@@ -1,0 +1,17 @@
+nodejs
+    -
+npm
+    -
+express
+    - npm install express
+    
+redis
+	- server: sudo apt-get install redis
+		start server by issuing: redis-server &
+	- nodejs:
+		npm install redis
+
+sshfs
+    - sudo apt-get install sshfs
+    
+    
