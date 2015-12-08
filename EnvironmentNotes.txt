@@ -27,10 +27,11 @@ Note: The following assumes you are using a Beaglebone, with the node name of 'b
 Note: See bottom of this document for help with 'local'.
 
 On your Linux host, create the directory structure:
-	/home/geek/SoftwareProjects/geeksHome
+(Note: This example uses 'geeksWeather'; if making a different app, then use that app name instead.)
+	/home/geek/SoftwareProjects/geeksWeather
 	
 Then cd to it
-	cd /home/geek/SoftwarProjects/geeksHome
+	cd /home/geek/SoftwarProjects/geeksWeather
 	
 Install 'git' onto this structure
 
@@ -38,9 +39,9 @@ Put any existing software you may have already started on into your local 'git' 
 
 Now you are ready to prepare the Beaglebone.
 
-Log into your geek@beaglebone.local user account (or geek@192.168.1.100 - see Notes above regarding this).
+Log into your geek@beaglebone.local user account (or geek@xxx.xxx.x.xxx - see Notes above regarding this).
 
-Mount the host source directory into the Beaglebone 'geek' account.  I developed a script utility for this, named 'sshfs_mount'.  Here are the contents:
+Using the 'sshfs' utility ('sudo apt-get update then sudo apt-get install sshfs' if not on your system), mount the Host-Source-Directory into the Beaglebone 'geek' account.  I developed a script utility for this, named 'sshfs_mount'.  Here are the contents:
 
     #!/bin/bash
     #
@@ -58,14 +59,19 @@ Mount the host source directory into the Beaglebone 'geek' account.  I developed
     #Understanding the command:
     #   sshfs:                       mounts a networked file using ssh
     #   geek@LINUX-HOST.local        Host-Source-Directory source location
-    #   ./SoftwareProjects/geeksHome SBC-Source-Directory source location
-    #	/home/geek/SoftwareProjects/geeksHome-venv/geeksHome
+    #   ./SoftwareProjects/geeksWeather SBC-Source-Directory source location
+    #	/home/geek/SoftwareProjects/geeksWeather-venv/geeksWeather
     #      - the directory on the Beagle where the host will be made available
     #
-    #The command follows:
-    sshfs  geek@LINUX-HOST.local:./SoftwareProjects/geeksHome /home/geek/SoftwareProjects/geeksHome-venv/geeksHome
+    #Once mounted, do a 'ls -al' to see the files from your LINUX-HOST directory!
+    #
+    #The command follows (note: get out of the mount point first via 'cd ~':
+    cd ~
+    sshfs  geek@LINUX-HOST.local:./SoftwareProjects/geeksWeather /home/geek/SoftwareProjects/geeksWeather
 
-I add an environment variable called $working for my SBC-Source-Directory
+Verify the mount by 'cd ~/SoftwareProjects/geeksWeather' then issuing: 'ls -al'.  You should see files that are on your LINUX-HOST computer.
+
+I add an environment variable called $working for my ~/SoftwareProjects/geeksWeather in ~/.bash_aliases.  You may need to edit and remove commented lines from .bashrc to get it to invoke.
 
 Note: while on Beaglebone SBC, anywhere within the parent of $working, any simple changes you make, such as vi aFile.js, are actually being done in the 'sshfs' mounted repository of the Linux host, so these will be in your git repository automatically, and you won't have to copy them from the Beaglebone to your host!  So, for a small change, I don't always go back to the IDE, I just do them on the Beagle then they are available to my IDE (to refresh of course) and git.
 
@@ -79,4 +85,4 @@ FILE SIZE OF HOST /var/log/syslog INCREASED TO VERY LARGE!
 Note: my host computer (Ubuntu 14.04) began to have a large increase in the size of the system log /var/log/syslog  In looking at this, I detected a lot of dhcp repeating enteries, about every 10 seconds or so, along with avahi-daemon and networkmanager entries.  It was associated with (for my system) eth1, which was associated with the USB connection from my host to my Beaglebone Black; I was using this as the primary power connection for the Beagle.  I elected to remove this cable and power the Beagle from a 5VDC power source, and the issue went away.  So, if you are using the USB connection and notice your /var/log/syslog file getting much larger than normal, this may be the culpret.
 
 
-
+ech
