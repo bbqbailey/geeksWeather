@@ -1,0 +1,8 @@
+{
+	comment:"Wunderground Key",
+	keyValue:"1do2d656db212dcc",
+	state:"GA",
+	city:"Alpharetta",
+	station:"KGAALPHA23.json"
+}
+
