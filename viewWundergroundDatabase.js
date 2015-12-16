@@ -48,11 +48,11 @@ var docs = db.find({}).sort({local_epoch_val:1}).exec(function(err,docs) {
 
     for (value in docs) {
         console.log();
-        console.log("local_tme_rec822: ", docs[value].current_observation.local_time_rfc822);
+        console.log("local_time_rec822: ", docs[value].current_observation.local_time_rfc822);
         console.log("observation time: ", docs[value].current_observation.observation_time);
-        console.log("local_epocy typeof: ", typeof docs[value].current_observation.local_epoch);
+        console.log("local_epoch typeof: ", typeof docs[value].current_observation.local_epoch);
         console.log("local_epoch: ", docs[value].current_observation.local_epoch);
-        console.log("local_epoch_val: ", docs[value].current_observation.local_epoch_val);
+        console.log("local_epoch_val: ", docs[value].local_epoch_val);
         console.log("temp_f: ", docs[value].current_observation.temp_f);
         console.log("_id: ", docs[value]._id);
     };

@@ -6,10 +6,10 @@ var eventEmitter = new events.EventEmitter();
 var db           = new Datastore( { filename: './wunderground.db', autoload: true });
 var myKeyDB      = new Datastore( { filename: './myWundergroundKey.db', autoload: true });
 
-var weather = {}; //defined in getData()
 var id; //definefd in getData()
 var wunderground; //defined in getKey()
 var myKey=""; //defined in getKey()
+var emitter_weather={};
 
 
 //get your stored key you obtained from wunderground.com
@@ -29,16 +29,18 @@ function getKey() {
         console.log("Proceeding with key: ", myKey);
         wunderground = new Wunderground(myKey);
         console.log("getKey() exit");
-        getDataStore();
+        processWeatherData();
     });
 }
 
 
-//gets weather data and stores it
-function getDataStore() {
-    console.log("getData() entry");
-    wunderground.conditions().request('pws/q/pws:KGAALPHA23', function(err, response){
-        weather                 = response;
+
+function createEmitterData(err, weather) {
+    if(err) {
+        console.log("createEmitterData() err: ", err) 
+        return;
+    } else {
+        console.log("createEmitterData() entry");
         var observation_time    = weather.current_observation.observation_time; 
         var temp_f              = weather.current_observation.temp_f;
         var local_time          = weather.current_observation.local_time_rfc822; 
@@ -58,38 +60,50 @@ function getDataStore() {
         var precip_today_in     = weather.current_observation.precip_today_in;
         var icon                = weather.current_observation.icon;
 
-        var current_weather = { 'observation_time': observation_time, 'temp_f': temp_f, 'local_time': local_time, 'local_epoch': local_epoch, 
+        emitter_weather = { 'observation_time': observation_time, 'temp_f': temp_f, 'local_time': local_time, 'local_epoch': local_epoch, 
             'wind_mph': wind_mph, 'wind_gust_mph': wind_gust_mph, 'wind_string': wind_string, 'wind_dir': wind_dir, 'wind_degrees': wind_degrees,
             'relative_humidity': relative_humidity, 'pressure_mb': pressure_mb, 'pressure_in': pressure_in, 'pressure_trend': pressure_trend,
             'dewpoint_f': dewpoint_f, 'feelslike_f': feelslike_f, 'visibility_mi': visibility_mi, 'precip_today_in': precip_today_in, 'icon': icon }
 
+        eventEmitter.emit('newWeatherData', emitter_weather);
+        console.log("createEmitterData() exit");
+    }
+}
 
-        
-        console.log();
-
-        var local_epoch_val = parseInt(local_epoch);
-
-        db.insert(weather, function(err, doc) {
-            if(err) {
-                console.log("getDataStore error: ", err);
-                return;
-            }
+function dbInsertWeatherData(err, weather) {
+    console.log("dbInsertWeatherData() entry");
+    
+    createEmitterData(err, weather); //yeah!  asynch
+    
+    db.insert(weather, function(err, doc) {
+        if(err) {
+            console.log("dbInsertWeatherData() error: ", err);
+            return;
+        } else {
 
             id=doc._id;
 
-            console.log("local_time: ", local_time);
+            obs=weather.current_observation;
+
+            console.log("local_time: ", obs.local_time_rfc822);
             console.log("record id: ", id);
+            console.log("temp_f: ", obs.temp_f);
             console.log();
        
-            db.update({ _id: id }, { $set: { 'local_epoch_val': local_epoch_val } }, {}, function(err, newDoc){
-                eventEmitter.emit('newWeatherData', current_weather);
-                console.log("eventEmitter.emit newWeatherData: current_weather: ", current_weather);
-                console.log();
-            });
+            local_epoch_val = parseInt(weather.current_observation.local_epoch);
+            db.update({ _id: id }, { $set: { 'local_epoch_val': local_epoch_val } });
+        }
+    });
+    console.log("dbInsertWeatherData() exit");
+}
 
-        });
 
-   });
+//gets weather data and stores it
+function processWeatherData() {
+    console.log("processWeatherData() entry");
+    wunderground.conditions().request('pws/q/pws:KGAALPHA23', dbInsertWeatherData);
+
+    console.log("processWeatherData() exit");
 }
 
 //=========================active program starts
@@ -97,4 +111,4 @@ function getDataStore() {
 getKey();
 
 var minute = 1000 * 60; //useful substitution 
-setInterval(getDataStore, 5 * minute); //schedule next run
+setInterval(processWeatherData, 5 * minute); //schedule next run
