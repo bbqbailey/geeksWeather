@@ -1,4 +1,6 @@
 *~
+*.db
+*.bak
 AlpharettaWeatherServer.js
 public/AlpharettaWeather.css
 public/AlpharettaWeather.html
