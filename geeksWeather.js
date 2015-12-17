@@ -68,13 +68,14 @@ function createEmitterData(err, weather) {
         var dewpoint_f          = obs.dewpoint_f;
         var feelslike_f         = obs.feelslike_f;
         var visibility_mi       = obs.visibility_mi;
+        var precip_1hr_in       = obs.precip_1hr_in;
         var precip_today_in     = obs.precip_today_in;
         var icon                = obs.icon;
 
         emitter_weather = { 'observation_time': observation_time, 'temp_f': temp_f, 'local_time': local_time, 'local_epoch': local_epoch, 
             'wind_mph': wind_mph, 'wind_gust_mph': wind_gust_mph, 'wind_string': wind_string, 'wind_dir': wind_dir, 'wind_degrees': wind_degrees,
             'relative_humidity': relative_humidity, 'pressure_mb': pressure_mb, 'pressure_in': pressure_in, 'pressure_trend': pressure_trend,
-            'dewpoint_f': dewpoint_f, 'feelslike_f': feelslike_f, 'visibility_mi': visibility_mi, 'precip_today_in': precip_today_in, 'icon': icon,
+            'dewpoint_f': dewpoint_f, 'feelslike_f': feelslike_f, 'visibility_mi': visibility_mi, 'precip_1hr_in': precip_1hr_in, 'precip_today_in': precip_today_in, 'icon': icon,
             'city': city, 'state': state, 'zip': zip, 'station': station 
         }
 

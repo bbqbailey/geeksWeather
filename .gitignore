@@ -1,6 +1,8 @@
 *~
 *.db
 *.bak
+create_wundergroundInfo.js.MINE
+create_wundergroundInfo.js.clean
 AlpharettaWeatherServer.js
 public/AlpharettaWeather.css
 public/AlpharettaWeather.html
