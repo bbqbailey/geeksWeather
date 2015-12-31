@@ -10,7 +10,7 @@ var wgInfo = new Datastore( { filename: './myWundergroundInfo.db', autoload: tru
 
 var id; //definefd in getData()
 var wunderground; //defined in getWUInfo()
-var myKey=""; //defined in getWUInfo()
+var my_key=""; //defined in getWUInfo()
 var city="";
 var state="";
 var zip="";
@@ -78,13 +78,13 @@ function getWUInfo() {
             return;
         }
         console.log("keyDoc: ", keyDoc[0]);
-        myKey=keyDoc[0].myKey;
+        my_key=keyDoc[0].my_key;
         city=keyDoc[0].city;
         state=keyDoc[0].state;
         zip=keyDoc[0].zip;
         station=keyDoc[0].station;
-        console.log("Proceeding with key: ", myKey);
-        wunderground = new Wunderground(myKey);
+        console.log("Proceeding with key: ", my_key);
+        wunderground = new Wunderground(my_key);
         console.log("getWUInfo() exit");
         processWeatherData();
     });
