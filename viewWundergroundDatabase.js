@@ -46,14 +46,20 @@ db.find({"current_observation.temp_f":{$exists: true}},function(err, docs) {
 var docs = db.find({}).sort({local_epoch_val:1}).exec(function(err,docs) {
     console.log("db.find.sort err: ", err);
 
+
     for (value in docs) {
+        obs = docs[value].current_observation;
+
         console.log();
-        console.log("local_time_rec822: ", docs[value].current_observation.local_time_rfc822);
-        console.log("observation time: ", docs[value].current_observation.observation_time);
-        console.log("local_epoch typeof: ", typeof docs[value].current_observation.local_epoch);
-        console.log("local_epoch: ", docs[value].current_observation.local_epoch);
-        console.log("local_epoch_val: ", docs[value].local_epoch_val);
-        console.log("temp_f: ", docs[value].current_observation.temp_f);
+        console.log("local_time_rec822: ", obs.local_time_rfc822);
+        console.log("observation time: ", obs.observation_time);
+        console.log("temp_f: ", obs.temp_f);
+        console.log("precip_1hr_in: ", obs.precip_1hr_in);
+        console.log("precip_today_in: ", obs.precip_today_in);
+        console.log("pressure_in: ", obs.pressure_in);
+        console.log("relative_humidity: ", obs.relative_humidity);
+        console.log("wind: ", obs.wind_string);
+        console.log("icon: ", obs.icon);
         console.log("_id: ", docs[value]._id);
     };
 });
