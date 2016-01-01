@@ -1,7 +1,8 @@
 var Wunderground = require('wundergroundnode');
 var Datastore    = require('nedb');
 var http         = require("http");
-var port = 8080;
+var async        = require("async");
+
 var MAX_NON_REPORT_TIME_MINUTES=60;//amount of time that can elapse before we alarm on weather station down
 var MAX_NON_REPORT_TIME_SECS = MAX_NON_REPORT_TIME_MINUTES * 60;
 
@@ -14,55 +15,65 @@ var my_key=""; //defined in getWUInfo()
 var city="";
 var state="";
 var zip="";
-var station=""
+var station="";
+var myPort="";
+var myServer="";
 
 var emitter_weather={};
 
-http.createServer(function(req, res) {
-    var index = "./weatherServer.html";
-    var interval;
-    var temp_f = emitter_weather.temp_f;
-    var last_time="";
-    var weather;
+function createServer(callback) {
+    console.log("==========================createServer() entry");
 
-    var time_now_seconds = Math.floor(new Date().getTime()/1000);
-    if(time_now_seconds - emitter_weather.observation_epoch >= MAX_NON_REPORT_TIME_SECS ) {
-        console.log("****************WEATHER STATION EXCEEDED NON-REPORTING TIME*****************");
-    } else {
-        console.log("WEATHER STATION OK");
-    }
-    console.log("time_now_seconds: " + time_now_seconds);
-    console.log("MAX_NON_REPORT_TIME_SECS: " + MAX_NON_REPORT_TIME_SECS);
-    console.log("emitter_weather.observation_epoch: " + emitter_weather.observation_epoch);
-    var elapsed_seconds = time_now_seconds - emitter_weather.observation_epoch;
-    console.log("time difference in seconds: " + elapsed_seconds);
-    console.log("time difference in minutes: " + (elapsed_seconds / 60));
-    console.log("time difference in hours: " + (elapsed_seconds / (60*60)));
-    if(req.url === "/") 
-       filename = index;
-    else
-        filename = "." + req.url;
+    http.createServer(function(req, res) {
+        var index = "./weatherServer.html";
+        var interval;
+        var temp_f = emitter_weather.temp_f;
+        var last_time="";
+        var weather;
 
-    if(filename === "./weatherServer.html") {
-        res.writeHead(200, {"Content-type":"text/event-stream", "Cache-Control":"no-cache", "Connection":"keep-alive"});
-        res.write("retry: 10000\n");
-        res.write("event: connectime\n");
-        interval = setInterval(function() {
-            res.write("data: " + (new Date()) + "\n");
-            res.write("data: " + "temp_f: " + temp_f + "\n");
-            if(last_time !== emitter_weather.local_epoch) {
-                last_time = emitter_weather.local_epoch;
-                weather = JSON.stringify(emitter_weather);
-                res.write("data: " + weather + "\n\n");
-            }
-        }, 1000);
-        req.connection.addListener("close", function() {
-            clearInterval(interval);
-        }, false);
-    }
-}).listen(port, "127.0.0.1");;
-console.log("listening on port " + port);
+   
+        var time_now_seconds = Math.floor(new Date().getTime()/1000);
+        if(time_now_seconds - emitter_weather.observation_epoch >= MAX_NON_REPORT_TIME_SECS ) {
+            console.log("****************WEATHER STATION EXCEEDED NON-REPORTING TIME*****************");
+        } else {
+            console.log("WEATHER STATION OK");
+        }
+        console.log("time_now_seconds: " + time_now_seconds);
+        console.log("MAX_NON_REPORT_TIME_SECS: " + MAX_NON_REPORT_TIME_SECS);
+        console.log("emitter_weather.observation_epoch: " + emitter_weather.observation_epoch);
+        var elapsed_seconds = time_now_seconds - emitter_weather.observation_epoch;
+        console.log("time difference in seconds: " + elapsed_seconds);
+        console.log("time difference in minutes: " + (elapsed_seconds / 60));
+        console.log("time difference in hours: " + (elapsed_seconds / (60*60)));
+        if(req.url === "/") 
+            filename = index;
+        else
+            filename = "." + req.url;
 
+        if(filename === "./weatherServer.html") {
+            res.writeHead(200, {"Content-type":"text/event-stream", "Cache-Control":"no-cache", "Connection":"keep-alive"});
+            res.write("retry: 10000\n");
+            res.write("event: connectime\n");
+            interval = setInterval(function() {
+                res.write("data: " + (new Date()) + "\n");
+                res.write("data: " + "temp_f: " + temp_f + "\n");
+                if(last_time !== emitter_weather.local_epoch) {
+                    last_time = emitter_weather.local_epoch;
+                    weather = JSON.stringify(emitter_weather);
+                    res.write("data: " + weather + "\n\n");
+                }
+            }, 1000);
+            req.connection.addListener("close", function() {
+                clearInterval(interval);
+            }, false);
+        }
+    }).listen(myPort, myServer);
+    console.log("listening on port " + myPort);
+    console.log("listening on server " + myServer);
+    console.log("=====================createServer() exit");
+    if(typeof callback === "function")
+        callback();
+}
         
 
 //get your stored key you obtained from wunderground.com
@@ -70,7 +81,7 @@ console.log("listening on port " + port);
 //then run the js via 'nodejs create_wundergroundInfo.js' to create
 //your keyfile ./myWundergroundInfo.db
 //
-function getWUInfo() {
+function getWUInfo(callback) {
     console.log("getWUInfo() entry");
     wgInfo.find({}, function(err, keyDoc) {
         if(err) {
@@ -83,10 +94,14 @@ function getWUInfo() {
         state=keyDoc[0].state;
         zip=keyDoc[0].zip;
         station=keyDoc[0].station;
+        myServer=keyDoc[0].myServer;
+        myPort=keyDoc[0].myPort;
         console.log("Proceeding with key: ", my_key);
         wunderground = new Wunderground(my_key);
         console.log("getWUInfo() exit");
-        processWeatherData();
+        if(typeof callback === "function")
+            callback();
+//        processWeatherData();
     });
 }
 
@@ -161,16 +176,31 @@ function dbInsertWeatherData(err, weather) {
 
 
 //gets weather data and stores it
-function processWeatherData() {
+function processWeatherData(callback) {
     console.log("processWeatherData() entry");
     wunderground.conditions().request('pws/q/pws:' + station, dbInsertWeatherData);
 
     console.log("processWeatherData() exit");
+    if (typeof callback === "function")
+        callback();
+
 }
 
 //=========================active program starts
 
-getWUInfo();
+//getWUInfo();
+//
+function sayHello(callback) {
+    console.log("SAYING HELLO!======================");
+    if(typeof callback === "function")
+        callback();
+}
 
 var minute = 1000 * 60; //useful substitution 
+
+async.series([sayHello, getWUInfo, createServer, processWeatherData],function(err) {
+    console.log("========================async.series error: ", err);
+    return;
+});
+
 setInterval(processWeatherData, 5 * minute); //schedule next run
