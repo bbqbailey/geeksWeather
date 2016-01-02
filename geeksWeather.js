@@ -8,11 +8,9 @@ var logger = log4js.getLogger();
 logger.setLevel('ALL');
 
 var MAX_NON_REPORT_TIME_MINUTES=60;//amount of time that can elapse before we alarm on weather station down
-var MAX_NON_REPORT_TIME_SECS = MAX_NON_REPORT_TIME_MINUTES * 60;
+var MAX_NON_REPORT_TIME_SECS = MAX_NON_REPORT_TIME_MINUTES * 60; //amount of time, in seconds, to alarm on weather station down
 var MINUTE = 1000 * 60; //useful substitution 
-var MINUTES_UNTIL_GET_WEATHER_INFO = 1 * MINUTE;
-
-
+var MINUTES_UNTIL_GET_WEATHER_DATA = 1 * MINUTE; //determines when we request weather data from Wunderground.  Default is 5 * MINUTE
 
 var db     = new Datastore( { filename: './wunderground.db', autoload: true });
 var wgInfo = new Datastore( { filename: './myWundergroundInfo.db', autoload: true });
@@ -26,7 +24,7 @@ var zip="";
 var station="";
 var myPort="";
 var myServer="";
-var server_time_now     = new Date();
+var server_time_now=new Date();
 
 var emitter_weather={};
 
@@ -34,7 +32,7 @@ function createServer(callback) {
     logger.trace("createServer() entry");
 
     http.createServer(function(req, res) {
-        var index = "./weatherServer.html";
+        var index = "./weatherServer";
         var interval;
         var temp_f = emitter_weather.temp_f;
         var last_time="";
@@ -47,13 +45,18 @@ function createServer(callback) {
         } else {
             logger.debug("WEATHER STATION OK");
         }
-        if(req.url === "/") 
+        
+        logger.debug("server page requested is " + req.url);
+        if(req.url === "/") {
             filename = index;
-        else
+            logger.debug("changing requested server page to filename " + filename);
+        } else {
             filename = "." + req.url;
+            logger.debug("changed requested server page to filename " + filename);
+        }
 
-        if(filename === "./weatherServer.html") {
-            logger.trace("filename === '/.weatherServer.html' is true ");
+        if(filename === "./weatherServer") {
+            logger.trace("filename === '/.weatherServer' is true ");
             res.writeHead(200, {"Content-type":"text/event-stream", "Cache-Control":"no-cache", "Connection":"keep-alive"});
             res.write("retry: 10000\n");
             res.write("event: connectime\n");
@@ -69,6 +72,8 @@ function createServer(callback) {
             req.connection.addListener("close", function() {
                 clearInterval(interval);
             }, false);
+        } else {
+            logger.warn("Requested server page " + req.url + " not a valid hosted page.");
         }
     }).listen(myPort, myServer);
     logger.info("listening on port " + myPort);
@@ -200,4 +205,4 @@ async.series([getWUInfo, createServer, processWeatherData],function(err) {
     return;
 });
 
-setInterval(processWeatherData, MINUTES_UNTIL_GET_WEATHER_INFO); //schedule next run
+setInterval(processWeatherData, MINUTES_UNTIL_GET_WEATHER_DATA); //schedule next run
