@@ -159,6 +159,15 @@ function createEmitterData(err, weather) {
 function dbInsertWeatherData(err, weather) {
     logger.trace("dbInsertWeatherData() entry");
     logger.debug("weather: ", weather);
+    logger.debug("===========weather forecast start============ ");
+    var forecastday = weather.forecast.simpleforecast.forecastday;
+
+    forecastday.forEach(function(forecast) {
+        logger.debug(forecast);
+    });
+    logger.debug("===========weather forecast end============ ");
+
+
 
     createEmitterData(err, weather); //yeah!  asynch
     
@@ -175,9 +184,23 @@ function dbInsertWeatherData(err, weather) {
             logger.info("Wunderground local_time: ", obs.local_time_rfc822);
             logger.info("server time: ", server_time_now);
             logger.info("record id: ", id);
+            logger.info();
+            logger.info("=====================CURRENT=================================");
             logger.info("temp_f: ", obs.temp_f);
             logger.info("wind: ", obs.wind_string);
             logger.info("icon: ", obs.icon);
+            logger.info();
+            logger.info("=====================FORECAST================================");
+            forecastday.forEach(function(forecast) {
+               logger.info("Day: " + forecast.date.weekday );
+               logger.info("High: " + forecast.high.fahrenheit);
+               logger.info("Low: " + forecast.low.fahrenheit);
+               logger.info("Conditions: " + forecast.conditions);
+               logger.info("Wind Avg: " + forecast.avewind.mph + " Dir: " + forecast.avewind.dir);
+               logger.info("Wind Max: " + forecast.maxwind.mph + " Dir: " + forecast.maxwind.dir);
+               logger.info();
+            });
+
             logger.info();
        
             local_epoch_val = parseInt(obs.local_epoch);
@@ -191,7 +214,7 @@ function dbInsertWeatherData(err, weather) {
 //gets weather data and stores it
 function processWeatherData(callback) {
     logger.trace("processWeatherData() entry");
-    wunderground.conditions().request('pws/q/pws:' + station, dbInsertWeatherData);
+    wunderground.conditions().forecast().request('pws/q/pws:' + station, dbInsertWeatherData);
 
     logger.trace("processWeatherData() exit");
     if (typeof callback === "function")
