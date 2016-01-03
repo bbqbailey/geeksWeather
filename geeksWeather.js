@@ -5,19 +5,21 @@ var async        = require("async");
 var log4js       = require('log4js');
 
 var logger = log4js.getLogger();
-logger.setLevel('ALL');
+logger.setLevel('INFO'); //In order: ALL, TRACE, DEBUG, INFO, WARN, ERROR, FATAL
 
 var MAX_NON_REPORT_TIME_MINUTES=60;//amount of time that can elapse before we alarm on weather station down
 var MAX_NON_REPORT_TIME_SECS = MAX_NON_REPORT_TIME_MINUTES * 60; //amount of time, in seconds, to alarm on weather station down
 var MINUTE = 1000 * 60; //useful substitution 
 var MINUTES_UNTIL_GET_WEATHER_DATA = 1 * MINUTE; //determines when we request weather data from Wunderground.  Default is 5 * MINUTE
 
+var SHOW_EMITTER_DATA = true; //determines whether emitter data will be shown on server.
+
 var db     = new Datastore( { filename: './wunderground.db', autoload: true });
 var wgInfo = new Datastore( { filename: './myWundergroundInfo.db', autoload: true });
 
 var id; //definefd in getData()
-var wunderground; //defined in getWUInfo()
-var my_key=""; //defined in getWUInfo()
+var wunderground; //defined in getAppInfo()
+var my_key=""; //defined in getAppInfo()
 var city="";
 var state="";
 var zip="";
@@ -27,9 +29,10 @@ var myServer="";
 var server_time_now=new Date();
 
 var emitter_weather={};
+var wunderground_weather={}; //contains weather info returned by Wunderground.com API
 
-function createServer(callback) {
-    logger.trace("createServer() entry");
+function createAppServer(callback) {
+    logger.trace("createAppServer() entry");
 
     http.createServer(function(req, res) {
         var index = "./weatherServer";
@@ -48,8 +51,7 @@ function createServer(callback) {
         
         logger.debug("server page requested is " + req.url);
         if(req.url === "/") {
-            filename = index;
-            logger.debug("changing requested server page to filename " + filename);
+            filename = index; logger.debug("changing requested server page to filename " + filename);
         } else {
             filename = "." + req.url;
             logger.debug("changed requested server page to filename " + filename);
@@ -78,7 +80,7 @@ function createServer(callback) {
     }).listen(myPort, myServer);
     logger.info("listening on port " + myPort);
     logger.info("listening on server " + myServer);
-    logger.trace("createServer() exit");
+    logger.trace("createAppServer() exit");
     if(typeof callback === "function")
         callback();
 }
@@ -89,11 +91,11 @@ function createServer(callback) {
 //then run the js via 'nodejs create_wundergroundInfo.js' to create
 //your keyfile ./myWundergroundInfo.db
 //
-function getWUInfo(callback) {
-    logger.trace("getWUInfo() entry");
+function getAppInfo(callback) {
+    logger.trace("getAppInfo() entry");
     wgInfo.find({}, function(err, keyDoc) {
         if(err) {
-            logger.error("getWUInfo() exit on error", err);
+            logger.error("getAppInfo() exit on error", err);
             return;
         }
         logger.debug("keyDoc: ", keyDoc[0]);
@@ -106,13 +108,56 @@ function getWUInfo(callback) {
         myPort=keyDoc[0].myPort;
         logger.debug("Proceeding with key: ", my_key);
         wunderground = new Wunderground(my_key);
-        logger.trace("getWUInfo() exit");
+        logger.trace("getAppInfo() exit");
         if(typeof callback === "function")
             callback();
     });
 }
 
+//gets weather data and stores it
+function getWeatherData(callback) {
+    logger.trace("getWeatherData() entry");
+    wunderground.conditions().forecast().request('pws/q/pws:' + station, processWundergroundData);
 
+    logger.trace("getWeatherData() exit");
+    if (typeof callback === "function")
+        callback();
+
+}
+
+function processWundergroundData(err, weather) {
+    logger.trace("processWundergroundData() entry");
+    dbInsertWeatherData(err, weather);
+    createEmitterData(err, weather);
+    showWundergroundData(err, weather);
+    logger.trace("processWundergroundData() exit");
+}
+
+
+//callback for Wunderground API usage.
+//param weather will contain results obtained from Wunderground
+function dbInsertWeatherData(err, weather) {
+    logger.trace("dbInsertWeatherData() entry");
+    logger.debug("weather: ", weather);
+
+    db.insert(weather, function(err, doc) {
+        if(err) {
+            logger.error("dbInsertWeatherData() error: ", err);
+            return;
+        } else {
+
+            id=doc._id;
+            logger.debug("db insert record ID: " + id);
+
+            obs=weather.current_observation;
+
+      
+            local_epoch_val = parseInt(obs.local_epoch);
+            db.update({ _id: id }, { $set: { 'local_epoch_val': local_epoch_val } });
+        }
+    });
+    logger.trace("dbInsertWeatherData() exit");
+}
 
 function createEmitterData(err, weather) {
     if(err) {
@@ -121,33 +166,13 @@ function createEmitterData(err, weather) {
     } else {
         logger.trace("createEmitterData() entry");
         obs=weather.current_observation;
-        var observation_epoch   = obs.observation_epoch;
-        var observation_time    = obs.observation_time; 
-        var temp_f              = obs.temp_f;
-        var local_time          = obs.local_time_rfc822; 
-        var local_epoch         = obs.local_epoch;
-        var wind_mph            = obs.wind_mph;
-        var wind_gust_mph       = obs.wind_gust_mph;
-        var wind_string         = obs.wind_string;
-        var wind_dir            = obs.wind_dir;
-        var wind_degrees        = obs.wind_degrees;
-        var relative_humidity   = obs.relative_humidity; 
-        var pressure_mb         = obs.pressure_mb;
-        var pressure_in         = obs.pressure_in; 
-        var pressure_trend      = obs.pressure_trend; 
-        var dewpoint_f          = obs.dewpoint_f;
-        var feelslike_f         = obs.feelslike_f;
-        var visibility_mi       = obs.visibility_mi;
-        var precip_1hr_in       = obs.precip_1hr_in;
-        var precip_today_in     = obs.precip_today_in;
-        var icon                = obs.icon;
-        
+       
         server_time_now     = new Date();
         
-        emitter_weather = { 'observation_epoch': observation_epoch, 'observation_time': observation_time, 'temp_f': temp_f, 'local_time': local_time, 'local_epoch': local_epoch, 
-            'wind_mph': wind_mph, 'wind_gust_mph': wind_gust_mph, 'wind_string': wind_string, 'wind_dir': wind_dir, 'wind_degrees': wind_degrees,
-            'relative_humidity': relative_humidity, 'pressure_mb': pressure_mb, 'pressure_in': pressure_in, 'pressure_trend': pressure_trend,
-            'dewpoint_f': dewpoint_f, 'feelslike_f': feelslike_f, 'visibility_mi': visibility_mi, 'precip_1hr_in': precip_1hr_in, 'precip_today_in': precip_today_in, 'icon': icon,
+        emitter_weather = { 'observation_epoch': obs.observation_epoch, 'observation_time': obs.observation_time, 'temp_f': obs.temp_f, 'local_time': obs.local_time_rfc822, 'local_epoch': obs.local_epoch, 
+            'wind_mph': obs.wind_mph, 'wind_gust_mph': obs.wind_gust_mph, 'wind_string': obs.wind_string, 'wind_dir': obs.wind_dir, 'wind_degrees': obs.wind_degrees,
+            'relative_humidity': obs.relative_humidity, 'pressure_mb': obs.pressure_mb, 'pressure_in': obs.pressure_in, 'pressure_trend': obs.pressure_trend,
+            'dewpoint_f': obs.dewpoint_f, 'feelslike_f': obs.feelslike_f, 'visibility_mi': obs.visibility_mi, 'precip_1hr_in': obs.precip_1hr_in, 'precip_today_in': obs.precip_today_in, 'icon': obs.icon,
             'city': city, 'state': state, 'zip': zip, 'station': station, 'server_time': server_time_now 
         }
 
@@ -156,76 +181,61 @@ function createEmitterData(err, weather) {
     logger.trace("createEmitterData() exit");
 }
 
-function dbInsertWeatherData(err, weather) {
-    logger.trace("dbInsertWeatherData() entry");
-    logger.debug("weather: ", weather);
-    logger.debug("===========weather forecast start============ ");
-    var forecastday = weather.forecast.simpleforecast.forecastday;
+function showWundergroundData(err, weather) {
+    if(SHOW_EMITTER_DATA) {
+        logger.trace("showWundergroundData() entry");
+        var forecastday = weather.forecast.simpleforecast.forecastday;
+        if(logger.level.isLessThanOrEqualTo("DEBUG")) {
+            logger.debug("===========weather forecast start============ ");
 
-    forecastday.forEach(function(forecast) {
-        logger.debug(forecast);
-    });
-    logger.debug("===========weather forecast end============ ");
-
-
-
-    createEmitterData(err, weather); //yeah!  asynch
-    
-    db.insert(weather, function(err, doc) {
-        if(err) {
-            logger.error("dbInsertWeatherData() error: ", err);
-            return;
-        } else {
-
-            id=doc._id;
-
-            obs=weather.current_observation;
-
-            logger.info("Wunderground local_time: ", obs.local_time_rfc822);
-            logger.info("server time: ", server_time_now);
-            logger.info("record id: ", id);
-            logger.info();
-            logger.info("=====================CURRENT=================================");
-            logger.info("temp_f: ", obs.temp_f);
-            logger.info("wind: ", obs.wind_string);
-            logger.info("icon: ", obs.icon);
-            logger.info();
-            logger.info("=====================FORECAST================================");
             forecastday.forEach(function(forecast) {
-               logger.info("Day: " + forecast.date.weekday );
-               logger.info("High: " + forecast.high.fahrenheit);
-               logger.info("Low: " + forecast.low.fahrenheit);
-               logger.info("Conditions: " + forecast.conditions);
-               logger.info("Wind Avg: " + forecast.avewind.mph + " Dir: " + forecast.avewind.dir);
-               logger.info("Wind Max: " + forecast.maxwind.mph + " Dir: " + forecast.maxwind.dir);
-               logger.info();
+                logger.debug(forecast);
             });
-
-            logger.info();
-       
-            local_epoch_val = parseInt(obs.local_epoch);
-            db.update({ _id: id }, { $set: { 'local_epoch_val': local_epoch_val } });
+            logger.debug("===========weather forecast end============ ");
+            logger.debug();
         }
-    });
-    logger.trace("dbInsertWeatherData() exit");
+
+        obs=weather.current_observation;
+
+        console.log("===================== Info ============================================");
+        console.log("Wunderground local_time: ", obs.local_time_rfc822);
+        console.log("Server time: ", server_time_now);
+        console.log("Station ", obs.observation_time);
+        console.log("Station: ", station);
+        console.log("City: ", obs.observation_location.city);
+        console.log("State: ", obs.observation_location.state);
+        console.log("Zip: ", obs.display_location.zip);
+        console.log("Latitude: ", obs.observation_location.latitude);
+        console.log("Longitude: ", obs.observation_location.longitude);
+        console.log("Station Elevation: ", obs.observation_location.elevation);
+        console.log();
+        console.log("===================== CURRENT WEATHER =================================");
+        console.log("temp_f: ", obs.temp_f);
+        console.log("wind: ", obs.wind_string);
+        console.log("icon: ", obs.icon);
+        console.log();
+        console.log("===================== FORECAST WEATHER ================================");
+        forecastday.forEach(function(forecast) {
+           console.log("Day: " + forecast.date.weekday );
+           console.log("High: " + forecast.high.fahrenheit);
+           console.log("Low: " + forecast.low.fahrenheit);
+           console.log("Conditions: " + forecast.conditions);
+           console.log("Wind Avg: " + forecast.avewind.mph + " Dir: " + forecast.avewind.dir);
+           console.log("Wind Max: " + forecast.maxwind.mph + " Dir: " + forecast.maxwind.dir);
+           console.log();
+        });
+
+        console.log();
+        logger.trace("showWundergroundData() exit");
+    }
 }
 
 
-//gets weather data and stores it
-function processWeatherData(callback) {
-    logger.trace("processWeatherData() entry");
-    wunderground.conditions().forecast().request('pws/q/pws:' + station, dbInsertWeatherData);
-
-    logger.trace("processWeatherData() exit");
-    if (typeof callback === "function")
-        callback();
-
-}
-
-
-async.series([getWUInfo, createServer, processWeatherData],function(err) {
-    logger.error("========================async.series error: ", err);
-    return;
+async.series([getAppInfo, createAppServer, getWeatherData],function(err) {
+    if(err) {
+        logger.error("========================async.series error: ", err);
+         return;
+    }
 });
 
-setInterval(processWeatherData, MINUTES_UNTIL_GET_WEATHER_DATA); //schedule next run
+setInterval(getWeatherData, MINUTES_UNTIL_GET_WEATHER_DATA); //schedule next run
