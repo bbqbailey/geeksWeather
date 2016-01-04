@@ -10,9 +10,9 @@ logger.setLevel('INFO'); //In order: ALL, TRACE, DEBUG, INFO, WARN, ERROR, FATAL
 var MAX_NON_REPORT_TIME_MINUTES=60;//amount of time that can elapse before we alarm on weather station down
 var MAX_NON_REPORT_TIME_SECS = MAX_NON_REPORT_TIME_MINUTES * 60; //amount of time, in seconds, to alarm on weather station down
 var MINUTE = 1000 * 60; //useful substitution 
-var MINUTES_UNTIL_GET_WEATHER_DATA = 1 * MINUTE; //determines when we request weather data from Wunderground.  Default is 5 * MINUTE
+var MINUTES_UNTIL_GET_WEATHER_DATA = 5 * MINUTE; //determines when we request weather data from Wunderground.  Default is 5 * MINUTE
 
-var SHOW_EMITTER_DATA = true; //determines whether emitter data will be shown on server.
+var SHOW_DATA_ON_SERVER = true; //determines whether emitter data will be shown on server.
 
 var db     = new Datastore( { filename: './wunderground.db', autoload: true });
 var wgInfo = new Datastore( { filename: './myWundergroundInfo.db', autoload: true });
@@ -182,7 +182,7 @@ function createEmitterData(err, weather) {
 }
 
 function showWundergroundData(err, weather) {
-    if(SHOW_EMITTER_DATA) {
+    if(SHOW_DATA_ON_SERVER) {
         logger.trace("showWundergroundData() entry");
         var forecastday = weather.forecast.simpleforecast.forecastday;
         if(logger.level.isLessThanOrEqualTo("DEBUG")) {
