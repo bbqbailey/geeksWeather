@@ -3,6 +3,9 @@ var Datastore    = require('nedb');
 var http         = require("http");
 var async        = require("async");
 var log4js       = require('log4js');
+var fs           = require('fs');
+var querystring  = require('querystring');
+var util        = require('util');
 
 var logger = log4js.getLogger();
 logger.setLevel('INFO'); //In order: ALL, TRACE, DEBUG, INFO, WARN, ERROR, FATAL
@@ -32,9 +35,13 @@ var emitter_weather={};
 var wunderground_weather={}; //contains weather info returned by Wunderground.com API
 
 function createAppServer(callback) {
+    //
+    //a useful web page that addresses handling forms without a framework is
+    //http://blog.frankgrimm.net/2010/11/howto-access-http-message-body-post-data-in-node-js/
+    //
     logger.trace("createAppServer() entry");
 
-    http.createServer(function(req, res) {
+    http.createServer(function(request, response) {
         var index = "./weatherServer";
         var interval;
         var temp_f = emitter_weather.temp_f;
@@ -49,33 +56,76 @@ function createAppServer(callback) {
             logger.debug("WEATHER STATION OK");
         }
         
-        logger.debug("server page requested is " + req.url);
-        if(req.url === "/") {
+        logger.debug("server page requested is " + request.url);
+       
+        if(request.url === "/") {
             filename = index; logger.debug("changing requested server page to filename " + filename);
         } else {
-            filename = "." + req.url;
+            filename = "." + request.url;
             logger.debug("changed requested server page to filename " + filename);
         }
 
         if(filename === "./weatherServer") {
             logger.trace("filename === '/.weatherServer' is true ");
-            res.writeHead(200, {"Content-type":"text/event-stream", "Cache-Control":"no-cache", "Connection":"keep-alive"});
-            res.write("retry: 10000\n");
-            res.write("event: connectime\n");
+            response.writeHead(200, {"Content-type":"text/event-stream", "Cache-Control":"no-cache", "Connection":"keep-alive"});
+            response.write("retry: 10000\n");
+            response.write("event: connectime\n");
             interval = setInterval(function() {
-                res.write("data: " + (new Date()) + "\n");
-                res.write("data: " + "temp_f: " + temp_f + "\n");
+                response.write("data: " + (new Date()) + "\n");
+                response.write("data: " + "temp_f: " + temp_f + "\n");
                 if(last_time !== emitter_weather.local_epoch) {
                     last_time = emitter_weather.local_epoch;
                     weather = JSON.stringify(emitter_weather);
-                    res.write("data: " + weather + "\n\n");
+                    response.write("data: " + weather + "\n\n");
                 }
             }, 1000);
-            req.connection.addListener("close", function() {
+            request.connection.addListener("close", function() {
                 clearInterval(interval);
             }, false);
+        } else if(request.url === "/configureGeeksWeather") {
+            //
+            //a useful web page that addresses handling forms without a framework is
+            //http://blog.frankgrimm.net/2010/11/howto-access-http-message-body-post-data-in-node-js/
+            //
+            logger.trace("request.url === configureGeeksWeather");
+            fs.readFile("configureGeeksWeather.html","binary", function(err, file) {
+                if(err) {
+                    response.writeHead(500, {"Content-Type": "text/plain"});
+                    response.write(err + "\n");
+                    response.end();
+                    return;
+                }
+                response.writeHead(200);
+                response.write(file, "binary");
+                response.end();
+            });
+        } else if(request.url === "/configurationFormHandler") {
+            logger.trace("request.url === configurationFormHandler");
+            logger.trace("request.url is ", request.url);
+            logger.debug("request.method: ", request.method); 
+            if(request.method.toLowerCase() == 'post') {
+                var fullBody = "";
+                logger.trace("---received POST method");
+                request.on('data', function(chunk) {
+                    fullBody += chunk.toString();
+                });
+
+                request.on('end', function() {
+                    response.writeHead(200, "OK", {'Content-Type':'text/html'});
+
+                    var decodedBody = querystring.parse(fullBody);
+                    response.write('<html><head><title>Post Data</title></head><body><pre>');
+                    response.write(util.inspect(decodedBody));
+                    response.write('</pre></body></html>');
+                    response.end();
+                });
+            } else {
+                response.writeHead(405, "Method not supported", {'Content-Type': 'text/html'});
+                response.end('<html><head><title>405 - Method not supported</title></head><body><H1>Method not supported.</h1></body</html>');
+            }
+ 
         } else {
-            logger.warn("Requested server page " + req.url + " not a valid hosted page.");
+            logger.warn("Requested server page " + request.url + " not a valid hosted page.");
         }
     }).listen(myPort, myServer);
     logger.info("listening on port " + myPort);
