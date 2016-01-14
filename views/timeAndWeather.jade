@@ -1,0 +1,121 @@
+doctype html
+html
+    head
+        Title Time and Weather!
+        <link href='https://fonts.googleapis.com/css?family=Orbitron:900' rel='stylesheet' type='text/css'>
+
+        style.
+            #time {
+                font-family: 'Orbitron', sans-serif;
+                font-size: 80px;
+                color: #007700;
+                }
+            #temp_f {
+                font-family: 'Orbitron', sans-serif;
+                font-size: 60px;
+                color: #000066;
+                }
+
+            .temp {
+                font-family: 'Orbitron', sans-serif;
+                font-size: 40px;
+                color #000000;
+                }
+    body
+        div(id="time" ) Time: Waiting...
+        
+        div(id="temp_f" class="temp"     ) Temp: Waiting...
+        div(id="wind_string" class="temp") Wind: Waiting...
+        div(id="cond"        class="temp") Conditions: Waiting...
+        div(id="today_high"  class="temp") Today's High: Waiting...
+        div(id="today_low"   class="temp") Today's Low: Waiting...
+        br
+        div(id="tmrw_high"   ) Tom.'s High: Waiting...
+        div(id="tmrw_low"    ) Tom.'s Low: Waiting...
+        div(id="tmrw_wind"   ) Tom.'s Wind: Waiting...
+        div(id="tmrw_cond"   ) Tom.'s Cond: Waiting...
+        br
+        div(id="state"       ) Start: Disconnected
+        div(id="station"     ) Station: Disconnected
+
+        h1 Ben's World!
+
+        script(src="//code.jquery.com/jquery-2.1.4.min.js") 
+
+        script.
+            if(!!window.EventSource) {
+                console.log('inside window.EventSource')
+                var source = new EventSource('/eventEngine')
+                console.log('after call to EventSource');
+                source.addEventListener('open', function(e) {
+                    $("#state").text("Connected")
+                    console.log('open received')
+                }, false)
+
+                source.addEventListener('weather', function(e) {
+                    console.log('eventListener: weather: ', e);
+                    weather_data = JSON.parse(e.data);
+                    forecast = weather_data.forecast;
+                    $("#temp_f").text(         " Temp: " + weather_data.temp_f);
+                    $("#wind_string").text(    " Wind: " + weather_data.wind_string);
+                    $("#cond").text(           " Conditions: " + weather_data.icon);
+                    $("#today_high").text(     " Today's High: " + forecast[0].high.fahrenheit);
+                    $("#today_low").text(      " Today's Low: " + forecast[0].low.fahrenheit);
+                    $("#tmrw_high").text(      " Tom.'s High: " + forecast[1].high.fahrenheit);
+                    $("#tmrw_low").text(       " Tom.'s Low: " + forecast[1].low.fahrenheit);
+                    $("#tmrw_wind").text(      " Tom.'s Wind: " + forecast[1].avewind.mph);
+                    $("#tmrw_cond").text(      " Tom.'s Cond: " + forecast[1].conditions);
+                    $("#state").text(" Connected");
+                    $("#station").text("Station: " + weather_data.station);
+                    console.log("weather: ", weather_data);
+                    console.log("forecast: ", weather_data.forecast);
+                                                     
+                }, false)
+
+
+                source.addEventListener('time', function(e) {
+                    console.log('eventListener: time: ', e);
+                    time = JSON.parse(e.data);
+                    console.log('time: ', time);
+                    $("#time").text(time);
+                    $("state").text(" Connected");
+                })
+
+
+                source.addEventListener('error', function(e) {
+                    console.log('eventlistener: error: ', e)
+                    if(e.target.readyState == EventSource.CLOSED) {
+                        $("#temp_f").text(         " Temp: Disconnected");
+                        $("#wind_string").text(    " Wind: Disconnected");
+                        $("#cond").text(           " Conditions: Disconnected");
+                        $("#today_high").text(     " Today's High: Disconnected");
+                        $("#today_low").text(      " Today's Low: Disconnected");
+                        $("#tmrw_high").text(      " Tom.'s High: Disconnected");
+                        $("#tmrw_low").text(       " Tom.'s Low: Disconnected");
+                        $("#tmrw_wind").text(      " Tom.'s Wind: Disconnected");
+                        $("#tmrw_cond").text(      " Tom.'s Cond: Disconnected");
+                        $("#state").text(" Disconnected");
+                        $("#station").text(" Disconnected");
+                    } else if (e.target.readyState == EventSource.CONNECTING) {
+                        $("#temp_f").text(         " Temp: Connecting...");
+                        $("#wind_string").text(    " Wind: Connecting...");
+                        $("#cond").text(           " Conditions: Connecting...");
+                        $("#today_high").text(     " Today's High: Connecting...");
+                        $("#today_low").text(      " Today's Low: Connecting...");
+                        $("#tmrw_high").text(      " Tom.'s High: Connecting...");
+                        $("#tmrw_low").text(       " Tom.'s Low: Connecting...");
+                        $("#tmrw_wind").text(      " Tom.'s Wind: Connecting...");
+                        $("#tmrw_cond").text(      " Tom.'s Cond: Connecting...");
+                        $("#state").text("Connecting...");
+                        $("#station").text("Station: Connecting...");
+                    }
+                }, false)
+            } else {
+                console.log("Your browser doesn't support SSE")
+            }
+
+
+
+
+
+
