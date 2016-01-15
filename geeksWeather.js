@@ -53,12 +53,27 @@ app.get('/eventEngine' , function(req, res) {
         connections.splice(i,1);
         logger.debug("Removed a connection; connections.length: " + connections.length);
     });
+    logger.trace("app.get(/eventEngine) exit");
 });
 
-app.get('/detail', function(req, res, next) { //renders __dirname/views/index.jade
-    logger.trace('app.get(/detail) entry');
-    res.render('detail');
+app.get('/timeAndWeather', function(req, res, next) { //renders __dirname/views/index.jade
+    logger.trace('app.get(/timeAndWeather) entry');
+    res.render('timeAndWeather');
+    logger.trace("app.get(/timeAndWeather) exit");
 });
+
+app.get('/about', function(req, res, next) {
+    logger.trace('app.get(/about) entry');
+    res.render('about');
+    logger.trace('app.get(/about exit');
+});
+
+app.get('/headers', function(req, res, next) {
+    logger.trace('app.get(/headers) entry');
+    res.render('headers');
+    logger.trace('app.get(/headers) exit');
+});
+
 
 
 app.listen(8080, function (err) {
@@ -66,9 +81,19 @@ app.listen(8080, function (err) {
 });
 
 
-var wundergroundInterval = setInterval(getWeatherData, WUNDERGROUND_GET_TIME);
+var wundergroundInterval = setInterval(function() {
+    logger.trace("setInterval(getWeatherData()) entry");
+    getWeatherData();
+    logger.trace("setInterval(getWeatherData()) exit");
+}, WUNDERGROUND_GET_TIME);
+
 //var weatherInterval = setInterval(sendWeather, WEATHER_SEND_TIME);
-var dateInterval = setInterval(sendTime, TIME_SEND_TIME);
+
+var dateInterval = setInterval(function() {
+    logger.trace("setInterval(sendTime()) entry");
+    sendTime();
+    logger.trace("setInterval(sendTime()) exit");
+}, TIME_SEND_TIME);
 
 
 
@@ -76,6 +101,7 @@ function sendWeather() {
     logger.trace("sendWeather() entry");
     var weatherJson = JSON.stringify(emitter_weather);
     sendConnections(weatherJson, 'weather');
+    logger.trace("sendWeather() exit");
 }
 
 function sendTime() {
@@ -100,6 +126,7 @@ function sendTime() {
     timeJson = JSON.stringify(time_data);
     sendConnections(timeJson,'time');
     logger.debug("Number of connections: " + connections.length);
+    logger.trace("sendTime() exit");
 }
 
 function sendConnections(data, event) {
@@ -110,6 +137,7 @@ function sendConnections(data, event) {
         connections[i].write('event: ' + event + '\n');
         connections[i].write('data: ' + data + '\n\n');
     }
+    logger.trace("sendConnections() exit");
 }    
     
     
@@ -139,6 +167,7 @@ function getAppInfo(callback) {
         if(typeof callback === "function")
             callback();
     });
+    logger.trace("getAppInfo() exit");
 }
 
 //gets weather data and stores it
@@ -146,10 +175,10 @@ function getWeatherData(callback) {
     logger.trace("getWeatherData() entry");
     wunderground.conditions().forecast().request('pws/q/pws:' + station, processWundergroundData);
 
-    logger.trace("getWeatherData() exit");
     if (typeof callback === "function")
         callback();
     sendWeather();    
+    logger.trace("getWeatherData() exit");
 }
 
 function processWundergroundData(err, weather) {
@@ -161,13 +190,16 @@ function processWundergroundData(err, weather) {
 }
 
 function createEmitterData(err, weather) {
+    logger.trace("createEmitterData() entry");
     if(err) {
         logger.error("createEmitterData() err: ", err) 
         return;
     } else {
-        logger.trace("createEmitterData() entry");
+        logger.trace("createEmitterData() after check for no-error");
         var obs=weather.current_observation;
         var forecastday=weather.forecast.simpleforecast.forecastday;
+        logger.trace("createEmitterData() after call to weather.forecast.simpleforecast.forecastday");
+        logger.debug("createEmitterData(); forecastday value: ", forecastday);
        
         var server_time_now     = new Date();
         
