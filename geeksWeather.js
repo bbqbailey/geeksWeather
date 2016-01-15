@@ -14,6 +14,7 @@ const MINUTE = SECOND * 60;
 const WUNDERGROUND_GET_TIME = 5 * MINUTE;
 //const WEATHER_SEND_TIME = WUNDERGROUND_GET_TIME - 1;
 const TIME_SEND_TIME = 1 * SECOND;
+const DEFAULT_FILE = "timeAndWeather";
 
 var wgInfo = new Datastore( { filename: './myWundergroundInfo.db', autoload: true });
 var emitter_weather={};
@@ -54,6 +55,12 @@ app.get('/eventEngine' , function(req, res) {
         logger.debug("Removed a connection; connections.length: " + connections.length);
     });
     logger.trace("app.get(/eventEngine) exit");
+});
+
+app.get('/', function(req, res, next) {
+    logger.trace('app.get(/) entry - rendering DEFAULT_FILE');
+    res.render(DEFAULT_FILE);
+    logger.trace('app.get(/) exit');
 });
 
 app.get('/timeAndWeather', function(req, res, next) { //renders __dirname/views/index.jade
