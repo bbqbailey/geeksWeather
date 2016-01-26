@@ -210,10 +210,12 @@ function createEmitterData(err, weather) {
        
         var server_time_now     = new Date();
         
-        emitter_weather = { 'observation_epoch': obs.observation_epoch, 'observation_time': obs.observation_time, 'temp_f': obs.temp_f, 'local_time': obs.local_time_rfc822, 'local_epoch': obs.local_epoch, 
+        emitter_weather = { 'observation_epoch': obs.observation_epoch, 'observation_time': obs.observation_time, 'temp_f': obs.temp_f, 
+            'local_time': obs.local_time_rfc822, 'local_epoch': obs.local_epoch, 
             'wind_mph': obs.wind_mph, 'wind_gust_mph': obs.wind_gust_mph, 'wind_string': obs.wind_string, 'wind_dir': obs.wind_dir, 'wind_degrees': obs.wind_degrees,
             'relative_humidity': obs.relative_humidity, 'pressure_mb': obs.pressure_mb, 'pressure_in': obs.pressure_in, 'pressure_trend': obs.pressure_trend,
-            'dewpoint_f': obs.dewpoint_f, 'feelslike_f': obs.feelslike_f, 'visibility_mi': obs.visibility_mi, 'precip_1hr_in': obs.precip_1hr_in, 'precip_today_in': obs.precip_today_in, 'icon': obs.icon,
+            'dewpoint_f': obs.dewpoint_f, 'feelslike_f': obs.feelslike_f, 'visibility_mi': obs.visibility_mi, 'precip_1hr_in': obs.precip_1hr_in, 
+            'precip_today_in': obs.precip_today_in, 'icon': obs.icon,
             'city': city, 'state': state, 'zip': zip, 'station': station, 'server_time': server_time_now, 'forecast':forecastday
         }
 
