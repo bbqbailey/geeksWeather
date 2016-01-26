@@ -1,152 +1,123 @@
-doctype html
-html
-    head
-        Title Time and Weather!
-        <link href='https://fonts.googleapis.com/css?family=Orbitron:900' rel='stylesheet' type='text/css'>
-        <link rel='icon' href='./images/bbqBailey.png'>
-        <link rel='stylesheet' type='text/css' href='./css/stylesheets.css'>
+head
 
-        style.
-            header {
-                font-family: 'Orbitron', sans-serif;
-                font-size: 100px;
-                color: #007700;
-                text-align: left;
-                padding: 10px;
-            }
+div(id='pagewrap')
 
-            .today {
-                font-family: sans-serif-bold;
-                font-size: 80px;
-                width: 350px;
-                padding: 10px;
-                display: inline;
-                float: left;
-            }
+    header
+        title Time and Weather!
+        link(href='https://fonts.googleapis.com/css?family=Orbitron:900' rel='stylesheet' type='text/css')
+        link(rel='icon' href='/images/bbqBailey.png')
+        link(rel='stylesheet' type='text/css' href='/stylesheets/threeCol.css')
 
-            .tomorrow {
-                font-family: sans-serif-bold;
-                font-size: 80px;
-                width: 350px;
-                padding: 10px;
-                display: inline;
-                float: left;
-            }
+        
+    section(id='topTime')
+        div(id="time" ) Time: Waiting...
+    
+    section(id='topTemp')
+        div(id="temp_f" ) 
+    
+    section(id='today')
+        div(id='today_high'  style='em') H: 
+        div(id='today_low') L: 
+        div(id='wind') W: 
 
-            .footer {
-                padding: 10px;
-                display: inline;
-            }
+    
+    section(id='tomorrow')
+        div(id='tmrw_high') H:
+        div(id='tmrw_low') L: 
+        div(id='tmrw_wind') W: 
+
+    section(id='todayCond')
+        div(id='cond')
+
+    section(id='tomorrowCond')
+        div(id='tmrw_cond')
+
+    footer
+        div(id='state') State:
+        div(id='station') Station:
 
 
-    body
-        header
-            div(id="time" ) Time: Waiting...
-            div(id="temp_f" ) 
+    script(src="//code.jquery.com/jquery-2.1.4.min.js") 
 
-        div 
-            left(class='today')    
-                div(id="today_high"  style='em') H:
-                div(id="today_low"   ) L:
-                div(id="wind"        ) W:
-                div(id="cond"        ) C:
+    script.
+        if(!!window.EventSource) {
+            console.log('inside window.EventSource')
+            var source = new EventSource('/eventEngine')
+            console.log('after call to EventSource');
+            source.addEventListener('open', function(e) {
+                $("#state").text("Connected")
+                console.log('open received')
+            }, false)
 
-            right(class='tomorrow')
-                div(id="tmrw_high"   ) H:
-                div(id="tmrw_low"    ) L:
-                div(id="tmrw_wind"   ) W:
-                div(id="tmrw_cond"   ) C:
+            source.addEventListener('weather', function(e) {
+                console.log('eventListener: weather: ', e);
+                weather_data = JSON.parse(e.data);
+                forecast = weather_data.forecast;
+                var tempRound = Math.round(weather_data.temp_f);
+                var windRound = Math.round(weather_data.wind_mph);
+                $("#temp_f").text(tempRound);
+                $("#today_high").text(     " H: " + forecast[0].high.fahrenheit);
+                $("#today_low").text(      " L: " + forecast[0].low.fahrenheit);
+                $("#wind").text(           " W: " + windRound);
+                $("#cond").text(           weather_data.icon);
+                console.log("Bengy - today's conditions icon: " + weather_data.icon + '.gif');
+                $("#today").css('background-image', 'url(http://icons.wxug.com/i/c/h/' + weather_data.icon + '.gif)');
 
-        div
-        br
-        br
-        br
-        br
-        br
-        br
-        br
-        br
-        br
-
-        div(class='footer')
-            div(id='state') State:
-            div(id='station') Station:
-
-
-        script(src="//code.jquery.com/jquery-2.1.4.min.js") 
-
-        script.
-            if(!!window.EventSource) {
-                console.log('inside window.EventSource')
-                var source = new EventSource('/eventEngine')
-                console.log('after call to EventSource');
-                source.addEventListener('open', function(e) {
-                    $("#state").text("Connected")
-                    console.log('open received')
-                }, false)
-
-                source.addEventListener('weather', function(e) {
-                    console.log('eventListener: weather: ', e);
-                    weather_data = JSON.parse(e.data);
-                    forecast = weather_data.forecast;
-                    $("#temp_f").text(weather_data.temp_f);
-                    $("#today_high").text(     " H: " + forecast[0].high.fahrenheit);
-                    $("#today_low").text(      " L: " + forecast[0].low.fahrenheit);
-                    $("#wind").text(           " W: " + weather_data.wind_mph);
-                    $("#cond").text(           " C: " + weather_data.icon);
-
-                    $("#tmrw_high").text(      " H: " + forecast[1].high.fahrenheit);
-                    $("#tmrw_low").text(       " L: " + forecast[1].low.fahrenheit);
-                    $("#tmrw_wind").text(      " W: " + forecast[1].avewind.mph);
-                    $("#tmrw_cond").text(      " C: " + forecast[1].conditions);
-                    $("#state").text(" Connected");
-                    $("#station").text("Station: " + weather_data.station);
-                    console.log("weather: ", weather_data);
-                    console.log("forecast: ", weather_data.forecast);
-                                                     
-                }, false)
+                
+                $("#tmrw_high").text(      " H: " + forecast[1].high.fahrenheit);
+                $("#tmrw_low").text(       " L: " + forecast[1].low.fahrenheit);
+                $("#tmrw_wind").text(      " W: " + forecast[1].avewind.mph);
+                $("#tmrw_cond").text(      forecast[1].conditions);
+                $("#state").text(" Connected");
+                $("#station").text("Station: " + weather_data.station);
+                console.log("weather: ", weather_data);
+                console.log("forecast: ", weather_data.forecast);
+                console.log("Bengy - tomorrow's conditions icon: " + forecast[1].icon + '.gif');
+                $("#tomorrow").css('background-image', 'url(http://icons.wxug.com/i/c/h/' + forecast[1].icon + '.gif)');
+                                                 
+            }, false)
 
 
-                source.addEventListener('time', function(e) {
-                    console.log('eventListener: time: ', e);
-                    time = JSON.parse(e.data);
-                    console.log('time: ', time);
-                    $("#time").text(time);
-                    $("state").text(" Connected");
-                })
+            source.addEventListener('time', function(e) {
+                console.log('eventListener: time: ', e);
+                time = JSON.parse(e.data);
+                console.log('time: ', time);
+                $("#time").text(time);
+                $("state").text(" Connected");
+            })
 
 
-                source.addEventListener('error', function(e) {
-                    console.log('eventlistener: error: ', e)
-                    if(e.target.readyState == EventSource.CLOSED) {
-                        $("#temp_f").text("T");
-                        $("#today_high").text(     " H:");
-                        $("#today_low").text(      " L:");
-                        $("#wind").text(           " W:");
-                        $("#cond").text(           " C:");
-                        $("#tmrw_high").text(      " H:");
-                        $("#tmrw_low").text(       " L:");
-                        $("#tmrw_wind").text(      " W:");
-                        $("#tmrw_cond").text(      " C:");
-                        $("#state").text(" Disconnected");
-                        $("#station").text(" Disconnected");
-                    } else if (e.target.readyState == EventSource.CONNECTING) {
-                        $("#temp_f").text("T");
-                        $("#today_high").text(     " H:");
-                        $("#today_low").text(      " L:");
-                        $("#wind").text(           " W:");
-                        $("#cond").text(           " C:");
-                        $("#tmrw_high").text(      " H:");
-                        $("#tmrw_low").text(       " L:");
-                        $("#tmrw_wind").text(      " W:");
-                        $("#tmrw_cond").text(      " C:");
-                        $("#state").text("Connecting...");
-                        $("#station").text("Station: Connecting...");
-                    }
-                }, false)
-            } else {
-                console.log("Your browser doesn't support SSE")
-            }
+            source.addEventListener('error', function(e) {
+                console.log('eventlistener: error: ', e)
+                if(e.target.readyState == EventSource.CLOSED) {
+                    $("#temp_f").text("T");
+                    $("#today_high").text(     " H:");
+                    $("#today_low").text(      " L:");
+                    $("#wind").text(           " W:");
+                    $("#cond").text(           " C:");
+                    $("#tmrw_high").text(      " H:");
+                    $("#tmrw_low").text(       " L:");
+                    $("#tmrw_wind").text(      " W:");
+                    $("#tmrw_cond").text(      );
+                    $("#state").text(" Disconnected");
+                    $("#station").text(" Disconnected");
+                } else if (e.target.readyState == EventSource.CONNECTING) {
+                    $("#temp_f").text("T");
+                    $("#today_high").text(     " H:");
+                    $("#today_low").text(      " L:");
+                    $("#wind").text(           " W:");
+                    $("#cond").text(           );
+                    $("#tmrw_high").text(      " H:");
+                    $("#tmrw_low").text(       " L:");
+                    $("#tmrw_wind").text(      " W:");
+                    $("#tmrw_cond").text(      );
+                    $("#state").text("Connecting...");
+                    $("#station").text("Station: Connecting...");
+                }
+            }, false)
+        } else {
+            console.log("Your browser doesn't support SSE")
+        }
 
 
 
