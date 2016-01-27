@@ -80,6 +80,15 @@ body {
 	padding: 5px 15px;
 	float: left;
 }
+
+button#southernMissRadarButton {
+    height: 60px;
+}
+
+button#returnButton {
+    height: 60px;
+}
+
 footer {
 	clear: both;
 	padding: 0 15px;

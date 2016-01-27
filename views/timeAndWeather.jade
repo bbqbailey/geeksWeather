@@ -32,12 +32,20 @@ div(id='pagewrap')
     section(id='tomorrowCond')
         div(id='tmrw_cond')
 
+
     footer
         div(id='state') State:
         div(id='station') Station:
+        button(onclick='move()' id='southernMissRadarButton' value='Southern Miss. Radar') Southern Miss. Radar
+
 
 
     script(src="//code.jquery.com/jquery-2.1.4.min.js") 
+
+    script.
+        function move() {
+            window.location.href = '/southernMissRadar'
+        }
 
     script.
         if(!!window.EventSource) {

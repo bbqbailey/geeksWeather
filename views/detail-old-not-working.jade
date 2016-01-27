@@ -1,0 +1,112 @@
+style.
+    today {
+        font-size: 100px;
+    }
+
+
+
+h1 Weather for Alpharetta GA:
+
+
+b=time
+
+- var temp_f = weather.temp_f
+- var wind = weather.wind_string
+- var icon = weather.icon
+
+h2 The current weather is:
+
+h1 
+    today="Temp: " + temp_f 
+    br
+    today="+High: " + forecast_weather[0].high.fahrenheit 
+    br
+    today="-Low:  " + forecast_weather[0].low.fahrenheit
+    br
+    today="Wind: " + wind 
+    br
+    today="Cond: " + icon
+    br
+
+    div ---Tomorrow---
+    div="Temp: " + forecast_weather[1].high.fahrenheit + ", " + forecast_weather[1].low.fahrenheit
+    div="Wind: " + forecast_weather[1].avewind.mph + ", " + forecast_weather[1].maxwind.mph
+    div="Cond: " + forecast_weather[1].conditions
+
+-   forecast_high = "High: " + forecast_weather[0].high.fahrenheit
+-   forecast_low = "Low: "   + forecast_weather[0].low.fahrenheit
+-   forecast_conditions = "Conditions: " + forecast_weather[0].conditions
+-   forecast_avewind = "Wind Avg: " + forecast_weather[0].avewind.mph + " mph, from the " + forecast_weather[0].avewind.dir
+-   forecast_maxwind = "Wind Max: " + forecast_weather[0].maxwind.mph + " mph, from the " + forecast_weather[0].maxwind.dir
+
+h2 Forecast
+- for (var i = 0; i< forecast_weather.length; i++) {
+-   forecast_day = "Day: " + forecast_weather[i].date.weekday
+-   forecast_high = "High: " + forecast_weather[i].high.fahrenheit
+-   forecast_low = "Low: "   + forecast_weather[i].low.fahrenheit
+-   forecast_conditions = "Conditions: " + forecast_weather[i].conditions
+-   forecast_avewind = "Wind Avg: " + forecast_weather[i].avewind.mph + " mph, from the " + forecast_weather[0].avewind.dir
+-   forecast_maxwind = "Wind Max: " + forecast_weather[i].maxwind.mph + " mph, from the " + forecast_weather[0].maxwind.dir
+
+    b=forecast_day
+    div=forecast_high
+    div=forecast_low
+    div=forecast_conditions
+    div=forecast_avewind
+    div=forecast_maxwind
+    p
+- }
+
+
+
+
+-script
+
+    function connect() {  //executed at start if we have a browser capable.  
+-       source = new EventSource("stream");  //HTML5 - allows page to receive server-sent events.
+-       source.addEventListener("message", function(event) { 
+-           //THIS IS THE MAIN THING!  Every time the clock updates, it comes in via this 'message' event listener function. 
+-           output.textContent = event.data;
+-           if(beenHere) {
+-               output.style.backgroundColor = "red";
+-               beenHere=false;
+-           } else {
+-               output.style.backgroundColor = "white";
+-               beenHere=true;  
+-           }
+-       }, false);
+
+-       source.addEventListener("connecttime", function(event) {
+-           connectTime.textContent = "Connection was last established at: " + event.data;
+-       }, false);
+
+-       source.addEventListener("open", function(event) {
+-           button.value = "Disconnect";
+-           button.onclick = function(event) {
+-               source.close();
+-               button.value = "Connect";
+-               button.onclick = connect;
+-               status.textContent = "Connection closed!";
+-           };
+-           status.textContent = "Connection open!";
+-       }, false);
+
+-       source.addEventListener("error", function(event) {
+-           if (event.target.readyState === EventSource.CLOSED) {
+-               source.close();
+-               status.textContent = "Connection closed!";
+-           } else if (event.target.readyState === EventSource.CONNECTING) {
+-               status.textContent = "Connection closed. Attempting to reconnect!";
+-           } else {
+-               status.textContent = "Connection closed. Unknown error!";
+-           }
+-       }, false);
+-   }
+-   if (!!window.EventSource) {  //first thing done
+-        console.log('creating new eventsource')
+-       connect()
+-   } else {
+-       button.style.display = "none";
+-       status.textContent = "Sorry, your browser doesn't support server-sent events";
+-   }
+

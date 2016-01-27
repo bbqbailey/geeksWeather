@@ -4,6 +4,8 @@ var async        = require("async");
 var log4js       = require('log4js');
 var express      = require('express');
 var bodyParser   = require('body-parser');
+var path         = require('path');
+
 var app = express();
 
 var logger = log4js.getLogger();
@@ -23,7 +25,8 @@ var wunderground; //defined in getAppInfo()
 var wunderground_weather={}; //contains weather info returned by Wunderground.com API
 
 
-app.use(express.static(__dirname + '/public'));
+app.use(express.static('public'));
+
 app.use(bodyParser.urlencoded({ extended: true}));
 //or app.use(bodyParser.json()) if urlencoded is incorrect;
 
@@ -81,7 +84,12 @@ app.get('/headers', function(req, res, next) {
     logger.trace('app.get(/headers) exit');
 });
 
+app.get('/southernMissRadar', function(req, res, next) {
+    logger.trace('app.get(/southernMissRadar');
+    res.sendFile('southernMissRadar.html', {root: path.join(__dirname, 'public/images') });
 
+    logger.trace('app.get(/southernMissRadar');
+});
 
 app.listen(8080, function (err) {
     logger.info('Express started on port 8080');
