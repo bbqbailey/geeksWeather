@@ -7,4 +7,23 @@ AlpharettaWeatherServer.js
 public/AlpharettaWeather.css
 public/AlpharettaWeather.html
 public/OurHomeAlpharettaSnow1.jpg
+OLD-geeksWeather.js
+Software_Dependents.txt
+geeksWeather.log
+old/
+public/aPublicPage.html
+*.swp
+public/stylesheets/style.css
+public/testingJade.jade
+todo.txt
+viewResults.txt
+viewWundergroundDatabase.js
+views/about.jade
+views/detail-old-not-working.jade
+views/headers.jade
+views/styleExample.html
+views/styleExample.jade
+views/threeCol.html
+views/timeAndWeather.html
+
 
