@@ -23,6 +23,7 @@ var emitter_weather={};
 var connections=[];
 var wunderground; //defined in getAppInfo()
 var wunderground_weather={}; //contains weather info returned by Wunderground.com API
+var obs={} //weather observation
 
 
 app.use(express.static('public'));
@@ -112,6 +113,7 @@ var dateInterval = setInterval(function() {
 
 
 
+
 function sendWeather() {
     logger.trace("sendWeather() entry");
     var weatherJson = JSON.stringify(emitter_weather);
@@ -137,9 +139,12 @@ function sendTime() {
         seconds = "0" + seconds;
 
     var time_data = hours + ":" + minutes + ":" + seconds;
+    var jsonTimeTemp = {'time': time_data, 'temp_f': obs.temp_f};
+    logger.debug("sendTime() jsonTimeTemp: ", jsonTimeTemp);
     
-    timeJson = JSON.stringify(time_data);
-    sendConnections(timeJson,'time');
+    timeTempJson = JSON.stringify(jsonTimeTemp);
+    logger.debug("sendTime() timeJson: " , timeTempJson);
+    sendConnections(timeTempJson,'time');
     logger.debug("Number of connections: " + connections.length);
     logger.trace("sendTime() exit");
 }
@@ -211,7 +216,7 @@ function createEmitterData(err, weather) {
         return;
     } else {
         logger.trace("createEmitterData() after check for no-error");
-        var obs=weather.current_observation;
+        obs=weather.current_observation;
         var forecastday=weather.forecast.simpleforecast.forecastday;
         logger.trace("createEmitterData() after call to weather.forecast.simpleforecast.forecastday");
         logger.debug("createEmitterData(); forecastday value: ", forecastday);

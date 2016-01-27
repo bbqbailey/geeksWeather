@@ -61,9 +61,7 @@ div(id='pagewrap')
                 console.log('eventListener: weather: ', e);
                 weather_data = JSON.parse(e.data);
                 forecast = weather_data.forecast;
-                var tempRound = Math.round(weather_data.temp_f);
                 var windRound = Math.round(weather_data.wind_mph);
-                $("#temp_f").text(tempRound);
                 $("#today_high").text(     " H: " + forecast[0].high.fahrenheit);
                 $("#today_low").text(      " L: " + forecast[0].low.fahrenheit);
                 $("#wind").text(           " W: " + windRound);
@@ -88,9 +86,10 @@ div(id='pagewrap')
 
             source.addEventListener('time', function(e) {
                 console.log('eventListener: time: ', e);
-                time = JSON.parse(e.data);
-                console.log('time: ', time);
-                $("#time").text(time);
+                timeTemp = JSON.parse(e.data);
+                console.log('time: ', timeTemp.time);
+                $("#time").text(timeTemp.time);
+                $("#temp_f").text(Math.round(timeTemp.temp_f));
                 $("state").text(" Connected");
             })
 
