@@ -70,20 +70,16 @@ app.get('/', function(req, res, next) {
 app.get('/timeAndWeather', function(req, res, next) { //renders __dirname/views/index.jade
     logger.trace('app.get(/timeAndWeather) entry');
     res.render('timeAndWeather');
-    logger.trace("app.get(/timeAndWeather) exit");
+    logger.trace('app.get(/timeAndWeather) exit');
 });
 
-app.get('/about', function(req, res, next) {
-    logger.trace('app.get(/about) entry');
-    res.render('about');
-    logger.trace('app.get(/about exit');
+
+app.get('/timeAndRadar', function(req, res, next) {
+    logger.trace('app.get(/timeAndRadar) entry');
+    res.render('timeAndRadar');
+    logger.trace('app.get(/timeAndRadar) exit');
 });
 
-app.get('/headers', function(req, res, next) {
-    logger.trace('app.get(/headers) entry');
-    res.render('headers');
-    logger.trace('app.get(/headers) exit');
-});
 
 app.get('/southernMissRadar', function(req, res, next) {
     logger.trace('app.get(/southernMissRadar');
@@ -140,7 +136,6 @@ function sendTime() {
 
     var time_data = hours + ":" + minutes + ":" + seconds;
     var jsonTimeTemp = {'time': time_data, 'temp_f': obs.temp_f};
-    logger.debug("sendTime() jsonTimeTemp: ", jsonTimeTemp);
     
     timeTempJson = JSON.stringify(jsonTimeTemp);
     logger.debug("sendTime() timeJson: " , timeTempJson);
