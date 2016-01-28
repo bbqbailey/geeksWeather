@@ -80,20 +80,22 @@ app.get('/timeAndRadar', function(req, res, next) {
     logger.trace('app.get(/timeAndRadar) exit');
 });
 
-
 app.get('/southernMissRadar', function(req, res, next) {
     logger.trace('app.get(/southernMissRadar');
     res.sendFile('southernMissRadar.html', {root: path.join(__dirname, 'public/images') });
-
     logger.trace('app.get(/southernMissRadar');
 });
 
-app.listen(8080, function (err) {
-    logger.info('Express started on port 8080');
+app.get('/timeAndConus', function(req, res, next) {
+    logger.trace('app.get(/timeAndConus');
+    res.render('timeAndConus', {root: path.join(__dirname, 'public/images') });
+    logger.trace('app.get(/timeAndConus');
 });
 
 
-var wundergroundInterval = setInterval(function() {
+app.listen(8080, function (err) {
+    logger.info('Express started on port 8080');
+}); var wundergroundInterval = setInterval(function() {
     logger.trace("setInterval(getWeatherData()) entry");
     getWeatherData();
     logger.trace("setInterval(getWeatherData()) exit");
