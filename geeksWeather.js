@@ -24,6 +24,7 @@ var connections=[];
 var wunderground; //defined in getAppInfo()
 var wunderground_weather={}; //contains weather info returned by Wunderground.com API
 var obs={} //weather observation
+var noClients=true;
 
 
 app.use(express.static('public'));
@@ -37,15 +38,33 @@ app.set('views', __dirname + '/views');
 
 app.get('/eventEngine' , function(req, res) {
     logger.trace('app.get(/eventEngine) entry');
+    if(connections.length === 0) {
+        noClients=true;
+    } else {
+        noClients=false;
+    }
     connections.push(res);
-    logger.debug("Added a connection; connections.length: " + connections.length);
+    logger.debug("app.get(/eventEngine) Added a connection; connections.length: " + connections.length);
     res.writeHead(200, {
         "Content-type":"text/event-stream", 
         "Cache-Control":"no-cache", 
         "Connection":"keep-alive"
     });
-    sendWeather();
-    
+    if(noClients) {
+        logger.trace("app.get(/eventEngine): noClients was previously true so get new data from wunderground.");
+        //we haven't been polling wunderground when no clients so get an update!
+        logger.trace("app.get(/eventEngine): calling async.series([getWeatherData, sendWeather])");
+        async.series([getWeatherData, sendWeather], function(err) {
+            if(err) {
+                logger.error("async.series error in app.get(/eventEngine)");
+            }
+        });
+        noClients=false;
+    } else {
+        logger.trace("app.get(/eventEngine): noClients is false");
+        sendWeather();
+    }
+
     req.on("close", function() {
         logger.trace("req.on close");
         var toRemove;
@@ -67,7 +86,7 @@ app.get('/', function(req, res, next) {
     logger.trace('app.get(/) exit');
 });
 
-app.get('/timeAndWeather', function(req, res, next) { //renders __dirname/views/index.jade
+app.get('/timeAndWeather', function(req, res, next) { 
     logger.trace('app.get(/timeAndWeather) entry');
     res.render('timeAndWeather');
     logger.trace('app.get(/timeAndWeather) exit');
@@ -112,13 +131,13 @@ app.get('/timeAndConus', function(req, res, next) {
 
 app.listen(8080, function (err) {
     logger.info('Express started on port 8080');
-}); var wundergroundInterval = setInterval(function() {
+}); 
+
+var wundergroundInterval = setInterval(function() {
     logger.trace("setInterval(getWeatherData()) entry");
     getWeatherData();
     logger.trace("setInterval(getWeatherData()) exit");
 }, WUNDERGROUND_GET_TIME);
-
-//var weatherInterval = setInterval(sendWeather, WEATHER_SEND_TIME);
 
 var dateInterval = setInterval(function() {
     logger.trace("setInterval(sendTime()) entry");
@@ -131,6 +150,18 @@ var dateInterval = setInterval(function() {
 
 function sendWeather() {
     logger.trace("sendWeather() entry");
+    //no reason to proceed if no emitter_weather yet
+    if(Object.keys(emitter_weather).length === 0) {
+        logger.trace("sendWeather(), emitter_weather.length === 0");
+        logger.trace("sendWeather() exit on emitter.length === 0");
+        return;
+     }
+    //no reason to proceed if no clients listening
+    if(connections.length === 0) {
+        logger.trace("sendWeather(), connections.length === 0");
+        logger.trace("sendWeather() exit on connections.length === 0");
+        return;
+    }
     var weatherJson = JSON.stringify(emitter_weather);
     sendConnections(weatherJson, 'weather');
     logger.trace("sendWeather() exit");
@@ -138,6 +169,11 @@ function sendWeather() {
 
 function sendTime() {
     logger.trace("sendTime() entry");
+    if(connections.length === 0) {
+        //no reason to do all of this if no clients!
+        logger.trace("sendTime() connections.length === 0 so returning with no work.");
+        return;
+    }
     var time = new Date();
     var hours = time.getHours();
     var minutes  = time.getMinutes();
@@ -159,7 +195,7 @@ function sendTime() {
     timeTempJson = JSON.stringify(jsonTimeTemp);
     logger.debug("sendTime() timeJson: " , timeTempJson);
     sendConnections(timeTempJson,'time');
-    logger.debug("Number of connections: " + connections.length);
+    logger.debug("sendTime(): Number of connections: " + connections.length);
     logger.trace("sendTime() exit");
 }
 
@@ -207,11 +243,17 @@ function getAppInfo(callback) {
 //gets weather data and stores it
 function getWeatherData(callback) {
     logger.trace("getWeatherData() entry");
+    //no reason to proceed if no clients clients
+    if(connections.length === 0) {
+        logger.trace("getWeatherData(), connections.length === 0");
+        logger.trace("getWeatherData() exit on connections.length === 0");
+        return;
+    }
+    logger.debug("getWeatherData() Calling wunderground");
     wunderground.conditions().forecast().request('pws/q/pws:' + station, processWundergroundData);
 
     if (typeof callback === "function")
         callback();
-    sendWeather();    
     logger.trace("getWeatherData() exit");
 }
 
@@ -248,16 +290,17 @@ function createEmitterData(err, weather) {
 
         logger.debug("createEmitterData(); emitter_weather: ", emitter_weather);
     }
+    sendWeather();
     logger.trace("createEmitterData() exit");
 }
 
 
 //async.series([getAppInfo, createAppServer, getWeatherData],function(err) {
-async.series([getAppInfo, getWeatherData, sendWeather], function(err) {
+async.series([getAppInfo, getWeatherData], function(err) {
 
     if(err) {
-        logger.error("========================async.series error: ", err);
-         return;
+        logger.error("======================async.series error: ", err);
+        return;
     }
 });
 
