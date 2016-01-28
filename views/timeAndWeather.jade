@@ -38,6 +38,7 @@ div(id='pagewrap')
         button(onclick='moveToConus()' id='conusRadarButton' value='conusRadarButton')  USA Radar
         button(onclick='moveToAtlantaRadar()' id='atlantaRadarButton' value='atlantaRadarButton')  Atlanta Radar
         button(onclick='moveToConusSatellite()' id='conusSatelliteButton' value='conusSatelliteButton')  Continental USA Satelllite Image
+        button(onclick='moveToConusForecastMap()' id='conusForecastMapButton' value='conusForecastMapButton')  Continental USA Forecast Map 
         div(id='state') State:
         div(id='station') Station:
  
@@ -64,7 +65,12 @@ div(id='pagewrap')
             window.location.href = 'conusSatellite'
         }
 
-     
+    script.
+        function moveToConusForecastMap() {
+            window.location.href = 'conusForecastMap'
+        }
+
+      
     script.
         if(!!window.EventSource) {
             console.log('inside window.EventSource')

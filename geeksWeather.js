@@ -85,13 +85,17 @@ app.get('/atlantaRadar', function(req, res, next) {
     logger.trace('app.get(/atlantaRadar) exit');
 });
 
-
 app.get('/conusSatellite', function(req, res, next) {
     logger.trace('app.get(/conusSatellite) entry');
     res.render('conusSatellite');
     logger.trace('app.get(/conusSatellite) exit');
 });
 
+app.get('/conusForecastMap', function(req, res, next) {
+    logger.trace('app.get(/conusForecastMap) entry');
+    res.render('conusForecastMap');
+    logger.trace('app.get(/conusForecastMap) exit');
+});
 
 app.get('/southernMissRadar', function(req, res, next) {
     logger.trace('app.get(/southernMissRadar');

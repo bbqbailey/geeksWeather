@@ -102,6 +102,10 @@ button#conusSatelliteButton {
     height: 60px;
 }
 
+button#conusForecastMapButton {
+    height: 60px;
+}
+
 footer {
 	clear: both;
 	padding: 0 15px;
