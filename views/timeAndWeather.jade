@@ -35,7 +35,9 @@ div(id='pagewrap')
 
     footer
         button(onclick='moveToTimeAndRadar()' id='southernUSRadarButton' value='Southern US Radar') Southern US Radar
-        button(onclick='moveToTimeAndConus()' id='conusRadarButton' value='conusRadarButton')  USA Radar
+        button(onclick='moveToConus()' id='conusRadarButton' value='conusRadarButton')  USA Radar
+        button(onclick='moveToAtlantaRadar()' id='atlantaRadarButton' value='atlantaRadarButton')  Atlanta Radar
+        button(onclick='moveToConusSatellite()' id='conusSatelliteButton' value='conusSatelliteButton')  Continental USA Satelllite Image
         div(id='state') State:
         div(id='station') Station:
  
@@ -47,12 +49,22 @@ div(id='pagewrap')
         function moveToTimeAndRadar() {
             window.location.href = 'timeAndRadar'
         }
-    
     script.
-        function moveToTimeAndConus() {
+        function moveToConus() {
             window.location.href = 'timeAndConus'
         }
 
+    script.
+        function moveToAtlantaRadar() {
+            window.location.href = 'atlantaRadar'
+        }
+
+    script.
+        function moveToConusSatellite() {
+            window.location.href = 'conusSatellite'
+        }
+
+     
     script.
         if(!!window.EventSource) {
             console.log('inside window.EventSource')

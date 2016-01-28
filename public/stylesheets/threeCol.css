@@ -90,7 +90,15 @@ button#conusRadarButton {
     height: 60px;
 }
 
+button#atlantaRadarButton {
+    height: 60px;
+}
+
 button#returnButton {
+    height: 60px;
+}
+
+button#conusSatelliteButton {
     height: 60px;
 }
 

@@ -73,12 +73,25 @@ app.get('/timeAndWeather', function(req, res, next) { //renders __dirname/views/
     logger.trace('app.get(/timeAndWeather) exit');
 });
 
-
 app.get('/timeAndRadar', function(req, res, next) {
     logger.trace('app.get(/timeAndRadar) entry');
     res.render('timeAndRadar');
     logger.trace('app.get(/timeAndRadar) exit');
 });
+
+app.get('/atlantaRadar', function(req, res, next) {
+    logger.trace('app.get(/atlantaRadar) entry');
+    res.render('atlantaRadar');
+    logger.trace('app.get(/atlantaRadar) exit');
+});
+
+
+app.get('/conusSatellite', function(req, res, next) {
+    logger.trace('app.get(/conusSatellite) entry');
+    res.render('conusSatellite');
+    logger.trace('app.get(/conusSatellite) exit');
+});
+
 
 app.get('/southernMissRadar', function(req, res, next) {
     logger.trace('app.get(/southernMissRadar');
