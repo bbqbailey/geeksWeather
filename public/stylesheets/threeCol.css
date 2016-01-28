@@ -61,7 +61,7 @@ body {
     float: left;
     padding: 5px 15px;
     margin: 0px 5px 5px 5px;
-    font-size: 100px;
+    font-size: 80px;
     font-family: sans-serif-bold
     font-weight: 900;
 }
@@ -71,7 +71,7 @@ body {
     float: left;
     padding: 5px 15px;
     margin: 0px 5px 5px 5px;
-    font-size: 100px;
+    font-size: 80px;
     font-family: sans-serif-bold
     font-weight: 900;
 }
@@ -82,7 +82,11 @@ body {
 	float: left;
 }
 
-button#southernMissRadarButton {
+button#southernUSRadarButton {
+    height: 60px;
+}
+
+button#conusRadarButton {
     height: 60px;
 }
 
