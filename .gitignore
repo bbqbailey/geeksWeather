@@ -26,4 +26,6 @@ views/styleExample.jade
 views/threeCol.html
 views/timeAndWeather.html
 configureGeeksWeather.html
+Documentation
+node_modules
 

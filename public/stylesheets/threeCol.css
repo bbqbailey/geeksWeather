@@ -82,27 +82,7 @@ body {
 	float: left;
 }
 
-button#southernUSRadarButton {
-    height: 60px;
-}
-
-button#conusRadarButton {
-    height: 60px;
-}
-
-button#atlantaRadarButton {
-    height: 60px;
-}
-
-button#returnButton {
-    height: 60px;
-}
-
-button#conusSatelliteButton {
-    height: 60px;
-}
-
-button#conusForecastMapButton {
+button.pageSelection {
     height: 60px;
 }
 

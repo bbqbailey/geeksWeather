@@ -250,7 +250,7 @@ function getWeatherData(callback) {
         return;
     }
     logger.debug("getWeatherData() Calling wunderground");
-    wunderground.conditions().forecast().request('pws/q/pws:' + station, processWundergroundData);
+    wunderground.astronomy().conditions().forecast().request('pws/q/pws:' + station, processWundergroundData);
 
     if (typeof callback === "function")
         callback();
@@ -262,6 +262,7 @@ function processWundergroundData(err, weather) {
 //    dbInsertWeatherData(err, weather);
     createEmitterData(err, weather);
 //    showWundergroundData(err, weather);
+    logger.trace("processWundergroundData() weather: ", weather);
     logger.trace("processWundergroundData() exit");
 }
 
