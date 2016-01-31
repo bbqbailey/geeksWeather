@@ -110,6 +110,18 @@ app.get('/conusSatellite', function(req, res, next) {
     logger.trace('app.get(/conusSatellite) exit');
 });
 
+app.get('/localForecast', function(req, res, next) {
+    logger.trace('app.get(/localForecast) entry');
+    res.render('localForecast');
+    logger.trace('app.get(/localForecast) exit');
+});
+
+app.get('/weatherNews', function(req, res, next) {
+    logger.trace('app.get(/weatherNews) entry');
+    res.render('weatherNews');
+    logger.trace('app.get(/weatherNews) exit');
+});
+
 app.get('/conusForecastMap', function(req, res, next) {
     logger.trace('app.get(/conusForecastMap) entry');
     res.render('conusForecastMap');
@@ -127,6 +139,8 @@ app.get('/timeAndConus', function(req, res, next) {
     res.render('timeAndConus', {root: path.join(__dirname, 'public/images') });
     logger.trace('app.get(/timeAndConus');
 });
+
+
 
 
 app.listen(8080, function (err) {

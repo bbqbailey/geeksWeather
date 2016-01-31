@@ -39,6 +39,8 @@ div(id='pagewrap')
         button(onclick='moveToAtlantaRadar()' class='pageSelection' id='atlantaRadarButton' value='atlantaRadarButton')  Atlanta Radar
         button(onclick='moveToConusSatellite()' class='pageSelection' id='conusSatelliteButton' value='conusSatelliteButton')  Continental USA Satelllite Image
         button(onclick='moveToConusForecastMap()' class='pageSelection' id='conusForecastMapButton' value='conusForecastMapButton')  Continental USA Forecast Map 
+        button(onclick='moveToLocalForecast()' class='pageSelection' id='localForecastButton' value='localForecastButton')  Alpharetta Forecast
+        button(onclick='moveToWeatherNews()' class='pageSelection' id='weatherNewsButton' value='weatherNewsButton') Weather News 
         div(id='state') State:
         div(id='station') Station:
  
@@ -70,7 +72,17 @@ div(id='pagewrap')
             window.location.href = 'conusForecastMap'
         }
 
-      
+    script.
+        function moveToLocalForecast() {
+            window.location.href = 'http://www.wunderground.com/cgi-bin/findweather/getForecast?query=alpharetta'
+        }
+
+    script.
+        function moveToWeatherNews() {
+            window.location.href = 'http://www.wunderground.com/news/'
+        }
+
+        
     script.
         if(!!window.EventSource) {
             console.log('inside window.EventSource')
