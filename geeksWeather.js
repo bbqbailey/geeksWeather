@@ -86,22 +86,16 @@ app.get('/', function(req, res, next) {
     logger.trace('app.get(/) exit');
 });
 
-app.get('/timeAndWeather', function(req, res, next) { 
-    logger.trace('app.get(/timeAndWeather) entry');
-    res.render('timeAndWeather');
-    logger.trace('app.get(/timeAndWeather) exit');
-});
-
-app.get('/timeAndRadar', function(req, res, next) {
-    logger.trace('app.get(/timeAndRadar) entry');
-    res.render('timeAndRadar');
-    logger.trace('app.get(/timeAndRadar) exit');
-});
-
 app.get('/atlantaRadar', function(req, res, next) {
     logger.trace('app.get(/atlantaRadar) entry');
     res.render('atlantaRadar');
     logger.trace('app.get(/atlantaRadar) exit');
+});
+
+app.get('/conusForecastMap', function(req, res, next) {
+    logger.trace('app.get(/conusForecastMap) entry');
+    res.render('conusForecastMap');
+    logger.trace('app.get(/conusForecastMap) exit');
 });
 
 app.get('/conusSatellite', function(req, res, next) {
@@ -110,22 +104,16 @@ app.get('/conusSatellite', function(req, res, next) {
     logger.trace('app.get(/conusSatellite) exit');
 });
 
+app.get('/detailedInfo', function(req, res, next) {
+    logger.trace('app.get(/detailedInfo) entry');
+    res.render('detailedInfo');
+    logger.trace('app.get(/detailedInfo) exit');
+});
+
 app.get('/localForecast', function(req, res, next) {
     logger.trace('app.get(/localForecast) entry');
     res.render('localForecast');
     logger.trace('app.get(/localForecast) exit');
-});
-
-app.get('/weatherNews', function(req, res, next) {
-    logger.trace('app.get(/weatherNews) entry');
-    res.render('weatherNews');
-    logger.trace('app.get(/weatherNews) exit');
-});
-
-app.get('/conusForecastMap', function(req, res, next) {
-    logger.trace('app.get(/conusForecastMap) entry');
-    res.render('conusForecastMap');
-    logger.trace('app.get(/conusForecastMap) exit');
 });
 
 app.get('/southernMissRadar', function(req, res, next) {
@@ -138,6 +126,24 @@ app.get('/timeAndConus', function(req, res, next) {
     logger.trace('app.get(/timeAndConus');
     res.render('timeAndConus', {root: path.join(__dirname, 'public/images') });
     logger.trace('app.get(/timeAndConus');
+});
+
+app.get('/timeAndRadar', function(req, res, next) {
+    logger.trace('app.get(/timeAndRadar) entry');
+    res.render('timeAndRadar');
+    logger.trace('app.get(/timeAndRadar) exit');
+});
+
+app.get('/timeAndWeather', function(req, res, next) { 
+    logger.trace('app.get(/timeAndWeather) entry');
+    res.render('timeAndWeather');
+    logger.trace('app.get(/timeAndWeather) exit');
+});
+
+app.get('/weatherNews', function(req, res, next) {
+    logger.trace('app.get(/weatherNews) entry');
+    res.render('weatherNews');
+    logger.trace('app.get(/weatherNews) exit');
 });
 
 

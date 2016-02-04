@@ -5,11 +5,16 @@
         <div>
             <img src="http://www.wpc.ncep.noaa.gov/noaa/noaad1.gif" alt="Today's Contenintal Forecast Map US from Weather.gov"  style="height: 600px">
             <img src="http://www.wpc.ncep.noaa.gov/noaa/noaad2.gif" alt="Tomorrow's Contenintal Forecast Map US from Weather.gov"  style="height: 600px">
-         </div>
+        </div>
 
-        <div>
-            <input onclick="location.href='/';" id='returnButton' type="button"  class='pageSelection' value="Return" style="height: 60px" >
-        </div
+        <footer>
+            <div>
+                <input onclick="location.href='/';" id='returnButton' type="button"  class='pageSelection' value="Return" style="height: 60px" >
+                <input onclick="location.href='http://origin.wpc.ncep.noaa.gov/basicwx/basicwx_ndfd.php';" 
+                     id='NOAA_ShortRangeForecasts' type="button"  class='pageSelection' value="NOAA Short Range Forecast" style="height: 60px" >
+                <input onclick="location.href='http://digital.weather.gov/index.php';" id='NOAA_GraphicalForecasts' type="button"  class='pageSelection' value="NOAA Graphical Forecast" style="height: 60px" >
+            </div>
+        </footer>
 
     </body>
 </html>
