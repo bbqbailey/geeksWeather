@@ -295,8 +295,12 @@ function createEmitterData(err, weather) {
         logger.trace("createEmitterData() after check for no-error");
         obs=weather.current_observation;
         var forecastday=weather.forecast.simpleforecast.forecastday;
+        var moon=weather.moon_phase;
+        var sun = weather.sun_phase
         logger.trace("createEmitterData() after call to weather.forecast.simpleforecast.forecastday");
         logger.debug("createEmitterData(); forecastday value: ", forecastday);
+        logger.debug("createEmitterData(); moon_phase value: ", moon);
+        logger.debug("createEmitterData(); sun_phase value: ", sun);
        
         var server_time_now     = new Date();
         
@@ -306,7 +310,11 @@ function createEmitterData(err, weather) {
             'relative_humidity': obs.relative_humidity, 'pressure_mb': obs.pressure_mb, 'pressure_in': obs.pressure_in, 'pressure_trend': obs.pressure_trend,
             'dewpoint_f': obs.dewpoint_f, 'feelslike_f': obs.feelslike_f, 'visibility_mi': obs.visibility_mi, 'precip_1hr_in': obs.precip_1hr_in, 
             'precip_today_in': obs.precip_today_in, 'icon': obs.icon,
-            'city': city, 'state': state, 'zip': zip, 'station': station, 'server_time': server_time_now, 'forecast':forecastday
+            'city': city, 'state': state, 'zip': zip, 'station': station, 'server_time': server_time_now, 'forecast':forecastday,
+            'moon_pctIllum': moon.percentIlluminated, 'moon_ageOfMoon': moon.ageOfMoon, 'moon_phaseofMoon': moon.phaseofMoon, 'moon_hemisphere': moon.hemisphere, 
+            'moon_moonrise_hr': moon.moonrise.hour, 'moon_moonrise_min': moon.moonrise.minute, 'moon_moonset_hr': moon.moonset.hour, 'moon_moonset_min': moon.moonset.minute,
+            'sun_sunrise_hr': sun.sunrise.hour, 'sun_sunrise_min': sun.sunrise.minute, 'sun_sunset_hr': sun.sunset.hour, 'sun_sunset_min': sun.sunset.minute
+
         }
 
         logger.debug("createEmitterData(); emitter_weather: ", emitter_weather);
