@@ -8,23 +8,23 @@ div(id='pagewrap')
         link(rel='icon' href='/images/bbqBailey.png')
         link(rel='stylesheet' type='text/css' href='/stylesheets/threeCol.css')
 
-        
+
     section(id='topTime')
         div(id="time" ) Time: Waiting...
-    
-    section(id='topTemp')
-        div(id="temp_f" ) 
-    
-    section(id='today')
-        div(id='today_high'  style='em') H: 
-        div(id='today_low') L: 
-        div(id='wind') W: 
 
-    
+    section(id='topTemp')
+        div(id="temp_f" )
+
+    section(id='today')
+        div(id='today_high'  style='em') H:
+        div(id='today_low') L:
+        div(id='wind') W:
+
+
     section(id='tomorrow')
         div(id='tmrw_high') H:
-        div(id='tmrw_low') L: 
-        div(id='tmrw_wind') W: 
+        div(id='tmrw_low') L:
+        div(id='tmrw_wind') W:
 
     section(id='todayCond')
         div(id='cond')
@@ -38,15 +38,16 @@ div(id='pagewrap')
         button(onclick='moveToConus()' class='pageSelection' id='conusRadarButton' value='conusRadarButton')  USA Radar
         button(onclick='moveToAtlantaRadar()' class='pageSelection' id='atlantaRadarButton' value='atlantaRadarButton')  Atlanta Radar
         button(onclick='moveToConusSatellite()' class='pageSelection' id='conusSatelliteButton' value='conusSatelliteButton')  Continental USA Satelllite Image
-        button(onclick='moveToConusForecastMap()' class='pageSelection' id='conusForecastMapButton' value='conusForecastMapButton')  Continental USA Forecast Map 
+        button(onclick='moveToConusForecastMap()' class='pageSelection' id='conusForecastMapButton' value='conusForecastMapButton')  Continental USA Forecast Map
         button(onclick='moveToLocalForecast()' class='pageSelection' id='localForecastButton' value='localForecastButton')  Alpharetta Forecast
-        button(onclick='moveToWeatherNews()' class='pageSelection' id='weatherNewsButton' value='weatherNewsButton') Weather News 
+        button(onclick='moveToWeatherNews()' class='pageSelection' id='weatherNewsButton' value='weatherNewsButton') Weather News
+        button(onclick='moveToWeatherGov()' class='pageSelection' id='weatherGovButton' value='weatherGovButton' ) Weather.gov
         div(id='state') State:
         div(id='station') Station:
- 
 
 
-    script(src="//code.jquery.com/jquery-2.1.4.min.js") 
+
+    script(src="//code.jquery.com/jquery-2.1.4.min.js")
 
     script.
         function moveToTimeAndRadar() {
@@ -82,7 +83,12 @@ div(id='pagewrap')
             window.location.href = 'http://www.wunderground.com/news/'
         }
 
-        
+    script.
+        function moveToWeatherGov() {
+            window.location.href = 'weatherGov'
+        }
+
+
     script.
         if(!!window.EventSource) {
             console.log('inside window.EventSource')
@@ -105,7 +111,7 @@ div(id='pagewrap')
                 console.log("Bengy - today's conditions icon: " + weather_data.icon + '.gif');
                 $("#today").css('background-image', 'url(http://icons.wxug.com/i/c/h/' + weather_data.icon + '.gif)');
 
-                
+
                 $("#tmrw_high").text(      " H: " + forecast[1].high.fahrenheit);
                 $("#tmrw_low").text(       " L: " + forecast[1].low.fahrenheit);
                 $("#tmrw_wind").text(      " W: " + forecast[1].avewind.mph);
@@ -116,7 +122,7 @@ div(id='pagewrap')
                 console.log("forecast: ", weather_data.forecast);
                 console.log("Bengy - tomorrow's conditions icon: " + forecast[1].icon + '.gif');
                 $("#tomorrow").css('background-image', 'url(http://icons.wxug.com/i/c/h/' + forecast[1].icon + '.gif)');
-                                                 
+
             }, false)
 
 
@@ -161,9 +167,3 @@ div(id='pagewrap')
         } else {
             console.log("Your browser doesn't support SSE")
         }
-
-
-
-
-
-

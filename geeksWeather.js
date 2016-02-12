@@ -46,8 +46,8 @@ app.get('/eventEngine' , function(req, res) {
     connections.push(res);
     logger.debug("app.get(/eventEngine) Added a connection; connections.length: " + connections.length);
     res.writeHead(200, {
-        "Content-type":"text/event-stream", 
-        "Cache-Control":"no-cache", 
+        "Content-type":"text/event-stream",
+        "Cache-Control":"no-cache",
         "Connection":"keep-alive"
     });
     if(noClients) {
@@ -134,10 +134,16 @@ app.get('/timeAndRadar', function(req, res, next) {
     logger.trace('app.get(/timeAndRadar) exit');
 });
 
-app.get('/timeAndWeather', function(req, res, next) { 
+app.get('/timeAndWeather', function(req, res, next) {
     logger.trace('app.get(/timeAndWeather) entry');
     res.render('timeAndWeather');
     logger.trace('app.get(/timeAndWeather) exit');
+});
+
+app.get('/weatherGov', function(req, res, next) {
+    logger.trace('app.get(/weatherGov) entry');
+    res.render('weatherGov');
+    logger.trace('app.get(/weatherGov) exit');
 });
 
 app.get('/weatherNews', function(req, res, next) {
@@ -151,7 +157,7 @@ app.get('/weatherNews', function(req, res, next) {
 
 app.listen(8080, function (err) {
     logger.info('Express started on port 8080');
-}); 
+});
 
 var wundergroundInterval = setInterval(function() {
     logger.trace("setInterval(getWeatherData()) entry");
@@ -211,7 +217,7 @@ function sendTime() {
 
     var time_data = hours + ":" + minutes + ":" + seconds;
     var jsonTimeTemp = {'time': time_data, 'temp_f': obs.temp_f};
-    
+
     timeTempJson = JSON.stringify(jsonTimeTemp);
     logger.debug("sendTime() timeJson: " , timeTempJson);
     sendConnections(timeTempJson,'time');
@@ -228,9 +234,9 @@ function sendConnections(data, event) {
         connections[i].write('data: ' + data + '\n\n');
     }
     logger.trace("sendConnections() exit");
-}    
-    
-    
+}
+
+
 //get your stored key you obtained from wunderground.com
 //If errors, then be sure you have added your key to file 'create_wundergroundInfo.js'
 //then run the js via 'nodejs create_wundergroundInfo.js' to create
@@ -289,7 +295,7 @@ function processWundergroundData(err, weather) {
 function createEmitterData(err, weather) {
     logger.trace("createEmitterData() entry");
     if(err) {
-        logger.error("createEmitterData() err: ", err) 
+        logger.error("createEmitterData() err: ", err)
         return;
     } else {
         logger.trace("createEmitterData() after check for no-error");
@@ -301,17 +307,17 @@ function createEmitterData(err, weather) {
         logger.debug("createEmitterData(); forecastday value: ", forecastday);
         logger.debug("createEmitterData(); moon_phase value: ", moon);
         logger.debug("createEmitterData(); sun_phase value: ", sun);
-       
+
         var server_time_now     = new Date();
-        
-        emitter_weather = { 'observation_epoch': obs.observation_epoch, 'observation_time': obs.observation_time, 'temp_f': obs.temp_f, 
-            'local_time': obs.local_time_rfc822, 'local_epoch': obs.local_epoch, 
+
+        emitter_weather = { 'observation_epoch': obs.observation_epoch, 'observation_time': obs.observation_time, 'temp_f': obs.temp_f,
+            'local_time': obs.local_time_rfc822, 'local_epoch': obs.local_epoch,
             'wind_mph': obs.wind_mph, 'wind_gust_mph': obs.wind_gust_mph, 'wind_string': obs.wind_string, 'wind_dir': obs.wind_dir, 'wind_degrees': obs.wind_degrees,
             'relative_humidity': obs.relative_humidity, 'pressure_mb': obs.pressure_mb, 'pressure_in': obs.pressure_in, 'pressure_trend': obs.pressure_trend,
-            'dewpoint_f': obs.dewpoint_f, 'feelslike_f': obs.feelslike_f, 'visibility_mi': obs.visibility_mi, 'precip_1hr_in': obs.precip_1hr_in, 
+            'dewpoint_f': obs.dewpoint_f, 'feelslike_f': obs.feelslike_f, 'visibility_mi': obs.visibility_mi, 'precip_1hr_in': obs.precip_1hr_in,
             'precip_today_in': obs.precip_today_in, 'icon': obs.icon,
             'city': city, 'state': state, 'zip': zip, 'station': station, 'server_time': server_time_now, 'forecast':forecastday,
-            'moon_pctIllum': moon.percentIlluminated, 'moon_ageOfMoon': moon.ageOfMoon, 'moon_phaseofMoon': moon.phaseofMoon, 'moon_hemisphere': moon.hemisphere, 
+            'moon_pctIllum': moon.percentIlluminated, 'moon_ageOfMoon': moon.ageOfMoon, 'moon_phaseofMoon': moon.phaseofMoon, 'moon_hemisphere': moon.hemisphere,
             'moon_moonrise_hr': moon.moonrise.hour, 'moon_moonrise_min': moon.moonrise.minute, 'moon_moonset_hr': moon.moonset.hour, 'moon_moonset_min': moon.moonset.minute,
             'sun_sunrise_hr': sun.sunrise.hour, 'sun_sunrise_min': sun.sunrise.minute, 'sun_sunset_hr': sun.sunset.hour, 'sun_sunset_min': sun.sunset.minute
 
@@ -332,4 +338,3 @@ async.series([getAppInfo, getWeatherData], function(err) {
         return;
     }
 });
-
