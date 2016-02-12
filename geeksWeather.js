@@ -18,7 +18,7 @@ const WUNDERGROUND_GET_TIME = 5 * MINUTE;
 const TIME_SEND_TIME = 1 * SECOND;
 const DEFAULT_FILE = "timeAndWeather";
 
-var wgInfo = new Datastore( { filename: './myWundergroundInfo.db', autoload: true });
+var wgInfo = new Datastore( { filename: __dirname + '/myWundergroundInfo.db', autoload: true });
 var emitter_weather={};
 var connections=[];
 var wunderground; //defined in getAppInfo()
@@ -26,15 +26,13 @@ var wunderground_weather={}; //contains weather info returned by Wunderground.co
 var obs={} //weather observation
 var noClients=true;
 
-
-app.use(express.static('public'));
-
 app.use(bodyParser.urlencoded({ extended: true}));
 //or app.use(bodyParser.json()) if urlencoded is incorrect;
 
 app.set('view engine', 'jade');
 app.engine('jade', require('jade').__express);
 app.set('views', __dirname + '/views');
+app.use(express.static(__dirname + '/public'))
 
 app.get('/eventEngine' , function(req, res) {
     logger.trace('app.get(/eventEngine) entry');
