@@ -35,8 +35,7 @@ var titles = [
 
 function newSite() {
   document.getElementById('myImage').src = sites[i];
-  document.getElementById('pageHeader').innerHTML= titles[i];
-  //document.getElementById('myImage').style = dims[i];
+  //document.getElementById('pageHeader').innerHTML= titles[i];
   console.log("button advance; image: ", sites[i]);
   console.log("button advance; pageInfo: ", titles[i]);
   i++;
