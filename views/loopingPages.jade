@@ -1,0 +1,27 @@
+head
+
+div(id='pagewrap')
+
+    header
+        title geeksWeather!
+        link(href='https://fonts.googleapis.com/css?family=Orbitron:900' rel='stylesheet' type='text/css')
+        link(rel='icon' href='/images/bbqBailey.png')
+        link(rel='stylesheet' type='text/css' href='/stylesheets/threeCol.css')
+        link(rel='stylesheet' type='text/css' href='/stylesheets/loopingPages.css')
+
+
+    section(id='topTime')
+        div(id="time" ) Time: Waiting...
+
+    section(id='topTemp')
+        div(id="temp_f" )
+
+    section(id='radar')
+        div
+            include ../public/images/loopingPages.html
+
+    script(src="//code.jquery.com/jquery-2.1.4.min.js")
+
+    script(src = "/javascripts/geeksWeatherEvents.js")
+    script(src = "/javascripts/loopingPages.js")
+    

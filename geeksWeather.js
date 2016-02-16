@@ -150,6 +150,11 @@ app.get('/weatherNews', function(req, res, next) {
     logger.trace('app.get(/weatherNews) exit');
 });
 
+app.get('/loopingPages', function(req, res, next) {
+    logger.trace('app.get(/loopingPages) entry');
+    res.render('loopingPages');
+    logger.trace('app.get(/loopingPages) exit');
+});
 
 
 
