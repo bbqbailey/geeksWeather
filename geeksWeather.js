@@ -9,7 +9,36 @@ var path         = require('path');
 var app = express();
 
 var logger = log4js.getLogger();
-logger.setLevel('TRACE'); //In order: ALL, TRACE, DEBUG, INFO, WARN, ERROR, FATAL
+logger.info("MODE is ", process.env.MODE);
+var mode=process.env.MODE;
+var loggerLevel="";
+switch(mode) {
+    case "PRODUCTION":
+      console.log("Mode is PRODUCTION");
+      console.log("Setting logging level to INFO");
+      loggerLevel="INFO";
+      break;
+    case "DEVELOPMENT":
+      console.log("Mode is DEVELOPMENT");
+      console.log("Setting logging level to DEBUG");
+      loggerLevel="DEBUG";
+      break;
+    case "TESTING":
+      console.log("Mode is TESTING");
+      console.log("Setting logging level to TRACE");
+      loggerLevel="TRACE";
+      break;
+    default:
+      console.log("Mode is INVALID! - ABORTING");
+      console.log("--Mode must be one of the following states:");
+      console.log("\tPRODUCTION");
+      console.log("\tDEVELOPMENT");
+      console.log("\tTESTING");
+      console.log("--Usage on start:");
+      console.log("\tMODE=DEVELOPMENT nodejs geeksWeather");
+      process.exit();
+}
+logger.setLevel(loggerLevel); //In order: ALL, TRACE, DEBUG, INFO, WARN, ERROR, FATAL
 
 const SECOND = 1000;
 const MINUTE = SECOND * 60;
