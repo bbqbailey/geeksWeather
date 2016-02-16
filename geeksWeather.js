@@ -10,6 +10,9 @@ var app = express();
 
 var logger = log4js.getLogger();
 logger.info("MODE is ", process.env.MODE);
+logger.info("NODE_ENV is ", process.env.NODE_ENV); //used in systemd/system/geeksWeather.service
+logger.info("geeksWeather.js - DELAY microseconds is: ", process.env.DELAY); //used in loopingPages
+
 var mode=process.env.MODE;
 var loggerLevel="";
 switch(mode) {

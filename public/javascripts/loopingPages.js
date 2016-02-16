@@ -1,4 +1,12 @@
-const DELAY = 20000;  //delay in microseconds between looping pages
+console.log("DELAY: ", DELAY);
+
+if(DELAY == 'undefined') {
+   console.log("loopingPages process.env.DELAY UNDEFINED");
+   console.log("setting DELAY to 10000 microseconds");
+   DELAY=10000;
+} else {
+   console.log("loopingPages process.env.DELAY is DEFINED and the value is: ", DELAY);
+}
 
 var docHeight = document.body.clientHeight;
 var docWidth  = document.body.clientWidth;
