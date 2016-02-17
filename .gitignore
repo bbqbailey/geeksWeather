@@ -28,4 +28,6 @@ views/timeAndWeather.html
 configureGeeksWeather.html
 Documentation
 node_modules
+npm-debug.log
+start
 

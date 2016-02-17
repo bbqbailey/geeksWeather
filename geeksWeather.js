@@ -13,8 +13,20 @@ logger.info("MODE is ", process.env.MODE);
 logger.info("NODE_ENV is ", process.env.NODE_ENV); //used in systemd/system/geeksWeather.service
 logger.info("geeksWeather.js - DELAY microseconds is: ", process.env.DELAY); //used in loopingPages
 
+var DELAY=10000; //default
+if(typeof process.env.DELAY === "undefined") {
+    logger.info("DELAY is undefined, so setting DELAY to default value of " + DELAY + " microseconds");
+    logger.info("--Did you remember to start this app with DEFAULT=<microseconds>? ");
+} else {
+    DELAY=process.env.DELAY;
+    logger.info("DELAY is DEFINED as " + DELAY);
+}
+
+DELAY=9000;
+
 var mode=process.env.MODE;
 var loggerLevel="";
+
 switch(mode) {
     case "PRODUCTION":
       console.log("Mode is PRODUCTION");
@@ -184,7 +196,7 @@ app.get('/weatherNews', function(req, res, next) {
 
 app.get('/loopingPages', function(req, res, next) {
     logger.trace('app.get(/loopingPages) entry');
-    res.render('loopingPages');
+    res.render('loopingPages', {'DELAY':DELAY, name:'Banjo'});
     logger.trace('app.get(/loopingPages) exit');
 });
 

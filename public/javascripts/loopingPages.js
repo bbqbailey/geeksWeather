@@ -1,11 +1,23 @@
-console.log("DELAY: ", DELAY);
 
-if(DELAY == 'undefined') {
-   console.log("loopingPages process.env.DELAY UNDEFINED");
-   console.log("setting DELAY to 10000 microseconds");
-   DELAY=10000;
+console.log("++++++++++++++ FINAL: theName should be Banjo +++++++++++++++++++");
+console.log("In loopingPages.js theName is " + theName);
+console.log("In loopingPages.js DELAY is " + DELAY);
+console.log("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
+
+var MinDelay=10000;
+if(typeof DELAY === 'undefined') {
+    console.log("ERROR: in loopingPages.js, DELAY is undefined.");
+    console.log("   Verify DELAY is passed as paramater in geeksWeather.js to /loopingPages");
+    console.log("   or within loopingPages.jade");
+    console.log("SETTING DELAY to MinDelay of " + MinDelay);
+    DELAY = MinDelay;
+} else if(DELAY < MinDelay) {
+    console.log("WARNING: in loopingPages.js, DELAY is set to a value less than MinDelay of " + MinDelay + " microseconds");
+    console.log("   This could result in hammering the underlaying websites, so the value is being changed.");
+    console.log("   Changing DELAY to MinDelay value of " + MinDelay + " microseconds.");
+    DELAY=MinDelay;
 } else {
-   console.log("loopingPages process.env.DELAY is DEFINED and the value is: ", DELAY);
+   console.log("loopingPages DELAY is: " + DELAY);
 }
 
 var docHeight = document.body.clientHeight;

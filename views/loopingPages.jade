@@ -1,27 +1,37 @@
 head
+body
+  div(id='pagewrap')
 
-div(id='pagewrap')
-
-    header
-        title geeksWeather!
-        link(href='https://fonts.googleapis.com/css?family=Orbitron:900' rel='stylesheet' type='text/css')
-        link(rel='icon' href='/images/bbqBailey.png')
-        link(rel='stylesheet' type='text/css' href='/stylesheets/threeCol.css')
-        link(rel='stylesheet' type='text/css' href='/stylesheets/loopingPages.css')
+  title geeksWeather!
+  link(href='https://fonts.googleapis.com/css?family=Orbitron:900' rel='stylesheet' type='text/css')
+  link(rel='icon' href='/images/bbqBailey.png')
+  link(rel='stylesheet' type='text/css' href='/stylesheets/threeCol.css')
+  link(rel='stylesheet' type='text/css' href='/stylesheets/loopingPages.css')
 
 
-    section(id='topTime')
-        div(id="time" ) Time: Waiting...
+  section(id='topTime')
+    div(id="time" ) Time: Waiting...
 
-    section(id='topTemp')
-        div(id="temp_f" )
+  section(id='topTemp')
+    div(id="temp_f" )
 
-    section(id='radar')
-        div
-            include ../public/images/loopingPages.html
+  section(id='status')
+    div(id="died")
+        img(src="/images/hesDeadJim.jpg" id="hesDeadJim" style="display:"  height="100%")
 
-    script(src="//code.jquery.com/jquery-2.1.4.min.js")
+  section(id='radar')
+    include ../public/images/loopingPages.html
 
-    script(src = "/javascripts/geeksWeatherEvents.js")
-    script(src = "/javascripts/loopingPages.js")
-    
+  script(src="//code.jquery.com/jquery-2.1.4.min.js")
+  script(src = "/javascripts/geeksWeatherEvents.js")
+  
+  script.
+    var theName = "#{name}"
+    var DELAY = "#{DELAY}"
+    console.log("==================================================")
+    console.log("In loopingPages.jade, the name is " + theName)
+    console.log("In loopingPages.jade, the DELAY is " + DELAY)
+    console.log("==================================================")
+
+  script(src = "/javascripts/loopingPages.js")
+

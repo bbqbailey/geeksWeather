@@ -1,11 +1,12 @@
+
 if(!!window.EventSource) {
-    console.log('inside window.EventSource')
-    var source = new EventSource('/eventEngine')
+    console.log('inside window.EventSource');
+    var source = new EventSource('/eventEngine');
     console.log('after call to EventSource');
     source.addEventListener('open', function(e) {
-        $("#state").text("EventSource Connected")
-        console.log('open received')
-    }, false)
+        $("#state").text("EventSource Connected");
+        console.log('open received');
+    }, false);
 
 
     source.addEventListener('time', function(e) {
@@ -21,11 +22,13 @@ if(!!window.EventSource) {
     source.addEventListener('error', function(e) {
         console.log('eventlistener: error: ', e)
         if(e.target.readyState == EventSource.CLOSED) {
-            $("#temp_f").text("T");
+            $("#time").text("Security System Error");
+            $("#temp_f").text("");
             $("#state").text(" Disconnected");
             $("#station").text(" Disconnected");
         } else if (e.target.readyState == EventSource.CONNECTING) {
-            $("#temp_f").text("T");
+            $("#time").text("Security System Error");
+            $("#temp_f").text("");
             $("#state").text("EventListener-Error Connecting...");
             $("#station").text("Station: Connecting...");
         }
