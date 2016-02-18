@@ -2,6 +2,7 @@
 console.log("++++++++++++++ FINAL: theName should be Banjo +++++++++++++++++++");
 console.log("In loopingPages.js theName is " + theName);
 console.log("In loopingPages.js DELAY is " + DELAY);
+console.log("Is Jim dead? " + HES_DEAD_JIM);
 console.log("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
 
 var MinDelay=10000;
@@ -53,14 +54,19 @@ var titles = [
 ];
 
 
-function newSite() {
-  document.getElementById('myImage').src = sites[i];
-  //document.getElementById('pageHeader').innerHTML= titles[i];
-  console.log("button advance; image: ", sites[i]);
-  console.log("button advance; pageInfo: ", titles[i]);
-  i++;
-  if(i==sites.length)
-    i=0;
+function nextSite() {
+  console.log("loopingPages.js: HES_DEAD_JIM: " + HES_DEAD_JIM);
+  if(HES_DEAD_JIM) {
+    document.getElementById('myImage').src='/images/hesDeadJim.jpg';
+  } else {
+    document.getElementById('myImage').src = sites[i];
+    //document.getElementById('pageHeader').innerHTML= titles[i];
+    console.log("button advance; image: ", sites[i]);
+    console.log("button advance; pageInfo: ", titles[i]);
+    i++;
+    if(i==sites.length)
+      i=0;
+  }
 };
 
 setInterval(function() {
@@ -68,11 +74,16 @@ setInterval(function() {
 }, DELAY);
 
 function advanceImage() {
-  document.getElementById('myImage').src = sites[i];
-  //document.getElementById('pageHeader').innerHTML=titles[i];
-  i++;
-  if(i==sites.length)
-    i=0;
-  console.log("setInterval() advance; image: ", sites[i]);
-  //console.log("setInterval() advance; pageInfo: ", titles[i]);
+  console.log("loopingPages.js: HES_DEAD_JIM: " + HES_DEAD_JIM);
+  if(HES_DEAD_JIM) {
+    document.getElementById('myImage').src='/images/hesDeadJim.jpg';
+  } else {
+    document.getElementById('myImage').src = sites[i];
+    //document.getElementById('pageHeader').innerHTML=titles[i];
+    i++;
+    if(i==sites.length)
+      i=0;
+    console.log("setInterval() advance; image: ", sites[i]);
+    //console.log("setInterval() advance; pageInfo: ", titles[i]);
+  }
 }

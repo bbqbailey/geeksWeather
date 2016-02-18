@@ -1,3 +1,4 @@
+console.log("geeksWeatherEvents.js - Is Jim Dead? " + HES_DEAD_JIM);
 
 if(!!window.EventSource) {
     console.log('inside window.EventSource');
@@ -16,21 +17,24 @@ if(!!window.EventSource) {
         $("#time").text(timeTemp.time);
         $("#temp_f").text(Math.round(timeTemp.temp_f));
         $("state").text("EventListener-Time Connected");
+        HES_DEAD_JIM = false;
     })
 
 
     source.addEventListener('error', function(e) {
         console.log('eventlistener: error: ', e)
         if(e.target.readyState == EventSource.CLOSED) {
-            $("#time").text("Security System Error");
+            $("#time").text("Error");
             $("#temp_f").text("");
             $("#state").text(" Disconnected");
             $("#station").text(" Disconnected");
+            HES_DEAD_JIM = true;
         } else if (e.target.readyState == EventSource.CONNECTING) {
-            $("#time").text("Security System Error");
+            $("#time").text("Error");
             $("#temp_f").text("");
             $("#state").text("EventListener-Error Connecting...");
             $("#station").text("Station: Connecting...");
+            HES_DEAD_JIM = true;
         }
     }, false)
 } else {
