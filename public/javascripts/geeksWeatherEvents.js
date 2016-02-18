@@ -1,4 +1,21 @@
-console.log("geeksWeatherEvents.js - Is Jim Dead? " + HES_DEAD_JIM);
+
+
+var secsSinceLastTimeEvent=0;
+var MAX_ELAPSED_TIMEOUT_SEC = 5; //maximum time since last time event received from server; if exceeded, then fail
+
+var timeout = setInterval(function() {
+    secsSinceLastTimeEvent++;
+    if(secsSinceLastTimeEvent > MAX_ELAPSED_TIMEOUT_SEC) {
+        console.log("ERROR: geeksWeatherEvents.js: secsSinceLastTimeEvent exceeded " + MAX_ELAPSED_TIMEOUT_SEC + " seconds.");
+        console.log("ERROR: geeksWeatherEvents.js: No time events from server in " + secsSinceLastTimeEvent + " seconds");
+        HES_DEAD_JIM = true;
+    } else {
+        console.log("geeksWeatherEvents.js setInterval() seconds since last time event received from server: " + secsSinceLastTimeEvent);
+    }
+
+}, 1000);
+
+
 
 if(!!window.EventSource) {
     console.log('inside window.EventSource');
@@ -18,6 +35,8 @@ if(!!window.EventSource) {
         $("#temp_f").text(Math.round(timeTemp.temp_f));
         $("state").text("EventListener-Time Connected");
         HES_DEAD_JIM = false;
+        secsSinceLastTimeEvent = 0; //reset cause we just got a time event from server
+
     })
 
 
@@ -40,3 +59,5 @@ if(!!window.EventSource) {
 } else {
     console.log("Your browser doesn't support SSE")
 }
+
+
