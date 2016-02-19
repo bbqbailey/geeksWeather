@@ -1,6 +1,7 @@
 # geeksWeather
 
-"&copy;" Ben Bailey 2016
+"&copy" 2016 Ben Bailey
+
 MIT licensed
 
 Note: This code is not yet suitable for downloading, as it is still undergoing initial development!
