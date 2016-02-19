@@ -1,5 +1,7 @@
 # geeksWeather
 
+Note: This code is not yet suitable for downloading, as it is still undergoing initial development!
+
 This is a weather display that utilizes the Wunderground API for weather.
 
 The API requires a 'key', which can be obtained from Wunderground.
