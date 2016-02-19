@@ -1,6 +1,6 @@
 # geeksWeather
 
-"&copy" 2016 Ben Bailey
+"&copy;" 2016 Ben Bailey
 
 MIT licensed
 
