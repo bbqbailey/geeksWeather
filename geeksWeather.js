@@ -1,19 +1,26 @@
+var express      = require('express');
+var path         = require('path');
+var bodyParser   = require('body-parser');
 var Wunderground = require('wundergroundnode');
 var Datastore    = require('nedb');
 var async        = require("async");
 var log4js       = require('log4js');
-var express      = require('express');
-var bodyParser   = require('body-parser');
-var path         = require('path');
-
-var app = express();
-
+var theRoutes = require('./app_server/routes/index');
+var users = require('./app_server/routes/users');
 var logger = log4js.getLogger();
+
+var app = module.exports = express();
+var DELAY=10000; //default
+const DEFAULT_FILE = "loopingPages";
+
+var routes = new theRoutes(DELAY, DEFAULT_FILE, logger);
+app.use('/', routes);
+
+
 logger.info("MODE is ", process.env.MODE);
 logger.info("NODE_ENV is ", process.env.NODE_ENV); //used in systemd/system/geeksWeather.service
 logger.info("geeksWeather.js - DELAY microseconds is: ", process.env.DELAY); //used in loopingPages
 
-var DELAY=10000; //default
 if(typeof process.env.DELAY === "undefined") {
     logger.info("DELAY is undefined, so setting DELAY to default value of " + DELAY + " microseconds");
     logger.info("--Did you remember to start this app with DEFAULT=<microseconds>? ");
@@ -21,8 +28,6 @@ if(typeof process.env.DELAY === "undefined") {
     DELAY=process.env.DELAY;
     logger.info("DELAY is DEFINED as " + DELAY);
 }
-
-DELAY=9000;
 
 var mode=process.env.MODE;
 var loggerLevel="";
@@ -55,12 +60,13 @@ switch(mode) {
 }
 logger.setLevel(loggerLevel); //In order: ALL, TRACE, DEBUG, INFO, WARN, ERROR, FATAL
 
+app.locals.DELAY = DELAY;
+
 const SECOND = 1000;
 const MINUTE = SECOND * 60;
 const WUNDERGROUND_GET_TIME = 5 * MINUTE;
 //const WEATHER_SEND_TIME = WUNDERGROUND_GET_TIME - 1;
 const TIME_SEND_TIME = 1 * SECOND;
-const DEFAULT_FILE = "timeAndWeather";
 
 var wgInfo = new Datastore( { filename: __dirname + '/myWundergroundInfo.db', autoload: true });
 var emitter_weather={};
@@ -75,7 +81,8 @@ app.use(bodyParser.urlencoded({ extended: true}));
 
 app.set('view engine', 'jade');
 app.engine('jade', require('jade').__express);
-app.set('views', __dirname + '/views');
+app.set('views',path.join( __dirname, 'app_server', 'views'));
+
 app.use(express.static(__dirname + '/public'))
 
 app.get('/eventEngine' , function(req, res) {
@@ -122,83 +129,7 @@ app.get('/eventEngine' , function(req, res) {
     logger.trace("app.get(/eventEngine) exit");
 });
 
-app.get('/', function(req, res, next) {
-    logger.trace('app.get(/) entry - rendering DEFAULT_FILE');
-    res.render(DEFAULT_FILE);
-    logger.trace('app.get(/) exit');
-});
 
-app.get('/atlantaRadar', function(req, res, next) {
-    logger.trace('app.get(/atlantaRadar) entry');
-    res.render('atlantaRadar');
-    logger.trace('app.get(/atlantaRadar) exit');
-});
-
-app.get('/conusForecastMap', function(req, res, next) {
-    logger.trace('app.get(/conusForecastMap) entry');
-    res.render('conusForecastMap');
-    logger.trace('app.get(/conusForecastMap) exit');
-});
-
-app.get('/conusSatellite', function(req, res, next) {
-    logger.trace('app.get(/conusSatellite) entry');
-    res.render('conusSatellite');
-    logger.trace('app.get(/conusSatellite) exit');
-});
-
-app.get('/detailedInfo', function(req, res, next) {
-    logger.trace('app.get(/detailedInfo) entry');
-    res.render('detailedInfo');
-    logger.trace('app.get(/detailedInfo) exit');
-});
-
-app.get('/localForecast', function(req, res, next) {
-    logger.trace('app.get(/localForecast) entry');
-    res.render('localForecast');
-    logger.trace('app.get(/localForecast) exit');
-});
-
-app.get('/southernMissRadar', function(req, res, next) {
-    logger.trace('app.get(/southernMissRadar');
-    res.sendFile('southernMissRadar.html', {root: path.join(__dirname, 'public/images') });
-    logger.trace('app.get(/southernMissRadar');
-});
-
-app.get('/timeAndConus', function(req, res, next) {
-    logger.trace('app.get(/timeAndConus');
-    res.render('timeAndConus', {root: path.join(__dirname, 'public/images') });
-    logger.trace('app.get(/timeAndConus');
-});
-
-app.get('/timeAndRadar', function(req, res, next) {
-    logger.trace('app.get(/timeAndRadar) entry');
-    res.render('timeAndRadar');
-    logger.trace('app.get(/timeAndRadar) exit');
-});
-
-app.get('/timeAndWeather', function(req, res, next) {
-    logger.trace('app.get(/timeAndWeather) entry');
-    res.render('timeAndWeather');
-    logger.trace('app.get(/timeAndWeather) exit');
-});
-
-app.get('/weatherGov', function(req, res, next) {
-    logger.trace('app.get(/weatherGov) entry');
-    res.render('weatherGov');
-    logger.trace('app.get(/weatherGov) exit');
-});
-
-app.get('/weatherNews', function(req, res, next) {
-    logger.trace('app.get(/weatherNews) entry');
-    res.render('weatherNews');
-    logger.trace('app.get(/weatherNews) exit');
-});
-
-app.get('/loopingPages', function(req, res, next) {
-    logger.trace('app.get(/loopingPages) entry');
-    res.render('loopingPages', {'DELAY':DELAY, name:'Banjo'});
-    logger.trace('app.get(/loopingPages) exit');
-});
 
 
 

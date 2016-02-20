@@ -28,17 +28,18 @@ function iframeDidLoad() {
   alert('Done');
 }
 
-var i=0;
 var sites = [
+  'http://www.ssec.wisc.edu/data/us_comp/image7.jpg', //Satellite
   'http://radar.weather.gov/Conus/RadarImg/latest.gif', //usa
   'http://radar.weather.gov/Conus/RadarImg/southmissvly.gif', //miss valley
   'http://radar.weather.gov/Conus/RadarImg/southeast.gif', //southeast
   'http://radar.weather.gov/lite/N0R/FFC_0.png', //atlanta
   'https://icons.wxug.com/data/640x480/2xus_severe.gif', //usa severe weather
   'https://icons.wxug.com/data/640x480/2xse_severe.gif', //s.e. severe weather
-  'http://www.ssec.wisc.edu/data/us_comp/image7.jpg', //Satellite
   'http://www.wpc.ncep.noaa.gov/noaa/noaad1.gif', //forecast today
   'http://www.wpc.ncep.noaa.gov/noaa/noaad2.gif', //forecast tomorrow
+  'http://www.ssd.noaa.gov/goes/comp/nhem/rb.jpg', //GOES-COMPOSITE Rainbow IR Ch 4
+  'http://www.ssd.noaa.gov/goes/comp/nhem/wv.jpg', //GOES-COMPSITE Water Vapor
   'http://www.ssd.noaa.gov/goes/east/watl/vis.jpg', //GOES-EAST visable
   'http://www.ssd.noaa.gov/goes/east/watl/wv.jpg', //GOES-EAST Water vapor
   'http://www.ssd.noaa.gov/goes/east/watl/ft.jpg', //GOES-EAST Funktop
@@ -46,28 +47,38 @@ var sites = [
 ];
 
 var titles = [
+  'Continental USA Satellite',
   'Continental USA Radar',
   'Lower Mississippi Valley Sector Radar',
   'southeast Sector Radar',
   'Atlanta Area Radar',
   'USA Severe Weather',
   'southeast Severe Weather',
-  'Continental USA Satellite',
   'Continental USA forecast - Today',
   'Continental USA forecast - Tomorrow',
+  'GOES-COMPOSITE Rainbow IR Ch 4',
+  'GOES-COMPOSITE Water Vapor',
   'GOES-EAST Visable - Current',
   'GOES-EAST Water Vapor - Current',
   'GOES-EAST Funktop - Current',
   'GOES-EAST Carib Funktop'
 ];
 
+var iframePages = [
+  'http://localhost:8080/timeAndWeather'
+]
 
-function nextSite() {
-  console.log("loopingPages.js: HES_DEAD_JIM: " + HES_DEAD_JIM);
+
+var i=0;
+var j=0;
+
+function nextSite() {  //used with button
+  console.log("loopingPages.js nextSite(): HES_DEAD_JIM: " + HES_DEAD_JIM);
   if(HES_DEAD_JIM) {
-    document.getElementById('myImage').src='/images/hesDeadJim.jpg';
+    document.getElementById('imageDiv').innerHTML='<img src="/images/hesDeadJim.jpg">';
+
   } else {
-    document.getElementById('myImage').src = sites[i];
+    document.getElementById('imageDiv').innerHTML='<img src=' + sites[i]+ '>';
     //document.getElementById('pageHeader').innerHTML= titles[i];
     console.log("button advance; image: ", sites[i]);
     console.log("button advance; pageInfo: ", titles[i]);
@@ -77,21 +88,46 @@ function nextSite() {
   }
 };
 
+
 setInterval(function() {
+  console.log("fired");
   advanceImage();
 }, DELAY);
 
-function advanceImage() {
+var display="iframeSite"; //valid are imgSite and iframeSite
+var firstTime = true;
+function advanceImage() { //used with setInterval
   console.log("loopingPages.js: HES_DEAD_JIM: " + HES_DEAD_JIM);
   if(HES_DEAD_JIM) {
-    document.getElementById('myImage').src='/images/hesDeadJim.jpg';
-  } else {
-    document.getElementById('myImage').src = sites[i];
+    console.log("display is HES_DEAD_JIM");
+    document.getElementById('imageDiv').innerHTML='<img src="/images/hesDeadJim.jpg">';
+  } else if(display==='imgSite') {
+    console.log("inside display===imgSite");
+    if(firstTime) {
+      console.log("firstTime is true");
+      document.getElementById('imageDiv').innerHTML='<img src=/images/bbqBailey.jpg>';
+      firstTime=false;
+    }
+    document.getElementById('imageDiv').innerHTML='<img src=' + sites[i]+ '>';
+    //document.getElementById('myImage').src = sites[i];
     //document.getElementById('pageHeader').innerHTML=titles[i];
     i++;
-    if(i==sites.length)
+    if(i==sites.length) {
       i=0;
-    console.log("setInterval() advance; image: ", sites[i]);
-    //console.log("setInterval() advance; pageInfo: ", titles[i]);
+      display="iframeSite"
+    }
+  } else if(display==='iframeSite') {
+    console.log("inside display===iframeSite");
+//    document.getElementById('imageDiv').innerHTML="<iframe src='http://localhost:8080/timeAndWeather' height='80%' width='80%'></iframe>"
+    document.getElementById('imageDiv').innerHTML="<iframe src=" + iframePages[j] + " height='80%' width='80%'></iframe>"
+    j++;
+    if(j==iframePages.length) {
+      j=0;
+      display="imgSite";
+    }
+  } else {
+    console.log("ERROR - SHOULDN'T BE HERE IN advanceImage");
+    console.log("ERROR - display value is " + display);
   }
+
 }

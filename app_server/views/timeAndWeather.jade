@@ -4,16 +4,9 @@ div(id='pagewrap')
 
     header
         title Time and Weather!
-        link(href='https://fonts.googleapis.com/css?family=Orbitron:900' rel='stylesheet' type='text/css')
         link(rel='icon' href='/images/bbqBailey.png')
         link(rel='stylesheet' type='text/css' href='/stylesheets/threeCol.css')
 
-
-    section(id='topTime')
-        div(id="time" ) Time: Waiting...
-
-    section(id='topTemp')
-        div(id="temp_f" )
 
     section(id='today')
         div(id='today_high'  style='em') H:
@@ -34,14 +27,6 @@ div(id='pagewrap')
 
 
     footer
-        button(onclick='moveToTimeAndRadar()' class='pageSelection' id='southernUSRadarButton' value='Southern US Radar') Southern US Radar
-        button(onclick='moveToConus()' class='pageSelection' id='conusRadarButton' value='conusRadarButton')  USA Radar
-        button(onclick='moveToAtlantaRadar()' class='pageSelection' id='atlantaRadarButton' value='atlantaRadarButton')  Atlanta Radar
-        button(onclick='moveToConusSatellite()' class='pageSelection' id='conusSatelliteButton' value='conusSatelliteButton')  Continental USA Satelllite Image
-        button(onclick='moveToConusForecastMap()' class='pageSelection' id='conusForecastMapButton' value='conusForecastMapButton')  Continental USA Forecast Map
-        button(onclick='moveToLocalForecast()' class='pageSelection' id='localForecastButton' value='localForecastButton')  Alpharetta Forecast
-        button(onclick='moveToWeatherNews()' class='pageSelection' id='weatherNewsButton' value='weatherNewsButton') Weather News
-        button(onclick='moveToWeatherGov()' class='pageSelection' id='weatherGovButton' value='weatherGovButton' ) Weather.gov
         button(onclick='moveToLoopingPages()' class='pageSelection' id='loopingPages' value='loopingPagesButton' ) Loop Pages
         div(id='state') State:
         div(id='station') Station:
