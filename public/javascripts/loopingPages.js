@@ -39,10 +39,10 @@ var sites = [
   'http://www.ssec.wisc.edu/data/us_comp/image7.jpg', //Satellite
   'http://www.wpc.ncep.noaa.gov/noaa/noaad1.gif', //forecast today
   'http://www.wpc.ncep.noaa.gov/noaa/noaad2.gif', //forecast tomorrow
-  'http://www.ssd.noaa.gov/goes/east/watl/vis.jpg', //GOES-EAST visable
-  'http://www.ssd.noaa.gov/goes/east/watl/wv.jpg', //GOES-EAST Water vapor
   'http://www.ssd.noaa.gov/goes/east/watl/ft.jpg', //GOES-EAST Funktop
-  'http://www.ssd.noaa.gov/goes/east/carb/ft.jpg' //GOES-EAST Carib Funktop
+  'http://www.ssd.noaa.gov/goes/east/carb/ft.jpg', //GOES-EAST Carib Funktop
+  'http://www.ssd.noaa.gov/goes/comp/nhem/rb.jpg', //GOES-COMPOSITE Rainbow IR Ch 4
+  'http://www.ssd.noaa.gov/goes/comp/nhem/wv.jpg' //GOES-COMPSITE Water Vapor
 ];
 
 var titles = [
@@ -55,10 +55,10 @@ var titles = [
   'Continental USA Satellite',
   'Continental USA forecast - Today',
   'Continental USA forecast - Tomorrow',
-  'GOES-EAST Visable - Current',
-  'GOES-EAST Water Vapor - Current',
   'GOES-EAST Funktop - Current',
-  'GOES-EAST Carib Funktop'
+  'GOES-EAST Carib Funktop',
+  'GOES-COMPOSITE Rainbow IR Ch 4',
+  'GOES-COMPOSITE Water Vapor'
 ];
 
 
