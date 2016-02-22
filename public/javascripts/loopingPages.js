@@ -57,7 +57,7 @@ var titles = [
 ];
 
 var iframePages = [
-  'http://localhost:8080/timeAndWeather'
+  '/timeAndWeather'
 ]
 
 
