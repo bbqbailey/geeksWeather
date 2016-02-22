@@ -11,13 +11,14 @@
     <!--
     <h1 id='pageHeader'>Continental USA Radar</h1>
   -->
-    <div id='imageDiv' style="display:yes">
+    <div id='imageDiv' style='display:yes'>
       <img src='/images/bbqBailey.png'>
 <!--      <iframe src='http://localhost:8080/timeAndWeather' height='80%' width='80%'></iframe> -->
     </div>
   </main>
   <footer>
-    <input class='nav' type="button" value="Change site" onclick="nextSite()" style="height:60"/>
+    <input class='nav' type='button' value='Next site' onclick='nextSite()' style='height:60'/>
+    <input class='nav' id='pauseCB' type='checkbox' name='pause' value='checked' onchange='pauseChanged(this)'>Pause</>
     <div id='state'>Not Connected...</div>
   </footer>
 </body>

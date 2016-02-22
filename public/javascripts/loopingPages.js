@@ -40,8 +40,6 @@ var sites = [
   'http://www.wpc.ncep.noaa.gov/noaa/noaad2.gif', //forecast tomorrow
   'http://www.ssd.noaa.gov/goes/comp/nhem/rb.jpg', //GOES-COMPOSITE Rainbow IR Ch 4
   'http://www.ssd.noaa.gov/goes/comp/nhem/wv.jpg', //GOES-COMPSITE Water Vapor
-  'http://www.ssd.noaa.gov/goes/east/watl/vis.jpg', //GOES-EAST visable
-  'http://www.ssd.noaa.gov/goes/east/watl/wv.jpg', //GOES-EAST Water vapor
   'http://www.ssd.noaa.gov/goes/east/watl/ft.jpg', //GOES-EAST Funktop
   'http://www.ssd.noaa.gov/goes/east/carb/ft.jpg' //GOES-EAST Carib Funktop
 ];
@@ -58,8 +56,6 @@ var titles = [
   'Continental USA forecast - Tomorrow',
   'GOES-COMPOSITE Rainbow IR Ch 4',
   'GOES-COMPOSITE Water Vapor',
-  'GOES-EAST Visable - Current',
-  'GOES-EAST Water Vapor - Current',
   'GOES-EAST Funktop - Current',
   'GOES-EAST Carib Funktop'
 ];
@@ -88,6 +84,14 @@ function nextSite() {  //used with button
   }
 };
 
+var pauseCheckboxValue='';
+function pauseChanged(element) { //used with checkbox
+    console.log("loopingPages.js pauseChanged() entry");
+    element.checked ? pauseCheckboxValue="Checked": pauseCheckboxValue="";
+    console.log("pauseCheckboxValue: " + pauseCheckboxValue);
+}
+
+
 
 setInterval(function() {
   console.log("fired");
@@ -101,6 +105,10 @@ function advanceImage() { //used with setInterval
   if(HES_DEAD_JIM) {
     console.log("display is HES_DEAD_JIM");
     document.getElementById('imageDiv').innerHTML='<img src="/images/hesDeadJim.jpg">';
+  } else if(pauseCheckboxValue==='Checked') {
+      console.log("advanceImage(): pauseCheckboxValue === 'Checked'");
+      console.log("returning without advancing");
+      return;
   } else if(display==='imgSite') {
     console.log("inside display===imgSite");
     if(firstTime) {
