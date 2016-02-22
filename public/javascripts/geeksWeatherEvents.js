@@ -10,7 +10,7 @@ var ERROR_INTERVAL_TIMEOUT = "Timeout: server update timed out.";
 var INFO_EVENT_LISTENER_CLOSED = "Disconnected";
 var INFO_EVENT_LISTENER_OPEN="EventSource Connected";
 var INFO_EVENT_TIME="EventListener-Time: Connected.";
-var COLOR_TIME_FIELD_NORMAL="green";
+var COLOR_TIME_FIELD_NORMAL="#007700";
 var COLOR_TIME_FIELD_ERROR="red";
 var COLOR_TEMPF_FIELD_NORMAL="black";
 
