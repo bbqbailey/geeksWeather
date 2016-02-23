@@ -26,7 +26,7 @@ views/styleExample.jade
 views/threeCol.html
 views/timeAndWeather.html
 configureGeeksWeather.html
-Documentation
+MyEnvironmentDocs
 node_modules
 npm-debug.log
 start
