@@ -32,3 +32,11 @@ router.get('/loopingPages', function(req, res, next) {
     res.render('loopingPages', {'DELAY':DELAY, name:'Banjo'});
     logger.trace('router.get(/loopingPages) exit');
 });
+
+router.get('/timeAndWeather', function(req, res, next) {
+    logger.trace('router.get(/timeAndWeather) entry');
+    res.render('timeAndWeather', {'DELAY':DELAY, name:'Banjo'});
+    logger.trace('router.get(/timeAndWeather) exit');
+});
+
+
