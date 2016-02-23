@@ -6,7 +6,6 @@ var Datastore    = require('nedb');
 var async        = require("async");
 var log4js       = require('log4js');
 var theRoutes = require('./app_server/routes/index');
-var users = require('./app_server/routes/users');
 var logger = log4js.getLogger();
 
 var app = module.exports = express();
