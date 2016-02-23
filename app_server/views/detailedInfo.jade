@@ -96,13 +96,7 @@ div(id='pagewrap')
 
 
     footer
-        button(onclick='moveToTimeAndRadar()' class='pageSelection' id='southernUSRadarButton' value='Southern US Radar') Southern US Radar
-        button(onclick='moveToConus()' class='pageSelection' id='conusRadarButton' value='conusRadarButton')  USA Radar
-        button(onclick='moveToAtlantaRadar()' class='pageSelection' id='atlantaRadarButton' value='atlantaRadarButton')  Atlanta Radar
-        button(onclick='moveToConusSatellite()' class='pageSelection' id='conusSatelliteButton' value='conusSatelliteButton')  Continental USA Satelllite Image
-        button(onclick='moveToConusForecastMap()' class='pageSelection' id='conusForecastMapButton' value='conusForecastMapButton')  Continental USA Forecast Map 
-        button(onclick='moveToLocalForecast()' class='pageSelection' id='localForecastButton' value='localForecastButton')  Alpharetta Forecast
-        button(onclick='moveToWeatherNews()' class='pageSelection' id='weatherNewsButton' value='weatherNewsButton') Weather News 
+        button(onclick='moveToHome()' class='pageSelection' id='homeButton' value='homeButton') Home
         div(id='state') State:
         div(id='station') Station:
  
@@ -111,37 +105,8 @@ div(id='pagewrap')
     script(src="//code.jquery.com/jquery-2.1.4.min.js") 
 
     script.
-        function moveToTimeAndRadar() {
-            window.location.href = 'timeAndRadar'
-        }
-    script.
-        function moveToConus() {
-            window.location.href = 'timeAndConus'
-        }
-
-    script.
-        function moveToAtlantaRadar() {
-            window.location.href = 'atlantaRadar'
-        }
-
-    script.
-        function moveToConusSatellite() {
-            window.location.href = 'conusSatellite'
-        }
-
-    script.
-        function moveToConusForecastMap() {
-            window.location.href = 'conusForecastMap'
-        }
-
-    script.
-        function moveToLocalForecast() {
-            window.location.href = 'http://www.wunderground.com/cgi-bin/findweather/getForecast?query=alpharetta'
-        }
-
-    script.
-        function moveToWeatherNews() {
-            window.location.href = 'http://www.wunderground.com/news/'
+        function moveToHome() {
+            window.location.href = '/'
         }
 
         

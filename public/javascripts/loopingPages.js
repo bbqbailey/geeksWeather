@@ -87,6 +87,11 @@ function pauseChanged(element) { //used with checkbox
     console.log("pauseCheckboxValue: " + pauseCheckboxValue);
 }
 
+function moveToDetailedInfo() { //used with button
+    console.log("loopingPages.js moveToDetailedInfo() entry");
+    window.location.href="detailedInfo";
+}
+
 
 
 setInterval(function() {
