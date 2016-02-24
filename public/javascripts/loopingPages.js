@@ -1,11 +1,12 @@
-
+/*
 console.log("++++++++++++++ FINAL: theName should be Banjo +++++++++++++++++++");
 console.log("In loopingPages.js theName is " + theName);
 console.log("In loopingPages.js DELAY is " + DELAY);
 console.log("Is Jim dead? " + HES_DEAD_JIM);
 console.log("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
+*/
 
-var MinDelay=10000;
+var MinDelay=5000;
 if(typeof DELAY === 'undefined') {
     console.log("ERROR: in loopingPages.js, DELAY is undefined.");
     console.log("   Verify DELAY is passed as paramater in geeksWeather.js to /loopingPages");
@@ -70,15 +71,16 @@ function nextSite() {  //used with button
     document.getElementById('imageDiv').innerHTML='<img src="/images/hesDeadJim.jpg">';
 
   } else {
-    document.getElementById('imageDiv').innerHTML='<img src=' + sites[i]+ '>';
+    document.getElementById('imageDiv').innerHTML='<img src=' + sites[i] + '>';
     //document.getElementById('pageHeader').innerHTML= titles[i];
-    console.log("button advance; image: ", sites[i]);
-    console.log("button advance; pageInfo: ", titles[i]);
+    console.log("button advance; image: ", sites[i]); //TESTING - SHOULD BE 'i' not '0'
+    //console.log("button advance; pageInfo: ", titles[i]);
     i++;
     if(i==sites.length)
       i=0;
   }
 };
+
 
 var pauseCheckboxValue='';
 function pauseChanged(element) { //used with checkbox
@@ -91,8 +93,6 @@ function moveToDetailedInfo() { //used with button
     console.log("loopingPages.js moveToDetailedInfo() entry");
     window.location.href="detailedInfo";
 }
-
-
 
 setInterval(function() {
   console.log("fired");
@@ -114,10 +114,10 @@ function advanceImage() { //used with setInterval
     console.log("inside display===imgSite");
     if(firstTime) {
       console.log("firstTime is true");
-      document.getElementById('imageDiv').innerHTML='<img src=/images/bbqBailey.jpg>';
+      //document.getElementById('imageDiv').innerHTML='<img src="/images/bbqBailey.jpg", height="80%", width="100%" >';
       firstTime=false;
     }
-    document.getElementById('imageDiv').innerHTML='<img src=' + sites[i]+ '>';
+    document.getElementById('imageDiv').innerHTML='<img src=' + sites[i]+ ' height="980px" ></iframe>'
     //document.getElementById('myImage').src = sites[i];
     //document.getElementById('pageHeader').innerHTML=titles[i];
     i++;
@@ -128,7 +128,7 @@ function advanceImage() { //used with setInterval
   } else if(display==='iframeSite') {
     console.log("inside display===iframeSite");
 //    document.getElementById('imageDiv').innerHTML="<iframe src='http://localhost:8080/timeAndWeather' height='80%' width='80%'></iframe>"
-    document.getElementById('imageDiv').innerHTML="<iframe src=" + iframePages[j] + " height='80%' width='80%'></iframe>"
+    document.getElementById('imageDiv').innerHTML='<iframe src=' + iframePages[j] + ' height="980px" width="120%"></iframe>'
     j++;
     if(j==iframePages.length) {
       j=0;

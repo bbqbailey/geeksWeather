@@ -3,21 +3,19 @@ var router = express.Router();
 
 var DELAY;
 var logger;
-var DEFAULT_FILE;
 
 //module.exports = router;
 
-module.exports = function(theDelay, theDefaulFile, theLogger) {
-  DEBUG = theDelay;
-  DEFAULT_FILE = theDefaulFile;
+module.exports = function(theDelay, theLogger) {
+  DELAY = theDelay;
   logger = theLogger;
   return router;
 }
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
-    logger.trace('router.get(/) entry - rendering DEFAULT_FILE');
-    res.render(DEFAULT_FILE);
+    logger.trace('router.get(/) entry');
+    res.render('loopingPages', {'DELAY':DELAY, name:'Banjo'});
     logger.trace('router.get(/) exit');
 });
 
@@ -38,5 +36,3 @@ router.get('/timeAndWeather', function(req, res, next) {
     res.render('timeAndWeather', {'DELAY':DELAY, name:'Banjo'});
     logger.trace('router.get(/timeAndWeather) exit');
 });
-
-

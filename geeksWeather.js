@@ -9,11 +9,8 @@ var theRoutes = require('./app_server/routes/index');
 var logger = log4js.getLogger();
 
 var app = module.exports = express();
-var DELAY=10000; //default
-const DEFAULT_FILE = "loopingPages";
+var DELAY=5000; //default
 
-var routes = new theRoutes(DELAY, DEFAULT_FILE, logger);
-app.use('/', routes);
 
 
 logger.info("MODE is ", process.env.MODE);
@@ -27,6 +24,10 @@ if(typeof process.env.DELAY === "undefined") {
     DELAY=process.env.DELAY;
     logger.info("DELAY is DEFINED as " + DELAY);
 }
+
+var routes = new theRoutes(DELAY, logger);
+app.use('/', routes);
+
 
 var mode=process.env.MODE;
 var loggerLevel="";

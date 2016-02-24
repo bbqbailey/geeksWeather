@@ -1,68 +1,56 @@
+//output:output.html
 head
+  title Time and Weather!
+  link(rel='icon' href='/images/bbqBailey.png')
+  link(rel='stylesheet' type='text/css' href='/stylesheets/threeCol.css')
 
-div(id='pagewrap')
-
-    header
-        title Time and Weather!
-        link(rel='icon' href='/images/bbqBailey.png')
-        link(rel='stylesheet' type='text/css' href='/stylesheets/threeCol.css')
-
-
+body
+  div(id='pagewrap')
     section(id='today')
-        div(id='today_high'  style='em') H:
-        div(id='today_low') L:
-        div(id='wind') W:
-
-
+      div(id='today_high'  style='em') H:
+      div(id='today_low') L:
+      div(id='wind') W:
     section(id='tomorrow')
-        div(id='tmrw_high') H:
-        div(id='tmrw_low') L:
-        div(id='tmrw_wind') W:
-
+      div(id='tmrw_high') H:
+      div(id='tmrw_low') L:
+      div(id='tmrw_wind') W:
     section(id='todayCond')
-        div(id='cond')
-
+      div(id='cond')
     section(id='tomorrowCond')
-        div(id='tmrw_cond')
-
-
+      div(id='tmrw_cond')
     footer
         div(id='state') State:
         div(id='station') Station:
 
-
     script(src="//code.jquery.com/jquery-2.1.4.min.js")
 
     script.
-        function moveToLoopingPages() {
-            window.location.href = 'loopingPages'
-        }
+      function moveToLoopingPages() {
+        window.location.href = 'loopingPages'
+      }
         
     script(src = "/javascripts/geeksWeatherEvents.js")
     
     script.
-        source.addEventListener('weather', function(e) {
-            console.log('eventListener: weather: ', e);
-            var weather_data = JSON.parse(e.data);
-            var forecast = weather_data.forecast;
-            var windRound = Math.round(weather_data.wind_mph);
-            $("#today_high").text(     " H: " + forecast[0].high.fahrenheit);
-            $("#today_low").text(      " L: " + forecast[0].low.fahrenheit);
-            $("#wind").text(           " W: " + windRound);
-            $("#cond").text(           weather_data.icon);
-            console.log("Today's conditions icon: " + weather_data.icon + '.gif');
-            $("#today").css('background-image', 'url(http://icons.wxug.com/i/c/h/' + weather_data.icon + '.gif)');
-
-
-            $("#tmrw_high").text(      " H: " + forecast[1].high.fahrenheit);
-            $("#tmrw_low").text(       " L: " + forecast[1].low.fahrenheit);
-            $("#tmrw_wind").text(      " W: " + forecast[1].avewind.mph);
-            $("#tmrw_cond").text(      forecast[1].conditions);
-            $("#state").text(" Connected");
-            $("#station").text("Station: " + weather_data.station);
-            console.log("weather: ", weather_data);
-            console.log("forecast: ", weather_data.forecast);
-            console.log("Tomorrow's conditions icon: " + forecast[1].icon + '.gif');
-            $("#tomorrow").css('background-image', 'url(http://icons.wxug.com/i/c/h/' + forecast[1].icon + '.gif)');
-
-        }, false)
+      source.addEventListener('weather', function(e) {
+        console.log('eventListener: weather: ', e);
+        var weather_data = JSON.parse(e.data);
+        var forecast = weather_data.forecast;
+        var windRound = Math.round(weather_data.wind_mph);
+        $("#today_high").text(     " H: " + forecast[0].high.fahrenheit);
+        $("#today_low").text(      " L: " + forecast[0].low.fahrenheit);
+        $("#wind").text(           " W: " + windRound);
+        $("#cond").text(           weather_data.icon);
+        console.log("Today's conditions icon: " + weather_data.icon + '.gif');
+        $("#today").css('background-image', 'url(http://icons.wxug.com/i/c/h/' + weather_data.icon + '.gif)');
+        $("#tmrw_high").text(      " H: " + forecast[1].high.fahrenheit);
+        $("#tmrw_low").text(       " L: " + forecast[1].low.fahrenheit);
+        $("#tmrw_wind").text(      " W: " + forecast[1].avewind.mph);
+        $("#tmrw_cond").text(      forecast[1].conditions);
+        $("#state").text(" Connected");
+        $("#station").text("Station: " + weather_data.station);
+        console.log("weather: ", weather_data);
+        console.log("forecast: ", weather_data.forecast);
+        console.log("Tomorrow's conditions icon: " + forecast[1].icon + '.gif');
+        $("#tomorrow").css('background-image', 'url(http://icons.wxug.com/i/c/h/' + forecast[1].icon + '.gif)');
+      }, false)

@@ -1,37 +1,45 @@
-head
+//output:output.html
+include headers.jade
+script.
+  var theName = "#{name}"
+  var DELAY = "#{DELAY}"
+  var HES_DEAD_JIM = false
+  console.log("==================================================")
+  console.log("In loopingPages.jade, the name is " + theName)
+  console.log("In loopingPages.jade, the DELAY is " + DELAY)
+  console.log("==================================================")
+
 body
   div(id='pagewrap')
+    title geeksWeather!
+    link(href='https://fonts.googleapis.com/css?family=Orbitron:900' rel='stylesheet' type='text/css')
+    link(rel='icon' href='/images/bbqBailey.png')
+    link(rel='stylesheet' type='text/css' href='/stylesheets/threeCol.css')
+    link(rel='stylesheet' type='text/css' href='/stylesheets/loopingPages.css')
 
-  title geeksWeather!
-  link(href='https://fonts.googleapis.com/css?family=Orbitron:900' rel='stylesheet' type='text/css')
-  link(rel='icon' href='/images/bbqBailey.png')
-  link(rel='stylesheet' type='text/css' href='/stylesheets/threeCol.css')
-  link(rel='stylesheet' type='text/css' href='/stylesheets/loopingPages.css')
+    section(id='topTime')
+      div(id="time" ) Time: Waiting... 
 
+    section(id='topTemp') 
+      div(id="temp_f" )
 
-  section(id='topTime')
-    div(id="time" ) Time: Waiting...
+    section(id='status')
+      div(id="died")
+          img(src="/images/hesDeadJim.jpg", id="hesDeadJim", style="display:none")
+      div(id='imageDiv')
+        img(src='/images/bbqBailey.png', height="900px")
+        script(src = "/javascripts/loopingPages.js")    
 
-  section(id='topTemp')
-    div(id="temp_f" )
+    script(src="//code.jquery.com/jquery-2.1.4.min.js")
+    
+      
 
-  section(id='status')
-    div(id="died")
-        img(src="/images/hesDeadJim.jpg" id="hesDeadJim" style="display:none"  height="100%")
+    section(id='main')
+      //      script(src = "/javascripts/loopingPages.js")    
+      script(src="/javascripts/geeksWeatherEvents.js")
 
-  section(id='radar')
-    include ../../public/images/loopingPages.html
-
-  script(src="//code.jquery.com/jquery-2.1.4.min.js")
-  
-  script.
-    var theName = "#{name}"
-    var DELAY = "#{DELAY}"
-    var HES_DEAD_JIM = false
-    console.log("==================================================")
-    console.log("In loopingPages.jade, the name is " + theName)
-    console.log("In loopingPages.jade, the DELAY is " + DELAY)
-    console.log("==================================================")
-
-  script(src = "/javascripts/loopingPages.js")
-  script(src = "/javascripts/geeksWeatherEvents.js")
+  footer
+    input( class='nav', type='button', value='Next site', onclick='nextSite()', style='height:60')
+    input( class='nav', type='button', value='Detailed Weather Info', onclick='moveToDetailedInfo()')
+    input( class='nav', id='pauseCB', type='checkbox', name='pause', value='checked', onchange='pauseChanged(this)')
+    | Pause
