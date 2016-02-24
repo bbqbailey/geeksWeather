@@ -64,6 +64,7 @@ var iframePages = [
 
 var i=0;
 var j=0;
+var imgHeight="980px"
 
 function nextSite() {  //used with button
   console.log("loopingPages.js nextSite(): HES_DEAD_JIM: " + HES_DEAD_JIM);
@@ -71,7 +72,7 @@ function nextSite() {  //used with button
     document.getElementById('imageDiv').innerHTML='<img src="/images/hesDeadJim.jpg">';
 
   } else {
-    document.getElementById('imageDiv').innerHTML='<img src=' + sites[i] + '>';
+    document.getElementById('imageDiv').innerHTML='<img src=' + sites[i] + ' height=' + imgHeight + ' >';
     //document.getElementById('pageHeader').innerHTML= titles[i];
     console.log("button advance; image: ", sites[i]); //TESTING - SHOULD BE 'i' not '0'
     //console.log("button advance; pageInfo: ", titles[i]);
@@ -117,7 +118,7 @@ function advanceImage() { //used with setInterval
       //document.getElementById('imageDiv').innerHTML='<img src="/images/bbqBailey.jpg", height="80%", width="100%" >';
       firstTime=false;
     }
-    document.getElementById('imageDiv').innerHTML='<img src=' + sites[i]+ ' height="980px" ></iframe>'
+    document.getElementById('imageDiv').innerHTML='<img src=' + sites[i] + ' height=' + imgHeight + ' >';
     //document.getElementById('myImage').src = sites[i];
     //document.getElementById('pageHeader').innerHTML=titles[i];
     i++;
@@ -128,7 +129,7 @@ function advanceImage() { //used with setInterval
   } else if(display==='iframeSite') {
     console.log("inside display===iframeSite");
 //    document.getElementById('imageDiv').innerHTML="<iframe src='http://localhost:8080/timeAndWeather' height='80%' width='80%'></iframe>"
-    document.getElementById('imageDiv').innerHTML='<iframe src=' + iframePages[j] + ' height="980px" width="120%"></iframe>'
+    document.getElementById('imageDiv').innerHTML='<iframe src=' + iframePages[j] + ' height=' + imgHeight + ' width="120%"></iframe>'
     j++;
     if(j==iframePages.length) {
       j=0;
