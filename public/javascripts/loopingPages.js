@@ -59,7 +59,9 @@ var titles = [
 
 var iframePages = [
   '/timeAndWeather',
-  'http://www.wunderground.com/severe.asp?region=se&setprefs.0.key=SVRMAP&setprefs.0.val=se'
+  'http://www.wunderground.com/severe.asp?region=se&setprefs.0.key=SVRMAP&setprefs.0.val=se',
+  'http://forecast.weather.gov/MapClick.php?lat=34.02090065853963&lon=-84.23216746155833#.Vs8BIiArLnA',
+  'http://forecast.weather.gov/showsigwx.php?warnzone=GAZ033&warncounty=GAC121&firewxzone=GAZ033&local_place1=2%20Miles%20WSW%20Johns%20Creek%20GA&product1=Hazardous+Weather+Outlook&lat=34.0209&lon=-84.2322#.Vs8BOiArLnA'
 ]
 
 
