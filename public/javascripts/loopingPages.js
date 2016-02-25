@@ -1,10 +1,8 @@
-/*
 console.log("++++++++++++++ FINAL: theName should be Banjo +++++++++++++++++++");
 console.log("In loopingPages.js theName is " + theName);
 console.log("In loopingPages.js DELAY is " + DELAY);
 console.log("Is Jim dead? " + HES_DEAD_JIM);
 console.log("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
-*/
 
 var MinDelay=5000;
 if(typeof DELAY === 'undefined') {
@@ -58,7 +56,8 @@ var titles = [
 ];
 
 var iframePages = [
-  '/timeAndWeather'
+  '/timeAndWeather',
+  'http://www.wunderground.com/severe.asp?region=se&setprefs.0.key=SVRMAP&setprefs.0.val=se'
 ]
 
 
