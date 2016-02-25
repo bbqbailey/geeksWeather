@@ -28,6 +28,7 @@ function iframeDidLoad() {
 }
 
 var sites = [
+  'http://www.goes.noaa.gov/FULLDISK/GEIR.JPG', //noaa weastern hemisphere earth Satellite
   'http://www.ssec.wisc.edu/data/us_comp/image7.jpg', //Satellite
   'http://radar.weather.gov/Conus/RadarImg/latest.gif', //usa
   'http://radar.weather.gov/Conus/RadarImg/southmissvly.gif', //miss valley
@@ -42,6 +43,7 @@ var sites = [
 ];
 
 var titles = [
+  'NOAA Weastern Hemisphere Satellite',
   'Continental USA Satellite',
   'Continental USA Radar',
   'Lower Mississippi Valley Sector Radar',
