@@ -1,10 +1,11 @@
 console.log("++++++++++++++ FINAL: theName should be Banjo +++++++++++++++++++");
-console.log("In loopingPages.js theName is " + theName);
+console.log("In loopingPages.js theName is " + theName); 
 console.log("In loopingPages.js DELAY is " + DELAY);
 console.log("Is Jim dead? " + HES_DEAD_JIM);
 console.log("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
 
-var MinDelay=5000;
+var MinDelay=5000; 
+
 if(typeof DELAY === 'undefined') {
     console.log("ERROR: in loopingPages.js, DELAY is undefined.");
     console.log("   Verify DELAY is passed as paramater in geeksWeather.js to /loopingPages");
