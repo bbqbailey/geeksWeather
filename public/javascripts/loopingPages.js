@@ -1,10 +1,10 @@
 console.log("++++++++++++++ FINAL: theName should be Banjo +++++++++++++++++++");
-console.log("In loopingPages.js theName is " + theName); 
+console.log("In loopingPages.js theName is " + theName);
 console.log("In loopingPages.js DELAY is " + DELAY);
 console.log("Is Jim dead? " + HES_DEAD_JIM);
 console.log("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
 
-var MinDelay=5000; 
+var MinDelay=5000;
 
 if(typeof DELAY === 'undefined') {
     console.log("ERROR: in loopingPages.js, DELAY is undefined.");
@@ -28,64 +28,54 @@ function iframeDidLoad() {
   alert('Done');
 }
 
-var sites = [
-  'http://www.goes.noaa.gov/FULLDISK/GEIR.JPG', //noaa weastern hemisphere earth Satellite
-  'http://www.ssec.wisc.edu/data/us_comp/image7.jpg', //Satellite
-  'http://radar.weather.gov/Conus/RadarImg/latest.gif', //usa
-  'http://radar.weather.gov/Conus/RadarImg/southmissvly.gif', //miss valley
-  'http://radar.weather.gov/Conus/RadarImg/southeast.gif', //southeast
-  'http://radar.weather.gov/lite/N0R/FFC_0.png', //atlanta
-  'https://icons.wxug.com/data/640x480/2xus_severe.gif', //usa severe weather
-  'https://icons.wxug.com/data/640x480/2xse_severe.gif', //s.e. severe weather
-  'http://www.wpc.ncep.noaa.gov/noaa/noaad1.gif', //forecast today
-  'http://www.wpc.ncep.noaa.gov/noaa/noaad2.gif', //forecast tomorrow
-  'http://www.ssd.noaa.gov/goes/comp/nhem/rb.jpg', //GOES-COMPOSITE Rainbow IR Ch 4
-  'http://www.ssd.noaa.gov/goes/comp/nhem/wv.jpg' //GOES-COMPSITE Water Vapor
-];
-
-var titles = [
-  'NOAA Weastern Hemisphere Satellite',
-  'Continental USA Satellite',
-  'Continental USA Radar',
-  'Lower Mississippi Valley Sector Radar',
-  'southeast Sector Radar',
-  'Atlanta Area Radar',
-  'USA Severe Weather',
-  'southeast Severe Weather',
-  'Continental USA forecast - Today',
-  'Continental USA forecast - Tomorrow',
-  'GOES-COMPOSITE Rainbow IR Ch 4',
-  'GOES-COMPOSITE Water Vapor'
-];
-
-var iframePages = [
-  '/timeAndWeather',
-  'http://www.wunderground.com/severe.asp?region=se&setprefs.0.key=SVRMAP&setprefs.0.val=se',
-  'http://forecast.weather.gov/MapClick.php?lat=34.02090065853963&lon=-84.23216746155833#.Vs8BIiArLnA',
-  'http://forecast.weather.gov/showsigwx.php?warnzone=GAZ033&warncounty=GAC121&firewxzone=GAZ033&local_place1=2%20Miles%20WSW%20Johns%20Creek%20GA&product1=Hazardous+Weather+Outlook&lat=34.0209&lon=-84.2322#.Vs8BOiArLnA'
-]
-
-
-var i=0;
-var j=0;
 var imgHeight="980px"
 
-function nextSite() {  //used with button
-  console.log("loopingPages.js nextSite(): HES_DEAD_JIM: " + HES_DEAD_JIM);
+setInterval(function() {
+  console.log("fired");
+  advanceImage();
+}, DELAY);
+
+function buildHtml( displayObj ) {
+  console.log("buildHtml() entry: displayObj: ", displayObj);
+  var htmlString = '<' + displayObj.displayType + ' src="' + displayObj.uri + '" height="' + displayObj.height + '">;';
+  console.log("buildHtml(): htmlString: " + htmlString);
+  return htmlString;
+}
+
+var i=0;
+var firstTime = true;
+
+function hesDeadJim() {
+  console.log("hesDeadJim() entry");
+  var htmlString = buildHtml(sites.errorPage)
+  console.log("hesDeadJim() exit");
+  return htmlString;
+}
+
+
+function advanceImage() { //used with setInterval
+  var htmlString="";
+  console.log("loopingPages.js: advanceImage(): value of HES_DEAD_JIM: " + HES_DEAD_JIM);
   if(HES_DEAD_JIM) {
-    document.getElementById('imageDiv').innerHTML='<img src="/images/hesDeadJim.jpg">';
-
+    htmlString = hesDeadJim();  //always do this first
+  } else if(firstTime) { //then show splashPage
+      console.log("firstTime is true");
+      console.log("   calling buildHtml with sites.splashPage value: ", sites.splashPage);
+      htmlString=buildHtml(sites.splashPage);
+      firstTime=false;
+  } else if(pauseCheckboxValue==='Checked') {
+      console.log("advanceImage(): pauseCheckboxValue === 'Checked'");
+      console.log("returning to avoid advancing or redisplaying same page");
+      return;
   } else {
-    document.getElementById('imageDiv').innerHTML='<img src=' + sites[i] + ' height=' + imgHeight + ' >';
-    //document.getElementById('pageHeader').innerHTML= titles[i];
-    console.log("button advance; image: ", sites[i]); //TESTING - SHOULD BE 'i' not '0'
-    //console.log("button advance; pageInfo: ", titles[i]);
+    htmlString = buildHtml(sites.displayPages[i]);
     i++;
-    if(i==sites.length)
+    if(i==sites.length) {
       i=0;
+    }
   }
-};
-
+  document.getElementById('imageDiv').innerHTML=htmlString;
+}
 
 var pauseCheckboxValue='';
 function pauseChanged(element) { //used with checkbox
@@ -99,49 +89,17 @@ function moveToDetailedInfo() { //used with button
     window.location.href="detailedInfo";
 }
 
-setInterval(function() {
-  console.log("fired");
-  advanceImage();
-}, DELAY);
-
-var display="iframeSite"; //valid are imgSite and iframeSite
-var firstTime = true;
-function advanceImage() { //used with setInterval
-  console.log("loopingPages.js: HES_DEAD_JIM: " + HES_DEAD_JIM);
+function nextSite() {  //used with button
+  var htmlString = "";
+  console.log("loopingPages.js nextSite() entry: value of HES_DEAD_JIM: " + HES_DEAD_JIM);
   if(HES_DEAD_JIM) {
-    console.log("display is HES_DEAD_JIM");
-    document.getElementById('imageDiv').innerHTML='<img src="/images/hesDeadJim.jpg">';
-  } else if(pauseCheckboxValue==='Checked') {
-      console.log("advanceImage(): pauseCheckboxValue === 'Checked'");
-      console.log("returning without advancing");
-      return;
-  } else if(display==='imgSite') {
-    console.log("inside display===imgSite");
-    if(firstTime) {
-      console.log("firstTime is true");
-      //document.getElementById('imageDiv').innerHTML='<img src="/images/bbqBailey.jpg", height="80%", width="100%" >';
-      firstTime=false;
-    }
-    document.getElementById('imageDiv').innerHTML='<img src=' + sites[i] + ' height=' + imgHeight + ' >';
-    //document.getElementById('myImage').src = sites[i];
-    //document.getElementById('pageHeader').innerHTML=titles[i];
-    i++;
-    if(i==sites.length) {
-      i=0;
-      display="iframeSite"
-    }
-  } else if(display==='iframeSite') {
-    console.log("inside display===iframeSite");
-//    document.getElementById('imageDiv').innerHTML="<iframe src='http://localhost:8080/timeAndWeather' height='80%' width='80%'></iframe>"
-    document.getElementById('imageDiv').innerHTML='<iframe src=' + iframePages[j] + ' height=' + imgHeight + ' width="120%"></iframe>'
-    j++;
-    if(j==iframePages.length) {
-      j=0;
-      display="imgSite";
-    }
+    htmlString = hesDeadJim();
   } else {
-    console.log("ERROR - SHOULDN'T BE HERE IN advanceImage");
-    console.log("ERROR - display value is " + display);
+    i++;
+    if(i==sites.displayPages.length)
+      i=0;
+    htmlString = buildHtml(sites.displayPages[i]);
+    console.log("button advance; image: ", sites.displayPages[i].name);
   }
-
-}
+  document.getElementById('imageDiv').innerHTML=htmlString;
+};

@@ -1,13 +1,18 @@
 //output:output.html
 include headers.jade
 script.
-  var theName = "#{name}"
-  var DELAY = "#{DELAY}"
-  var HES_DEAD_JIM = false
-  console.log("==================================================")
-  console.log("In loopingPages.jade, the name is " + theName)
-  console.log("In loopingPages.jade, the DELAY is " + DELAY)
-  console.log("==================================================")
+  var theName = "#{name}";
+  var DELAY = "#{DELAY}";
+  var sites={};
+  var HES_DEAD_JIM = false;
+  
+  console.log("=============================================================")
+  var sitesStringify = '!{sites}';
+  sites = JSON.parse(sitesStringify);
+  console.log("sites: ",  sites);
+  console.log('sites typeof: ', typeof sites);
+  console.log("sites.splashPage: ", sites.splashPage);
+  console.log("===========================================================")
 
 body
   div(id='pagewrap')

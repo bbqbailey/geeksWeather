@@ -5,7 +5,8 @@ var Wunderground = require('wundergroundnode');
 var Datastore    = require('nedb');
 var async        = require("async");
 var log4js       = require('log4js');
-var theRoutes = require('./app_server/routes/index');
+var theRoutes    = require('./app_server/routes/index');
+
 var logger = log4js.getLogger();
 
 var app = module.exports = express();
@@ -135,6 +136,10 @@ app.get('/eventEngine' , function(req, res) {
 
 app.listen(8080, function (err) {
     logger.info('Express started on port 8080');
+    if(err) {
+      console.log("app.listen(localhost, 8080) error: ");
+      err();
+    }
 });
 
 var wundergroundInterval = setInterval(function() {

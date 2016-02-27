@@ -31,3 +31,5 @@ node_modules
 npm-debug.log
 start
 output.html
+output.log
+debugging.txt
