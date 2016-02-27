@@ -44,7 +44,8 @@ body
       script(src="/javascripts/geeksWeatherEvents.js")
 
   footer
-    input( class='nav', type='button', value='Next site', onclick='nextSite()', style='height:60')
+    input( class='nav', type='button', value='Next site', onclick='nextSite()', style='height:60px')
+    input( class='nav', type='button', value='Prev site', onclick='prevSite()', style='height:60px')
     input( class='nav', type='button', value='Detailed Weather Info', onclick='moveToDetailedInfo()')
     input( class='nav', id='pauseCB', type='checkbox', name='pause', value='checked', onchange='pauseChanged(this)')
     | Pause

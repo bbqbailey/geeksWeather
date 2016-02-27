@@ -97,10 +97,27 @@ function nextSite() {  //used with button
     htmlString = hesDeadJim();
   } else {
     i++;
-    if(i==sites.displayPages.length)
+    if(i>=sites.displayPages.length)
       i=0;
+    console.log('nextSite() i: ' + i + ' length: ' + sites.displayPages.length);
+    console.log("nextSite() image: ", sites.displayPages[i].name );
     htmlString = buildHtml(sites.displayPages[i]);
-    console.log("button advance; image: ", sites.displayPages[i].name);
+  }
+  document.getElementById('imageDiv').innerHTML=htmlString;
+};
+
+function prevSite() {  //used with button
+  var htmlString = "";
+  console.log("loopingPages.js prevSite() entry: value of HES_DEAD_JIM: " + HES_DEAD_JIM);
+  if(HES_DEAD_JIM) {
+    htmlString = hesDeadJim();
+  } else {
+    i--;
+    if(i<=0)
+      i=sites.displayPages.length-1;
+    console.log('prevSite() i: ' + i + ' length: ' + sites.displayPages.length);
+    console.log("prevSite() image: ", sites.displayPages[i].name );
+    htmlString = buildHtml(sites.displayPages[i]);
   }
   document.getElementById('imageDiv').innerHTML=htmlString;
 };
