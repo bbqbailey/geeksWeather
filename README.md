@@ -2,7 +2,7 @@
 
 "&copy;" 2016 Ben Bailey
 
-MIT licensed
+GNU GPLv2 licensed
 
 Note: This code is not yet suitable for downloading, as it is still undergoing initial development!
 
