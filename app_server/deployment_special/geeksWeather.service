@@ -1,0 +1,12 @@
+[Service]
+ExecStart=/usr/bin/nodejs /home/geek/SoftwareProjects/geeksWeather/geeksWeather.js
+Restart=on-failure
+StandardOutput=syslog
+StandardError=syslog
+SyslogIdentifier=node-app-1
+User=geek
+Group=geeksHome
+Environment=NODE_ENV=production PORT=8080 MODE=PRODUCTION
+
+[Install]
+WantedBy=multi-user.target

@@ -24,15 +24,9 @@ const WUNDERGROUND_GET_TIME = WUNDERGROUND_REFRESH_WEATHER_MINUTES * MINUTE;
 const TIME_SEND_TIME = 1 * SECOND;
 
 
-logger.info("defaultDELAY value is " + DELAY);
+logger.info("defaultDELAY value is " + DELAY + " microseconds");
 logger.info("MODE is ", process.env.MODE);
 logger.info("NODE_ENV is ", process.env.NODE_ENV); //used in systemd/system/geeksWeather.service
-
-//Note: process.env.DELAY will override value from geeksWeatherConfiguraton
-if(typeof process.env.DELAY != "undefined") {
-    DELAY=process.env.DELAY;
-    logger.info("Overriding config.appConfig.defaultDELAY with value from process.env.DELAY with value " + DELAY + " obtained at startup or geeksWeather.service via systemd restart.");
-}
 
 var routes = new theRoutes(DELAY, logger);
 app.use('/', routes);
