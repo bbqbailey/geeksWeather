@@ -1,6 +1,7 @@
 *~
 *.db
 *.bak
+wundergroundKey.json
 create_wundergroundInfo.js.MINE
 create_wundergroundInfo.js.clean
 AlpharettaWeatherServer.js

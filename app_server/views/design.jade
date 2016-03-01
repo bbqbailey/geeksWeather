@@ -1,0 +1,79 @@
+doctype html
+
+body
+  h1 Design Considerations for geeksWeather!
+  h2 License
+  p geeksWeather is licensed under GNU GPLv2.  <em>All rights retained by Ben Bailey</em>
+  p <em>Additional terms:</em> The user of this application agrees to show the bbqBailey image and geeksWeather image, currently located in <em>/public/images</em> and utilized in <em>loopingPages.*</em>, and referenced in <em>geeksWeatherConfiguration.json</em>.
+  p In addition, user of this application agrees to reserve the <em>splashPage and first entry in displayPages geeksWeatherConfiguration.json</em>, which refer to <em>bbqBailey.png and geeksWeather-Splash</em> as they are provided when obtained as the application from the distribution.  In addition, user agrees to keep the references to wunderground as provided, and required per agreement with wunderground.com for use of their API.
+  h2 copyright
+  p The geeksWeather application, software and all files, is copyright "&copy;" 2016 Ben Bailey.
+  hr
+  br
+  h2 Design
+  h3 nodejs
+  p This system incorporates a web server, typically hosted on a single board computer (SBC), such as a <em>Beaglebone Blac or a Raspberry Pi.</em>  This web server is provided by nodejs, and runs on the SBC.
+  h3 geeksWeather basis for display
+  p The <em>geeksWeather</em> application forms the basis for the <em>geeksSecuritySystem</em> via it's display pages.  Rather than continuously displaying a security system that should never have a security event, I have chosen to show the weather!  When the <em>geeksWeather</em> application is coupled with the <em>geeksSecuritySystem</em>, currently under development, then on a security event, the weather display will shift to the security event display.  So, think of this as a suite of applications, with the weather display forming the display for the other modules, with the intellegence to shift applications on events.
+  h3 Server Sent Events (AKA Server Side Events, AKA SSE)
+  p Rather than wasting bandwith and increasing system overhead, this application makes use of SSE.  SSE is a new element to HTML5.  Prior to HTML5, an application, such as a messaging application, if it needed an update, would have to refresh itself.  This meant a reload of the current page with information provided by the server.  This is referred to as 'polling', whereby the web page would contiually get a new page with fresh data. This increases network traffic, as well as increases the load on the server.  With HTML5, this is no longer necessary.  Instead, the web page registers as wishing to receive notification of a specified event, and this event contains the new inforation, which the web page can display on receiving the event.  Only the data associated with the event needs to be pushed from the server to the web page, so the content is usually considerably less than would be provided on a full page request, and the event notification from the server should only occur when new data is available that needs to be pushed to the web page.
+  p The <em>geeksWeather</em> application makes use of several SSE envents:
+  ul
+    li Clock second update - event 'time'.  This occurs once-per-second.
+    li Weather update - event 'weather'.  This occurs once-per-5, unless changed by the user.
+    li error update - event 'error'.  This occurs on any error detected that could render the system out of service.
+  h3 loopingPages
+  p The primary display page for the geeksWeather application is <em>loopingPages</em>.  This is a single page, constructed with three sections: top, middle, and bottom.  The top section displays the current time, updated each second, sent from the application host computer) along with the current temperature for your specified city/state, obtained from wunderground.com API via the user API key.  <em>For additional information, see detail below.</em>  
+  p The middle section of loopingPages obtains it's information from the geeksWeatherConfiguration.json file.  You can have a mixture of HTML types of <em>img and iframe.</em> Please remember, from additional license elements above, that <em>the first two entries in geeksWeatherConfiguration.json must retain the references to  bbqBailey.png and geeksWeather-Splash.png.</em>
+  p The middle section will go through each of the pages in geeksWeatherConfiguration.json, advancing to the next page per the value <em>ADVANCE_RATE_SECS</em>.  Once all of the pages have been displayed, the loop will restart at the first page and loop through all pages again.  This repeats as long as the geeksWeather application is running, or you change to a different display page via buttons on the bottom of the displayed page.
+  
+  br
+  h3 Watchdogs: application Event 'time'
+  p The <em>geeksWeather</em> application makes use of the LAN.  As such, it's critical to the successful operation of the application.  This makes it imperitive that the system, as well as the owner independently, can observe a problem with various components (LAN, application host computer, display device, display broswer ) of the application, both hardware and software.
+  p To facilitate this, as well as to provide a useful function, a digital clock is displayed at the top of each page.  The clock's time value is created at the <em>host system</em> that provides the geeksWeatherSystem application, typically an SBC.
+  p This clock is not updated by the browser or the device showing the browser.  Instead, it is developed on the host system, then pushed as an event to all connected display browsers.  On the host system, the date() function is called once-per-second, then the system event 'time' is generated.  All system browsers, when opening to the system webpage site, automatically register to receive this 'time' event. So once-per-second, each browser receives the 'time' event, and updates the displayed time value with this new time value generated by the system host.
+  p This means, any time the displayed clock's seconds are updated, the host system has functioned properly, the LAN between the host system and the browser displaying the time has functioned properly, the browser is functioning properly, and the device displaying the browser is functioning properly.  
+  p Likewise, any time the clock <em>fails to update</em>, then one or more of the elements <em>(host syste, LAN, browser, device running the browser)</em> has failed.
+  
+  h3 System configuration
+  p <em>Note: need to define after refactoring of code</em>
+    ul
+      li MAX_ELAPSED_TIMEOUT_SEC:  
+      p <em>defined: file, key:value pair</em>
+      p The browser web page attempts to trap any events, such as a LAN failure or timeout of the Event 'time', to signal this via an Error page displayed, instead of just detecting it by seeing the systems clock not updating on the display page.  
+      p The value for MAX_ELAPSED_TIMEOUT_SEC in module geeksWeatherEvents.js determines this maximum time between the updating of the clock seconds.  Exceeding this time value will cause the error page to be displayed.
+  hr
+  br
+  h2 Using geeksWeather
+  h3 Using wunderground.
+  p This application uses data from wunderground.com, and is subject to the terms outlined <a href=https://www.wunderground.com/weather/api/d/terms.html> here</a>.
+  h3 Obtaining a wunderground API key
+  p The setup of geeksWeather requires the use of a <em>wunderground.com API user key</em>.  This key is obtained directly from <em>wunderground.com.</em>   The key for wunderground.com API user's key is stored, by the user, in the <em>geeksWeather file myWundergroundInfo.db as the value for the json file key-pair "my_key".</em>  Without this key, the geeksWeather application will not be able to obtain current weather information from wunderground.com, and will result in an error.
+  p Currently (February 29, 2016), wunderground provides information regarding obtaining this key at <a href='https://www.wunderground.com/weather/api/d/docs'>wunderground</a>, but is subject to change.
+  p If you obtain a free personal key, then you are (currently 2/29/16) restricted to <em>500 data requests per day, and 10 per minute.</em> The geeksWeather application is currently set to obtain information once-per-5-minutes, which means, on a per-day basis, it does not exceed 288 reqeusts. <em>If you do additional development, or run this application on multiple systems with the same key, then you may possibly exceed this limit</em>, which would result in failure to abide with the wunderground terms, and may cause this application to no longer be usable with your key.  A commercial key, which can be obtained from wunderground.com, has less restricted terms.
+  
+  h3 Using the wunderground API key
+  p The geeksWeather application requires that you create a JSON file named <em>wundergroundKey.json</em> and put it into the application root directory (the same directory where geeksWeather.js is found).  Since this is a JSON formated file, it will contain key:value pairs.  Therefore, this file will contain your wunderground Key in the form:
+  p
+    pre(style="padding-left: 50pt")
+      code
+        |{ "KEY:VALUE"}
+  p In your file, the key would must be "my_key" (case sensitive), and your value would be the key obtained from wunderground.  Note the structure of a JSON file: a left brace { followed by a double-quote, then "my_key", then double-quote, then colon, then double-quote, your key value, then double-quote, then right brace.
+  p An example follows, where the value "1234abc123abc123" simulates the wunderground key you obtained:
+  p
+    pre(style="padding-left: 50pt")
+      code
+        |{ "my_key":"1234abc123abc123" }
+  p So the consolidated information:
+    pre(style="padding-left: 50pt")
+      code
+        |file: wundergroundKey.json
+        |contents: {"my_key":"your key value"}
+        
+  h3 Configuration
+  p <em><b>configuration elements go here.</b></em>
+  h4 geeksWeatherConfiguration.json
+  p geeksWeatherConfiguration.json, located at ./geeksWeatherConfiguration.json, is the primary configuration file for <em>geeksWeather</em>.
+  
+footer
+  p <em>Document Revision 1.0, Date: 2/29/2016  Author: Ben Bailey (&copy) 2016 Ben Bailey -- All righs reserved--</em>

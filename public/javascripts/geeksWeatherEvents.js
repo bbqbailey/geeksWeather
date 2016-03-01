@@ -17,6 +17,7 @@ var COLOR_TEMPF_FIELD_NORMAL="black";
 var timeout = setInterval(function() {
     secsSinceLastTimeEvent++;
     if(secsSinceLastTimeEvent > MAX_ELAPSED_TIMEOUT_SEC) {
+        //didn't get the clock update before MAX_ELAPSED_TIMEOUT_SEC
         console.log("ERROR: geeksWeatherEvents.js: secsSinceLastTimeEvent exceeded " + MAX_ELAPSED_TIMEOUT_SEC + " seconds.");
         console.log("ERROR: geeksWeatherEvents.js: No time events from server in " + secsSinceLastTimeEvent + " seconds");
         HES_DEAD_JIM = true;
@@ -74,5 +75,3 @@ if(!!window.EventSource) {
 } else {
     console.log("Your browser doesn't support SSE")
 }
-
-

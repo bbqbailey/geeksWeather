@@ -3,22 +3,22 @@ include headers.jade
 script.
   var theName = "#{name}";
   var DELAY = "#{DELAY}";
-  var sites={};
+  var config={};
   var HES_DEAD_JIM = false;
   
   console.log("=============================================================")
-  var sitesStringify = '!{sites}';
-  sites = JSON.parse(sitesStringify);
-  console.log("sites: ",  sites);
-  console.log('sites typeof: ', typeof sites);
-  console.log("sites.splashPage: ", sites.splashPage);
+  var configStringify = '!{config}';
+  config = JSON.parse(configStringify);
+  console.log("config: ",  config);
+  console.log('config typeof: ', typeof config);
+  console.log("config.splashPage: ", config.splashPage);
   console.log("===========================================================")
 
 body
   div(id='pagewrap')
     title geeksWeather!
     link(href='https://fonts.googleapis.com/css?family=Orbitron:900' rel='stylesheet' type='text/css')
-    link(rel='icon' href='/images/bbqBailey.png')
+    link(rel='icon' href='/images/bbqBailey.png') 
     link(rel='stylesheet' type='text/css' href='/stylesheets/threeCol.css')
     link(rel='stylesheet' type='text/css' href='/stylesheets/loopingPages.css')
 
@@ -32,6 +32,7 @@ body
       div(id="died")
           img(src="/images/hesDeadJim.jpg", id="hesDeadJim", style="display:none")
       div(id='imageDiv')
+        //why is bbqBailey still needed? It's in loopingPages.displayPages.splashPage, but not working if not here!  If it has to be here to keep the page from being blank, then make this the splashPage and remove from loopingPages.displayPages.
         img(src='/images/bbqBailey.png', height="900px")
         script(src = "/javascripts/loopingPages.js")    
 
@@ -44,8 +45,8 @@ body
       script(src="/javascripts/geeksWeatherEvents.js")
 
   footer
-    input( class='nav', type='button', value='Next site', onclick='nextSite()', style='height:60px')
     input( class='nav', type='button', value='Prev site', onclick='prevSite()', style='height:60px')
+    input( class='nav', type='button', value='Next site', onclick='nextSite()', style='height:60px')
     input( class='nav', type='button', value='Detailed Weather Info', onclick='moveToDetailedInfo()')
     input( class='nav', id='pauseCB', type='checkbox', name='pause', value='checked', onchange='pauseChanged(this)')
     | Pause

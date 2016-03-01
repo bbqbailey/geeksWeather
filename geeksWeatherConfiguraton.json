@@ -1,0 +1,175 @@
+{
+  "appInfo": {
+    "appDate":"Document date is 2/29/2016.",
+    "appRev":"This file is associated with R1.0.0",
+    "appName":"This is the configuration file for the application geeksWeather",
+
+
+    "contactInfo":"bbqBailey@gmail.com, github.com/bbqbailey/geeksWeather",
+
+
+    "appUpdates":"It is suggested that you backup this file for any updates, in case it is overwritten by an update.  In the distant future, I may provide a utility to backup and update this file with a release update, but not anytime soon!",
+
+    "appLicenseAndCopyright": {"multiLine":true}, "contents": [
+      "h1 geeksWeather",
+      "h2 License",
+      "p geeksWeather is licensed under GNU GPLv2.  <em>All rights retained by Ben Bailey</em>",
+      "p <em>Additional terms:</em> The user of this application agrees to show the bbqBailey image and geeksWeather image, currently located in <em>/public/images</em> and utilized in <em>loopingPages.*</em>, and referenced in <em>geeksWeatherConfiguration.json</em>.",
+      "p In addition, user of this application agrees to reserve the <em>splashPage and first entry in displayPages geeksWeatherConfiguration.json</em>, which refer to <em>bbqBailey.png and geeksWeather-Splash</em> as they are provided when obtained as the application from the distribution.  In addition, user agrees to keep the references to wunderground as provided, and required per agreement with wunderground.com for use of their API.",
+      "h2 copyright",
+      "p The geeksWeather application, software and all files, is copyright &copy; 2016 Ben Bailey."
+    ],
+
+    "appComment": {"multiline":true}, "contents": ["Several different types of information are contained within this json file, all of which are associated with running the geeksWeather application.  Some Notes: 1- displayPages section is associated with loopingPages.  Each entry is either an image (identified as html type img), or an embedded web page (identified as html type iframe).  You can have either.  An img will load fast, as it is just the image file.  However, an iframe is a web page, and will load as fast or slow as the size of the page, or the server you are hitting.  Also, there can be security issues associated with iframes, so you need to search google iframe security issue for insight.",
+
+    "Regarding img vs iframe: Where possible, I prefer to obtain the image file directly from the source, by right clicking on the presented web page and grabbing the URL for the image, then pasting herein.  However, sometimes the information I am interested in is not in the form of an image, but instead is dynamically created.  In those cases, I post the URL of the actual website, and show if via a type iframe herein.",
+
+    "Regarding my list of displayPages below: These are pages I found that I wanted to use.  With the exception of the first displayPages entry for geeksWeather-Splash, which you are required, by license, to retain, you are free to add, remove or replace any of the displayPages contents.  You can also place additional pictures, such as family pictures, here, preferrably in the ./public/images/ directory, then reference them as you see hereing.",
+
+    "Please note, if you elect to load iframes, which causes a web site to load, then it could take longer to load than is allowed by your defaultDelay value below, in which case, it may lead to errors in this application.  Therefore, I recommend that you either do not use iframes, or you ensure they load fast!  I had to remove a the wunderground.com site for sever weather because of this."
+    ]
+  },
+
+  "config": {
+
+    "appConfig": {
+      "city":"Alpharetta",
+      "state":"GA",
+      "zip":"30022",
+      "station":"KGAALPHA69",
+      "myServer":"localhost",
+      "myPort":"8080",
+      "Comment":"The area above should be changed to reflect your city/state/zip information.  Also, the station is from wundergound.com for personal weather stattion (PSW).  I do not have one of my own - too many free ones to bother with setting up my own!",
+
+      "defaultDelay":5000,
+      "Comment_defaultDelay":"The number of microseconds to delay between pages in loopingPages.  10,000 microseconds is 10 seconds.  NOTE that starting the app with DELAY=xxxxxx will override this value from process.env.DELAY.  If you are still having issues, also consult the start file for systemd: geeksWeather.service at /etc/systemd/service/geeksWeather.service",
+      
+      "WUNDERGROUND_REFRESH_WEATHER_MINUTES":5,
+      "Comment_WUNDERGROUND_REFRESH_WEATHER_MINUTES":"WUNDERGROUND_REFRESH_WEATHER_MINUTES is the frequency that geeksWeather is going out to wundergound to obtain refreshed weather data, using your wundergound key.  Weather does not change real fast, so anywhere for 5 - 30 minutes should be valid. Shortening the time between refreshes would result in more hits against your wundergound key, and could cause you to exceed your free key rate (currently) of 500 accesses per day."
+    },
+
+    "errorPage": {
+
+        "title": "Hes Dead Jim",
+        "uri": "/images/hesDeadJim.jpg",
+        "displayType": "img",
+        "height": "imgHeight",
+        "Comment":"The image that is displayed when a system error is encountered. You are free to substitute any image you desire here."
+    },
+
+    "splashPage":
+      {
+        "title": "bbqBailey",
+        "uri": "/images/bbqBailey.png",
+        "displayType": "img",
+        "height": "1000px",
+        "Comment":"Per your license agreement for geeksWeather, this image must remain as the first entry, as obtained, from geeksWeather. The page shown at startup, but not again.  This icon represents me, the coder of this application.  If you are a HAM Radio operator, my callsign, AK4OK is shown on my hat and shirt.  More insight here: http://bbqandbanjos.blogspot.com/"
+      },
+
+    "displayPages": [
+      {
+        "title": "geeksWeather",
+        "uri": "/images/geeksWeather-Splash.png",
+        "displayType": "img",
+        "height": "1000px",
+        "Comment": "Per your license agreement for geeksWeather, this image must remain as the first entry, as obtained, from geeksWeather.  The following entries are a list of images and web sites that are displayed by looping through all the pages.  Used by loopingPages in geeksWeather app.  There can be as many, or as few, as you want."
+      },
+
+      { "title": "timeAndWeather",
+        "uri": "/timeAndWeather",
+        "displayType": "iframe",
+        "height": "950px",
+        "width": "100%",
+        "timeAndWeather_Comment":"This is an image, so it is type img.  This is an application page within geeksWeather.  It is built real-time.  It is a dedicated page that is called in this loopingPages.  It will show your city s current and projected weather information, as obtained by your wunderground key, from wunderground.  The data on this page is updated, by default, every 5 minutes.  See value for WUNDERGROUND_REFRESH_WEATHER_MINUTES.  This value is in Minutes"
+      },
+
+      { "title": "weather.gov forecast for Alpharetta, GA",
+        "uri": "http://forecast.weather.gov/MapClick.php?lat=34.02090065853963&lon=-84.23216746155833#.Vs8BIiArLnA",
+        "displayType": "iframe",
+        "height": "950px",
+        "width": "100%",
+        "AlpharettaGA_Comment":"Type iframe, so it displays a web site.  This is the local city I show weather for.  If you do not want the weather for this city, remove or replace it for one you do want."
+      },
+
+      { "title": "weather.gov forecast Warnings",
+        "uri": "http://forecast.weather.gov/showsigwx.php?warnzone=GAZ033&warncounty=GAC121&firewxzone=GAZ033&local_place1=2%20Miles%20WSW%20Johns%20Creek%20GA&product1=Hazardous+Weather+Outlook&lat=34.0209&lon=-84.2322#.Vs8BOiArLnA",
+        "displayType": "iframe",
+        "height": "950px",
+        "width": "100%",
+        "Comment": "An iframe for the weather.gov website for forecast warning for a local city to me.  Substitue one of your own if you desire a different city."
+      },
+
+      { "title": "noaa weastern hemisphere earth Satellite",
+        "uri": "http://www.goes.noaa.gov/FULLDISK/GEIR.JPG",
+        "displayType":"img",
+        "height": "950px"
+      },
+
+      { "title": "Continental US Satellite",
+        "uri": "http://www.ssec.wisc.edu/data/us_comp/image7.jpg",
+        "displayType":"img",
+        "height": "950px"
+      },
+
+      { "title": "Continental US Radar",
+        "uri": "http://radar.weather.gov/Conus/RadarImg/latest.gif",
+        "displayType":"img",
+        "height": "950px"
+      },
+
+      { "title": "Lower Mississippi Valley Sector Radar",
+        "uri": "http://radar.weather.gov/Conus/RadarImg/southmissvly.gif",
+        "displayType":"img",
+        "height": "950px",
+        "comment":"If this is not the area you are interested in, please replace with one that you are interested in.  Please note that this is an html img file that I obtained by right clicking on the website and obtained the URL informaiton and pasted here."
+      },
+
+      { "title": "southeast Sector Radar",
+        "uri": "http://radar.weather.gov/Conus/RadarImg/southeast.gif",
+        "displayType": "img",
+        "height": "950px"
+      },
+
+      { "title": "Atlanta Area Radar",
+        "uri": "http://radar.weather.gov/lite/N0R/FFC_0.png",
+        "displayType": "img",
+        "height": "950px"
+      },
+
+      { "title": "USA Severe Weather",
+        "uri": "https://icons.wxug.com/data/640x480/2xus_severe.gif",
+        "displayType": "img",
+        "height": "950px"
+      },
+
+      { "title": "Southeast Severe Weather",
+        "uri": "https://icons.wxug.com/data/640x480/2xse_severe.gif",
+        "displayType": "img",
+        "height": "950px"
+      },
+
+      { "title": "Continental US Forecast for Today",
+        "uri": "http://www.wpc.ncep.noaa.gov/noaa/noaad1.gif",
+        "displayType": "img",
+        "height": "950px"
+      },
+
+      { "title": "Continental US Forecast for Tomorrow",
+        "uri": "http://www.wpc.ncep.noaa.gov/noaa/noaad2.gif",
+        "displayType": "img",
+        "height": "950px"
+      },
+
+      { "title": "GOES-COMPOSITE Rainbow IR Ch 4",
+        "uri": "http://www.ssd.noaa.gov/goes/comp/nhem/rb.jpg",
+        "displayType": "img",
+        "height": "950px"
+      },
+
+      { "title": "GOES-COMPOSITE Water Vapor",
+        "uri": "http://www.ssd.noaa.gov/goes/comp/nhem/wv.jpg",
+        "displayType": "img",
+        "height": "950px"
+      }]
+  }
+}

@@ -45,7 +45,7 @@ function buildHtml( displayObj ) {
 
 function hesDeadJim() {
   console.log("hesDeadJim() entry");
-  var htmlString = buildHtml(sites.errorPage)
+  var htmlString = buildHtml(config.errorPage)
   console.log("hesDeadJim() exit");
   return htmlString;
 }
@@ -61,17 +61,17 @@ function advanceImage() { //used with setInterval
   // ==== uncomment the following if you want a special first page that only runs first time.
   //} else if(firstTime) { //then show splashPage
       //console.log("firstTime is true");
-      //console.log("   calling buildHtml with sites.splashPage value: ", sites.splashPage);
-      //htmlString=buildHtml(sites.splashPage);
+      //console.log("   calling buildHtml with config.splashPage value: ", config.splashPage);
+      //htmlString=buildHtml(config.splashPage);
       //firstTime=false;
   } else if(pauseCheckboxValue==='Checked') {
       console.log("advanceImage(): pauseCheckboxValue === 'Checked'");
       console.log("returning to avoid advancing or redisplaying same page");
       return;
   } else {
-    htmlString = buildHtml(sites.displayPages[i]);
+    htmlString = buildHtml(config.displayPages[i]);
     i++;
-    if(i==sites.displayPages.length) {
+    if(i==config.displayPages.length) {
       i=0;
     }
   }
@@ -97,11 +97,11 @@ function nextSite() {  //used with button
     htmlString = hesDeadJim();
   } else {
     i++;
-    if(i>=sites.displayPages.length)
+    if(i>=config.displayPages.length)
       i=0;
-    console.log('nextSite() i: ' + i + ' length: ' + sites.displayPages.length);
-    console.log("nextSite() image: ", sites.displayPages[i].name );
-    htmlString = buildHtml(sites.displayPages[i]);
+    console.log('nextSite() i: ' + i + ' length: ' + config.displayPages.length);
+    console.log("nextSite() image: ", config.displayPages[i].name );
+    htmlString = buildHtml(config.displayPages[i]);
   }
   document.getElementById('imageDiv').innerHTML=htmlString;
 };
@@ -114,10 +114,10 @@ function prevSite() {  //used with button
   } else {
     i--;
     if(i<=0)
-      i=sites.displayPages.length-1;
-    console.log('prevSite() i: ' + i + ' length: ' + sites.displayPages.length);
-    console.log("prevSite() image: ", sites.displayPages[i].name );
-    htmlString = buildHtml(sites.displayPages[i]);
+      i=config.displayPages.length-1;
+    console.log('prevSite() i: ' + i + ' length: ' + config.displayPages.length);
+    console.log("prevSite() image: ", config.displayPages[i].name );
+    htmlString = buildHtml(config.displayPages[i]);
   }
   document.getElementById('imageDiv').innerHTML=htmlString;
 };

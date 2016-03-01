@@ -2,36 +2,41 @@ var express      = require('express');
 var path         = require('path');
 var bodyParser   = require('body-parser');
 var Wunderground = require('wundergroundnode');
-var Datastore    = require('nedb');
 var async        = require("async");
 var log4js       = require('log4js');
-var theRoutes    = require('./app_server/routes/index');
+var configFile   = require('./geeksWeatherConfiguraton'); //app json file
+var config       = configFile.config;
+var key          = require('./wundergroundKey');  //app json file
+var theRoutes    = require('./app_server/routes/index'); //app js file
 
 var logger = log4js.getLogger();
+var app    = module.exports = express();
+var DELAY  = config.appConfig.defaultDelay; //from geeksWeatherConfiguraton
+var mode   = process.env.MODE;
+var loggerLevel="";
 
-var app = module.exports = express();
-var DELAY=5000; //default
+app.locals.DELAY = DELAY;  //is this still needed?
+const SECOND = 1000;
+const MINUTE = SECOND * 60;
+var WUNDERGROUND_REFRESH_WEATHER_MINUTES = config.appConfig.defaultDelay;
+const WUNDERGROUND_GET_TIME = WUNDERGROUND_REFRESH_WEATHER_MINUTES * MINUTE;
+//const WEATHER_SEND_TIME = WUNDERGROUND_GET_TIME - 1;
+const TIME_SEND_TIME = 1 * SECOND;
 
 
-
+logger.info("defaultDELAY value is " + DELAY);
 logger.info("MODE is ", process.env.MODE);
 logger.info("NODE_ENV is ", process.env.NODE_ENV); //used in systemd/system/geeksWeather.service
-logger.info("geeksWeather.js - DELAY microseconds is: ", process.env.DELAY); //used in loopingPages
 
-if(typeof process.env.DELAY === "undefined") {
-    logger.info("DELAY is undefined, so setting DELAY to default value of " + DELAY + " microseconds");
-    logger.info("--Did you remember to start this app with DEFAULT=<microseconds>? ");
-} else {
+//Note: process.env.DELAY will override value from geeksWeatherConfiguraton
+if(typeof process.env.DELAY != "undefined") {
     DELAY=process.env.DELAY;
-    logger.info("DELAY is DEFINED as " + DELAY);
+    logger.info("Overriding config.appConfig.defaultDELAY with value from process.env.DELAY with value " + DELAY + " obtained at startup or geeksWeather.service via systemd restart.");
 }
 
 var routes = new theRoutes(DELAY, logger);
 app.use('/', routes);
 
-
-var mode=process.env.MODE;
-var loggerLevel="";
 
 switch(mode) {
     case "PRODUCTION":
@@ -61,15 +66,7 @@ switch(mode) {
 }
 logger.setLevel(loggerLevel); //In order: ALL, TRACE, DEBUG, INFO, WARN, ERROR, FATAL
 
-app.locals.DELAY = DELAY;
 
-const SECOND = 1000;
-const MINUTE = SECOND * 60;
-const WUNDERGROUND_GET_TIME = 5 * MINUTE;
-//const WEATHER_SEND_TIME = WUNDERGROUND_GET_TIME - 1;
-const TIME_SEND_TIME = 1 * SECOND;
-
-var wgInfo = new Datastore( { filename: __dirname + '/myWundergroundInfo.db', autoload: true });
 var emitter_weather={};
 var connections=[];
 var wunderground; //defined in getAppInfo()
@@ -95,7 +92,7 @@ app.get('/eventEngine' , function(req, res) {
     }
     connections.push(res);
     logger.debug("app.get(/eventEngine) Added a connection; connections.length: " + connections.length);
-    res.writeHead(200, {
+    res.writeHead(200, { //the following is what makes it a Server Sent Event!
         "Content-type":"text/event-stream",
         "Cache-Control":"no-cache",
         "Connection":"keep-alive"
@@ -227,25 +224,19 @@ function sendConnections(data, event) {
 //
 function getAppInfo(callback) {
     logger.trace("getAppInfo() entry");
-    wgInfo.find({}, function(err, keyDoc) {
-        if(err) {
-            logger.error("getAppInfo() exit on error", err);
-            return;
-        }
-        logger.debug("keyDoc: ", keyDoc[0]);
-        my_key=keyDoc[0].my_key;
-        city=keyDoc[0].city;
-        state=keyDoc[0].state;
-        zip=keyDoc[0].zip;
-        station=keyDoc[0].station;
-        myServer=keyDoc[0].myServer;
-        myPort=keyDoc[0].myPort;
-        logger.debug("Proceeding with key: ", my_key);
-        wunderground = new Wunderground(my_key);
-        logger.trace("getAppInfo() exit");
-        if(typeof callback === "function")
-            callback();
-    });
+    my_key=key.my_key;
+    logger.debug("my_key: " + my_key);
+    city=config.appConfig.city;
+    state=config.appConfig.state;
+    zip=config.appConfig.zip;
+    station=config.appConfig.station;
+    myServer=config.appConfig.myServer;
+    myPort=config.appConfig.myPort;
+    logger.debug("Proceeding with key: ", my_key);
+    wunderground = new Wunderground(my_key);
+    logger.trace("getAppInfo() exit");
+    if(typeof callback === "function")
+        callback();
     logger.trace("getAppInfo() exit");
 }
 
