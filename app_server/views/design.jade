@@ -2,6 +2,7 @@ doctype html
 
 body
   h1 Design Considerations for geeksWeather!
+  h3 Document Version: 1.0.0 for <em>geeksWeather</em> Application Version 1.0.0, Date: 3/1/16
   h2 License
   p geeksWeather is licensed under GNU GPLv2.  <em>All rights retained by Ben Bailey</em>
   p <em>Additional terms:</em> The user of this application agrees to show the bbqBailey image and geeksWeather image, currently located in <em>/public/images</em> and utilized in <em>loopingPages.*</em>, and referenced in <em>geeksWeatherConfiguration.json</em>.
@@ -26,8 +27,12 @@ body
   p The primary display page for the geeksWeather application is <em>loopingPages</em>.  This is a single page, constructed with three sections: top, middle, and bottom.  The top section displays the current time, updated each second, sent from the application host computer) along with the current temperature for your specified city/state, obtained from wunderground.com API via the user API key.  <em>For additional information, see detail below.</em>  
   p The middle section of loopingPages obtains it's information from the geeksWeatherConfiguration.json file.  You can have a mixture of HTML types of <em>img and iframe.</em> Please remember, from additional license elements above, that <em>the first two entries in geeksWeatherConfiguration.json must retain the references to  bbqBailey.png and geeksWeather-Splash.png.</em>
   p The middle section will go through each of the pages in geeksWeatherConfiguration.json, advancing to the next page per the value <em>ADVANCE_RATE_SECS</em>.  Once all of the pages have been displayed, the loop will restart at the first page and loop through all pages again.  This repeats as long as the geeksWeather application is running, or you change to a different display page via buttons on the bottom of the displayed page.
-  
   br
+  h3 Realtime Weather information
+  p The geeksWeather application goes out to wunderground, using your key, to obtain real time weather information.  It caches this information, so regardless of the number of browsers you have open against the nodejs geeksWeather server, your key is only being used once per update.  I sometimes hit my nodejs server from my cellphone to get the current weather pages loop.
+  br
+  h3 Cookies and personal information
+  p The geeksWeather application does not currently have a need for cookies, and thus does not use them.  Also, currently, there is no personal data of any type obtained by geeksWeather, and thus none that is collected or fed anywhere.  Any address you obtain weather for, from wunderground, is in the geeksWeather application configuration file, but this information is not accessed outside of the application, and thus not shared anywhere.  Note that the information you provided wunderground when you obtained your key, and when your key is used by the geeksWeather application to access wunderground data, is between you and wunderground.  This information is subject to the terms you agreed to with wunderground when you applied for and accepted your key.  This information is not under the control of the geeksWeather application.  This condition of geeksWeather for cookes and data sharing is subject to change in the future, but will be associated with a new release, and will be noted, if it ever happens, in the release notes for that release and subsequent releases.  In other words, unless you update to a version that contains cookies or data collection abilities, the geeksWeather version this document is associated with does not collect that information, and there is no way for it to start obtaining that information without a new release being installed by you.
   h3 Watchdogs: application Event 'time'
   p The <em>geeksWeather</em> application makes use of the LAN.  As such, it's critical to the successful operation of the application.  This makes it imperitive that the system, as well as the owner independently, can observe a problem with various components (LAN, application host computer, display device, display broswer ) of the application, both hardware and software.
   p To facilitate this, as well as to provide a useful function, a digital clock is displayed at the top of each page.  The clock's time value is created at the <em>host system</em> that provides the geeksWeatherSystem application, typically an SBC.
@@ -35,13 +40,6 @@ body
   p This means, any time the displayed clock's seconds are updated, the host system has functioned properly, the LAN between the host system and the browser displaying the time has functioned properly, the browser is functioning properly, and the device displaying the browser is functioning properly.  
   p Likewise, any time the clock <em>fails to update</em>, then one or more of the elements <em>(host syste, LAN, browser, device running the browser)</em> has failed.
   
-  h3 System configuration
-  p <em>Note: need to define after refactoring of code</em>
-    ul
-      li MAX_ELAPSED_TIMEOUT_SEC:  
-      p <em>defined: file, key:value pair</em>
-      p The browser web page attempts to trap any events, such as a LAN failure or timeout of the Event 'time', to signal this via an Error page displayed, instead of just detecting it by seeing the systems clock not updating on the display page.  
-      p The value for MAX_ELAPSED_TIMEOUT_SEC in module geeksWeatherEvents.js determines this maximum time between the updating of the clock seconds.  Exceeding this time value will cause the error page to be displayed.
   hr
   br
   h2 Using geeksWeather
@@ -71,9 +69,49 @@ body
         |contents: {"my_key":"your key value"}
         
   h3 Configuration
-  p <em><b>configuration elements go here.</b></em>
   h4 geeksWeatherConfiguration.json
-  p geeksWeatherConfiguration.json, located at ./geeksWeatherConfiguration.json, is the primary configuration file for <em>geeksWeather</em>.
+  p geeksWeatherConfiguration.json, located at ./geeksWeatherConfiguration.json, is the primary configuration file for <em>geeksWeather</em>.  Editing this file will allow you to specify certain elements that will configure the geeksWeather application to your needs.  <em>Note that this file, geeksWeatherConfiguration.json will be overwritten on application updates, so always keep a backup!</em>
+  p As deployed, this file contains a setup that I use for the city of Alpharetta GA, 30022 - a city about an hour north of Atlanta.  It has a heavy concentration of IT jobs, one of the heaviest in the SouthEast.  I worked here as a Software Architect for one of the two largest US cellular providers until my retirement.
+  p Several different types of information are contained within this json file, all of which are associated with running the geeksWeather application.  Some Notes: 1- <em>displayPages</em> section is associated with </em>loopingPages.</em>  Each entry in displayPages is either an image (identified as html type <em>img</em>), or an embedded web site page (identified as html type <em>iframe</em>).  You can have both types intermixed in the <em>displayPages</em> section.
+  
+  p An <em>img</em> file (e.g., .jpg, png, etc) will load fast, as it is just the image file.  However, an <em>iframe</em> is a web site page, and will load as fast or slow as the size of the page, or the server you are hitting, along with all of the ads, cookies, mp4 items, etc.  Also, there can be security issues associated with <em>iframes</em>, so if you are not familiar with these security issues (and I am not!), then you should search google <em>iframe security issues</em> for insight before making a decision to link to that web site.  
+
+  p Regarding <em>img vs iframe</em>: Where possible, I prefer to obtain the image file directly from the source, by right clicking on the presented web page and grabbing the URL for the image, then pasting into <em>displayPages</em>.  However, sometimes the information I am interested in is not in the form of an image, but instead is dynamically created.  In those cases, I post the URL of the actual website page, and show if via a <em>type iframe</em> in <em>displayPages</em>
+
+  p Please note, if you elect to load an <em>iframe</em>, which causes a web site to load, then it could take longer to load than is allowed by your configuation value for <em>defaultDelay (see below)</em>, in which case, it may lead to errors in the geeksWeather application.  Therefore, I recommend that you either do not use <em>iframes</em>, or you ensure they load fast!  I had to remove a the wunderground.com site for sever weather because of this.  Additionally, you will display all of the ads and sounds associated that web site.
+  
+  p Note that this is also a way to add family photos and have them display as you move throught the elements in <em>displayPages</em>.  The order of the insertion is the order in which the elements are displayed.  You can intermix as desired.  I expect to add some additional features along those lines in a future release.
+  
+  p Regarding my list of displayPages below: These are pages I found that I wanted to use.  With the exception of the first displayPages entry for geeksWeather-Splash, which you are required, by license, to retain, you are free to add, remove or replace any of the displayPages contents, to customize it to your likes.
+  
+  h5 Configurable Items
+  p The primary Configurable Items associated with geeksWeather are located in the json section config.appConfig, and consist of the following items:
+  
+  ul
+    
+    li <em>city</em> - associate the city you desire to show weather info for.
+    
+    li <em>state</em> - the state where the city above is located
+    
+    li <em>zip</em> - the zip code for the area the city above is located.  If desired, you can select a zip code that is closer to your house so your data will be more tuned to your area.
+    
+    li <em>station</em> - wundergroundKey provides data from personal weather stations (identified as 'pws') on their site.  Some of these are accurate, some are not, and some have more equipment than others (e.g., rain gauge, wind speed, UV, sunlight, etc).  Careful examination on wunderground.com for sites near your desired monitoring area is suggested.
+    
+    li <em>myServer</em> - ip address where you are running your nodejs web server for geeksWeather, and where it is going to be accessed.
+    
+    li <em>myPort</em> - the port you have chosen for access to the nodejs server for geeksWeather.
+    
+    li <em>LOOPINGPAGES_DELAY_SEC</em> - the time, in seconds, that will be your delay within each page.  Remember in particular, if you are going to external web sites and pages for images, then you need to be respectful of that host.  My list of web pages below takes about 3 minutes at 10 second delay to loop through once, so on average, I'm hitting a single external web page site once per 3 minutes, and I don't feel like that is much of a load on them, given the millions of times they typically get hit in a day!
+    
+    li <em>MAX_ELAPSED_TIMEOUT_SEC</em> - This value is in seconds, not microseconds.  All geeksWeather web pages attempt to trap any events, such as a LAN failure or loss of the the clock's Event 'time' not being recived, and to signal this failure as an Error notice and display page.  Assuming this value has been set for 10, which would be 10 seconds, then if you have not received a clock time event within the last 10 seconds, then an Error notice and associated page will be displayed.  On resumption of the clock, geeksWeather application will advance to a normal page from the Error page.  This is also a good indicator for the dependablity of your LAN.
+    
+    li <em>WUNDERGROUND_REFRESH_WEATHER_MINUTES</em> - The frequency, in minutes, that geeksWeather is going out to wundergound to obtain refreshed weather data, using your wundergound key.  Weather does not change real fast, so anywhere for 5 - 30 minutes should be valid. Shortening the time between refreshes would result in more hits against your wundergound key, and could cause you to exceed your free key rate (currently the rate for a free key) of 500 accesses per day, as defined in your agreement with wunderground for your license key.  A refreshe rate of 10 minutes, is 6 accesses per hour, or 144 accesses per day.
+    
+    li <em>errorPage</em> - The image that is displayed when a system error is encountered. You are free to substitute any image you desire here.
+    
+    li <em>splashPage</em> - Per your license agreement for geeksWeather, this image must remain as the first entry, as obtained, from geeksWeather. The page shown at startup, but not again.  This icon represents me, the coder of this application.  If you are a HAM Radio operator, my callsign, AK4OK is shown on my hat and shirt.  More insight here: http://bbqandbanjos.blogspot.com/
+    
+    li <em>displayPages</em> The pages that will be displayed, one-by-one, with a pause of LOOPINGPAGES_DELAY_SEC.
   
 footer
   p <em>Document Revision 1.0, Date: 2/29/2016  Author: Ben Bailey (&copy) 2016 Ben Bailey -- All righs reserved--</em>
