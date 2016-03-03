@@ -28,8 +28,9 @@ if(isNaN(MAX_ELAPSED_TIMEOUT_SEC) || (MAX_ELAPSED_TIMEOUT_SEC < (FORCED_MAX_ELAP
   logger.warn("geeksWeather.js: Warning: MAX_ELAPSED_TIMEOUT_SEC is either NaN or is less than " + FORCED_MAX_ELAPSED_TIMEOUT_SEC + " Seconds, so Forcing to " + FORCED_MAX_ELAPSED_TIMEOUT_SEC + ' Seconds.');
   MAX_ELAPSED_TIMEOUT_SEC = FORCED_MAX_ELAPSED_TIMEOUT_SEC;
 }
-MAX_ELAPSED_TIMEOUT_SEC = MAX_ELAPSED_TIMEOUT_SEC * MINUTE;
+MAX_ELAPSED_TIMEOUT_SEC = MAX_ELAPSED_TIMEOUT_SEC * SECOND;
 logger.trace("geeksWeather.js: After assignment, MAX_ELAPSED_TIMEOUT_SEC value is: " + MAX_ELAPSED_TIMEOUT_SEC + " (microseconds).");
+logger.info("Set MAX_ELAPSED_TIMEOUT_SEC to " + (MAX_ELAPSED_TIMEOUT_SEC / SECOND) + " Seconds." );
 
 
 var LOOPINGPAGES_DELAY_SEC  = config.appConfig.LOOPINGPAGES_DELAY_SEC;
@@ -39,6 +40,7 @@ if(isNaN(LOOPINGPAGES_DELAY_SEC)) {
 }
 LOOPINGPAGES_DELAY_SEC = LOOPINGPAGES_DELAY_SEC * SECOND;
 logger.trace("geeksWeather.js: After assignment, LOOPINGPAGES_DELAY_SEC value is: " + LOOPINGPAGES_DELAY_SEC + " (microseconds).");
+logger.info("Set LOOPINGPAGES_DELAY_SEC to " + (LOOPINGPAGES_DELAY_SEC / SECOND) + " Seconds.")
 
 var WUNDERGROUND_REFRESH_WEATHER_MINUTES = config.appConfig.WUNDERGROUND_REFRESH_WEATHER_MINUTES;
 if(isNaN(WUNDERGROUND_REFRESH_WEATHER_MINUTES) || (WUNDERGROUND_REFRESH_WEATHER_MINUTES < (FORCED_DEFAULT_DELAY_MINUTES_FOR_WUNDERGROUND_REFRESH))) {
@@ -47,6 +49,7 @@ if(isNaN(WUNDERGROUND_REFRESH_WEATHER_MINUTES) || (WUNDERGROUND_REFRESH_WEATHER_
 }
 WUNDERGROUND_REFRESH_WEATHER_MINUTES = WUNDERGROUND_REFRESH_WEATHER_MINUTES * MINUTE;
 logger.trace("geeksWeather.js: After assignment, WUNDERGROUND_REFRESH_WEATHER_MINUTES value is: " + WUNDERGROUND_REFRESH_WEATHER_MINUTES + " (microseconds).");
+logger.info("Set WUNDERGROUND_REFRESH_WEATHER_MINUTES to " +  (WUNDERGROUND_REFRESH_WEATHER_MINUTES / MINUTE) + " Minutes.")
 
 //app.locals.DELAY = DELAY;  //is this still needed?
 logger.info("geeksWeather.js: NODE_ENV is ", process.env.NODE_ENV); //used in systemd/system/geeksWeather.service
@@ -152,6 +155,7 @@ function setMode() {
         process.exit();
   }
   logger.setLevel(loggerLevel); //In order: ALL, TRACE, DEBUG, INFO, WARN, ERROR, FATAL
+  logger.info("Mode is " + mode + ", loggerLevel is " + loggerLevel);
   logger.trace("geeksWeather.js: setMode(): exit");
 
 }
@@ -175,8 +179,7 @@ function sendWeatherEvent() {
     if(Object.keys(emitter_weather).length === 0) {
         logger.trace("geeksWeather.js: sendWeatherEvent(), emitter_weather.length === 0 so not sending weather event to clients");
         logger.trace("geeksWeather.js: sendWeatherEvent() exit on emitter.length === 0");
-        logger.error("geeksWeather.js: sendWeatherEvent() Sending error to display at station on web page.");
-     }
+    }
     //no reason to proceed if no clients listening
     if(connections.length === 0) {
         logger.trace("geeksWeather.js: sendWeatherEvent(), connections.length === 0 so not sending weather event to 0 clients!");
