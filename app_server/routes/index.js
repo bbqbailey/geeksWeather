@@ -29,10 +29,10 @@ router.get('/detailedInfo', function(req, res, next) {
     logger.trace('router.get(/detailedInfo) exit');
 });
 
-router.get('/timeAndWeather', function(req, res) {
-    logger.trace('router.get(/timeAndWeather) entry');
-    res.render('timeAndWeather', {'DELAY':DELAY, name:'Banjo'});
-    logger.trace('router.get(/timeAndWeather) exit');
+router.get('/localForecast', function(req, res) {
+    logger.trace('router.get(/localForecast) entry');
+    res.render('localForecast', {'DELAY':DELAY, name:'Banjo'});
+    logger.trace('router.get(/localForecast) exit');
 });
 
 router.get('/design', function(req, res) {

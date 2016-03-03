@@ -25,7 +25,7 @@ views/headers.jade
 views/styleExample.html
 views/styleExample.jade
 views/threeCol.html
-views/timeAndWeather.html
+views/localForecast.html
 configureGeeksWeather.html
 MyEnvironmentDocs
 node_modules
