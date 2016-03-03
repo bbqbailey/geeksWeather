@@ -35,8 +35,8 @@ router.get('/localForecast', function(req, res) {
     logger.trace('router.get(/localForecast) exit');
 });
 
-router.get('/design', function(req, res) {
-  logger.trace('router.get(/design) entry');
-  res.render('design');
-  logger.trace('router.get(/design) exit');
+router.get('/geeksWeatherDoc', function(req, res) {
+  logger.trace('router.get(/geeksWeatherDoc) entry');
+  res.render('geeksWeatherDoc');
+  logger.trace('router.get(/geeksWeatherDoc) exit');
 });

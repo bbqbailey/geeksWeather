@@ -15,6 +15,6 @@ This code does not supply a 'key'.  Instead, it expects to find a 'key' in a sep
 	{"my_key":"your key goes here"}
 
 
-Please refer to app_server/views/design.jade for additional details.
+Please refer to app_server/views/geeksWeatherDoc.jade for additional details.
 
 Rev-0: 12/8/15 This code has not yet been developed to a point where it should be utilized.
