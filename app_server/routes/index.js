@@ -19,7 +19,7 @@ module.exports = function(theDelay, theLogger) {
 /* GET home page. */
 router.get('/', function(req, res, next) {
     logger.trace('router.get(/) entry');
-    res.render('loopingPages', {'DELAY':DELAY, name:'Banjo', 'config': stringifyconfig});
+    res.render('slideShow', {'DELAY':DELAY, name:'Banjo', 'config': stringifyconfig});
     logger.trace('router.get(/) exit');
 });
 

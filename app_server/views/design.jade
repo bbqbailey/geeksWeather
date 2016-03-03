@@ -5,7 +5,7 @@ body
   h3 Document Version: 1.0.0 for <em>geeksWeather</em> Application Version 1.0.0, Date: 3/1/16
   h2 License
   p geeksWeather is licensed under GNU GPLv2.  <em>All rights retained by Ben Bailey</em>
-  p <em>Additional terms:</em> The user of this application agrees to show the bbqBailey image and geeksWeather image, currently located in <em>/public/images</em> and utilized in <em>loopingPages.*</em>, and referenced in <em>geeksWeatherConfiguration.json</em>.
+  p <em>Additional terms:</em> The user of this application agrees to show the bbqBailey image and geeksWeather image, currently located in <em>/public/images</em> and utilized in <em>slideShow.*</em>, and referenced in <em>geeksWeatherConfiguration.json</em>.
   p In addition, user of this application agrees to reserve the <em>splashPage and first entry in displayPages geeksWeatherConfiguration.json</em>, which refer to <em>bbqBailey.png and geeksWeather-Splash</em> as they are provided when obtained as the application from the distribution.  In addition, user agrees to keep the references to wunderground as provided, and required per agreement with wunderground.com for use of their API.
   h2 copyright
   p The geeksWeather application, software and all files, is copyright "&copy;" 2016 Ben Bailey.
@@ -23,9 +23,9 @@ body
     li Clock second update - event 'time'.  This occurs once-per-second.
     li Weather update - event 'weather'.  This occurs once-per-5, unless changed by the user.
     li error update - event 'error'.  This occurs on any error detected that could render the system out of service.
-  h3 loopingPages
-  p The primary display page for the geeksWeather application is <em>loopingPages</em>.  This is a single page, constructed with three sections: top, middle, and bottom.  The top section displays the current time, updated each second, sent from the application host computer) along with the current temperature for your specified city/state, obtained from wunderground.com API via the user API key.  <em>For additional information, see detail below.</em>  
-  p The middle section of loopingPages obtains it's information from the geeksWeatherConfiguration.json file.  You can have a mixture of HTML types of <em>img and iframe.</em> Please remember, from additional license elements above, that <em>the first two entries in geeksWeatherConfiguration.json must retain the references to  bbqBailey.png and geeksWeather-Splash.png.</em>
+  h3 slideShow
+  p The primary display page for the geeksWeather application is <em>slideShow</em>.  This is a single page, constructed with three sections: top, middle, and bottom.  The top section displays the current time, updated each second, sent from the application host computer) along with the current temperature for your specified city/state, obtained from wunderground.com API via the user API key.  <em>For additional information, see detail below.</em>  
+  p The middle section of slideShow obtains it's information from the geeksWeatherConfiguration.json file.  You can have a mixture of HTML types of <em>img and iframe.</em> Please remember, from additional license elements above, that <em>the first two entries in geeksWeatherConfiguration.json must retain the references to  bbqBailey.png and geeksWeather-Splash.png.</em>
   p The middle section will go through each of the pages in geeksWeatherConfiguration.json, advancing to the next page per the value <em>ADVANCE_RATE_SECS</em>.  Once all of the pages have been displayed, the loop will restart at the first page and loop through all pages again.  This repeats as long as the geeksWeather application is running, or you change to a different display page via buttons on the bottom of the displayed page.
   br
   h3 Realtime Weather information
@@ -77,10 +77,13 @@ body
     li The geeksWeather log file will have an entry for "ERROR" and additional information.
     
   h3 Current Weather and Forecast page
-  p Normally, this will show the normal top items of time and temperature.  It will also show two (2) weather icons; the left one is today's forecast for high (H) and low (L) temperatures, with the actual current wind (W), as observed at the weather station.  The right icon is tomorrow's forecast for high (H) and low (L) temperatures, and the forecast average wind (W).  The bottom will show two (2) lines of information; the first line gives a connection status (whether the browser is connected to the geeksWeather application for event time and weather updates), and the station that is providing the data information.  <em>As noted above, the station information will display "No Wunderground Data Received"</em> when no data is being received from wunderground, in which case you should consult the geeksWeather log files for insight.  If you have been receiving data for a while, then your key should be OK, unless wunderground has turned access off for that key due to violations of their API license.  Additional issues may be wundergound is down, or the Internet connection is down (WAN); if the LAN is still up, everything else, such as the clock, will continue to function, but data for various pages may not be available.  This is true for all sites that are providing your content for your various loopingPages elements.
+  p Normally, this will show the normal top items of time and temperature.  It will also show two (2) weather icons; the left one is today's forecast for high (H) and low (L) temperatures, with the actual current wind (W), as observed at the weather station.  The right icon is tomorrow's forecast for high (H) and low (L) temperatures, and the forecast average wind (W).  The bottom will show two (2) lines of information; the first line gives a connection status (whether the browser is connected to the geeksWeather application for event time and weather updates), and the station that is providing the data information.  <em>As noted above, the station information will display "No Wunderground Data Received"</em> when no data is being received from wunderground, in which case you should consult the geeksWeather log files for insight.  If you have been receiving data for a while, then your key should be OK, unless wunderground has turned access off for that key due to violations of their API license.  Additional issues may be wundergound is down, or the Internet connection is down (WAN); if the LAN is still up, everything else, such as the clock, will continue to function, but data for various pages may not be available.  This is true for all sites that are providing your content for your various slideShow elements.
+  
+  h3 geeksWeather Appliction Log files
+  p If you start via systemd, then the log files will appear in /var/log/syslog.  If instead you start with a terminal session 'start MODE=PRODUCTION' (or other logging level, identified herein) command, then it will scroll to the screen, unless you redirect output.
   
   h3 Using the wunderground API key
-  p The geeksWeather application requires that you create a JSON file named <em>wundergroundKey.json</em> and put it into the application root directory (the same directory where geeksWeather.js is found).  Since this is a JSON formated file, it will contain key:value pairs.  As a convenience, geeksWeather deploys with this file, but with an invalid key.  Therefore, edit this file so it will contain your key in the form:  
+  p The geeksWeather application requires that you create a JSON file named <em>wundergroundKey.json</em> and put it into the application root directory (the same directory where geeksWeather.js is found).  Since this is a JSON formated file, it will contain key:value pairs.  
   p
     pre(style="padding-left: 50pt")
       code
@@ -101,7 +104,7 @@ body
   h4 geeksWeatherConfiguration.json
   p geeksWeatherConfiguration.json, located at ./geeksWeatherConfiguration.json, is the primary configuration file for <em>geeksWeather</em>.  Editing this file will allow you to specify certain elements that will configure the geeksWeather application to your needs.  <em>Note that this file, geeksWeatherConfiguration.json will be overwritten on application updates, so always keep a backup!</em>
   p As deployed, this file contains a setup that I use for the city of Alpharetta GA, 30022 - a city about an hour north of Atlanta.  It has a heavy concentration of IT jobs, one of the heaviest in the SouthEast.  I worked here as a Software Architect for one of the two largest US cellular providers until my retirement.
-  p Several different types of information are contained within this json file, all of which are associated with running the geeksWeather application.  Some Notes: 1- <em>displayPages</em> section is associated with </em>loopingPages.</em>  Each entry in displayPages is either an image (identified as html type <em>img</em>), or an embedded web site page (identified as html type <em>iframe</em>).  You can have both types intermixed in the <em>displayPages</em> section.
+  p Several different types of information are contained within this json file, all of which are associated with running the geeksWeather application.  Some Notes: 1- <em>displayPages</em> section is associated with </em>slideShow.</em>  Each entry in displayPages is either an image (identified as html type <em>img</em>), or an embedded web site page (identified as html type <em>iframe</em>).  You can have both types intermixed in the <em>displayPages</em> section.
   
   p An <em>img</em> file (e.g., .jpg, png, etc) will load fast, as it is just the image file.  However, an <em>iframe</em> is a web site page, and will load as fast or slow as the size of the page, or the server you are hitting, along with all of the ads, cookies, mp4 items, etc.  Also, there can be security issues associated with <em>iframes</em>, so if you are not familiar with these security issues (and I am not!), then you should search google <em>iframe security issues</em> for insight before making a decision to link to that web site.  
 
@@ -130,7 +133,7 @@ body
     
     li <em>myPort</em> - the port you have chosen for access to the nodejs server for geeksWeather.
     
-    li <em>LOOPINGPAGES_DELAY_SEC</em> - the time, in seconds, that will be your delay within each page.  Remember in particular, if you are going to external web sites and pages for images, then you need to be respectful of that host.  My list of web pages below takes about 3 minutes at 10 second delay to loop through once, so on average, I'm hitting a single external web page site once per 3 minutes, and I don't feel like that is much of a load on them, given the millions of times they typically get hit in a day!
+    li <em>slideShow_DELAY_SEC</em> - the time, in seconds, that will be your delay within each page.  Remember in particular, if you are going to external web sites and pages for images, then you need to be respectful of that host.  My list of web pages below takes about 3 minutes at 10 second delay to loop through once, so on average, I'm hitting a single external web page site once per 3 minutes, and I don't feel like that is much of a load on them, given the millions of times they typically get hit in a day!
     
     li <em>MAX_ELAPSED_TIMEOUT_SEC</em> - This value is in seconds, not microseconds.  All geeksWeather web pages attempt to trap any events, such as a LAN failure or loss of the the clock's Event 'time' not being recived, and to signal this failure as an Error notice and display page.  Assuming this value has been set for 10, which would be 10 seconds, then if you have not received a clock time event within the last 10 seconds, then an Error notice and associated page will be displayed.  On resumption of the clock, geeksWeather application will advance to a normal page from the Error page.  This is also a good indicator for the dependablity of your LAN.
     
@@ -140,7 +143,7 @@ body
     
     li <em>splashPage</em> - Per your license agreement for geeksWeather, this image must remain as the first entry, as obtained, from geeksWeather. The page shown at startup, but not again.  This icon represents me, the coder of this application.  If you are a HAM Radio operator, my callsign, AK4OK is shown on my hat and shirt.  More insight here: http://bbqandbanjos.blogspot.com/
     
-    li <em>displayPages</em> The pages that will be displayed, one-by-one, with a pause of LOOPINGPAGES_DELAY_SEC.
+    li <em>displayPages</em> The pages that will be displayed, one-by-one, with a pause of slideShow_DELAY_SEC.
   
 footer
   p <em>Document Revision 1.0, Date: 2/29/2016  Author: Ben Bailey (&copy) 2016 Ben Bailey -- All righs reserved--</em>

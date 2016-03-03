@@ -33,14 +33,14 @@ logger.trace("geeksWeather.js: After assignment, MAX_ELAPSED_TIMEOUT_SEC value i
 logger.info("Set MAX_ELAPSED_TIMEOUT_SEC to " + (MAX_ELAPSED_TIMEOUT_SEC / SECOND) + " Seconds." );
 
 
-var LOOPINGPAGES_DELAY_SEC  = config.appConfig.LOOPINGPAGES_DELAY_SEC;
-if(isNaN(LOOPINGPAGES_DELAY_SEC)) {
-  logger.warn("geeksWeather.js: Warning: in geeksWeather.js, forced LOOPINGPAGES_DELAY_SEC to " + FORCED_DEFAULT_DELAY_SECS_FOR_LOOPING_PAGES + ". Verify entry in  geeksWeatherConfiguraton.json file in appConfig section.");
-  LOOPINGPAGES_DELAY_SEC = FORCED_DEFAULT_DELAY_SECS_FOR_LOOPING_PAGES;
+var slideShow_DELAY_SEC  = config.appConfig.slideShow_DELAY_SEC;
+if(isNaN(slideShow_DELAY_SEC)) {
+  logger.warn("geeksWeather.js: Warning: in geeksWeather.js, forced slideShow_DELAY_SEC to " + FORCED_DEFAULT_DELAY_SECS_FOR_LOOPING_PAGES + ". Verify entry in  geeksWeatherConfiguraton.json file in appConfig section.");
+  slideShow_DELAY_SEC = FORCED_DEFAULT_DELAY_SECS_FOR_LOOPING_PAGES;
 }
-LOOPINGPAGES_DELAY_SEC = LOOPINGPAGES_DELAY_SEC * SECOND;
-logger.trace("geeksWeather.js: After assignment, LOOPINGPAGES_DELAY_SEC value is: " + LOOPINGPAGES_DELAY_SEC + " (microseconds).");
-logger.info("Set LOOPINGPAGES_DELAY_SEC to " + (LOOPINGPAGES_DELAY_SEC / SECOND) + " Seconds.")
+slideShow_DELAY_SEC = slideShow_DELAY_SEC * SECOND;
+logger.trace("geeksWeather.js: After assignment, slideShow_DELAY_SEC value is: " + slideShow_DELAY_SEC + " (microseconds).");
+logger.info("Set slideShow_DELAY_SEC to " + (slideShow_DELAY_SEC / SECOND) + " Seconds.")
 
 var WUNDERGROUND_REFRESH_WEATHER_MINUTES = config.appConfig.WUNDERGROUND_REFRESH_WEATHER_MINUTES;
 if(isNaN(WUNDERGROUND_REFRESH_WEATHER_MINUTES) || (WUNDERGROUND_REFRESH_WEATHER_MINUTES < (FORCED_DEFAULT_DELAY_MINUTES_FOR_WUNDERGROUND_REFRESH))) {
@@ -54,7 +54,7 @@ logger.info("Set WUNDERGROUND_REFRESH_WEATHER_MINUTES to " +  (WUNDERGROUND_REFR
 //app.locals.DELAY = DELAY;  //is this still needed?
 logger.info("geeksWeather.js: NODE_ENV is ", process.env.NODE_ENV); //used in systemd/system/geeksWeather.service
 
-var routes = new theRoutes(LOOPINGPAGES_DELAY_SEC, logger);
+var routes = new theRoutes(slideShow_DELAY_SEC, logger);
 app.use('/', routes);
 
 var emitter_weather={};

@@ -20,7 +20,7 @@ body
     link(href='https://fonts.googleapis.com/css?family=Orbitron:900' rel='stylesheet' type='text/css')
     link(rel='icon' href='/images/bbqBailey.png') 
     link(rel='stylesheet' type='text/css' href='/stylesheets/threeCol.css')
-    link(rel='stylesheet' type='text/css' href='/stylesheets/loopingPages.css')
+    link(rel='stylesheet' type='text/css' href='/stylesheets/slideShow.css')
 
     section(id='topTime')
       div(id="time" ) Time: Waiting... 
@@ -32,16 +32,16 @@ body
       div(id="died")
           img(src="/images/hesDeadJim.jpg", id="hesDeadJim", style="display:none")
       div(id='imageDiv')
-        //why is bbqBailey still needed? It's in loopingPages.displayPages.splashPage, but not working if not here!  If it has to be here to keep the page from being blank, then make this the splashPage and remove from loopingPages.displayPages.
+        //why is bbqBailey still needed? It's in slideShow.displayPages.splashPage, but not working if not here!  If it has to be here to keep the page from being blank, then make this the splashPage and remove from slideShow.displayPages.
         img(src='/images/bbqBailey.png', height="900px")
-        script(src = "/javascripts/loopingPages.js")    
+        script(src = "/javascripts/slideShow.js")    
 
     script(src="//code.jquery.com/jquery-2.1.4.min.js")
     
       
 
     section(id='main')
-      //      script(src = "/javascripts/loopingPages.js")    
+      //      script(src = "/javascripts/slideShow.js")    
       script(src="/javascripts/geeksWeatherEvents.js")
 
   footer

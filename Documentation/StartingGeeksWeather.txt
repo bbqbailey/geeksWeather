@@ -11,6 +11,6 @@ HOW TO START WITH MODE
   To start in DEVELOPMENT mode, at terminal command line:
     MODE=DEVELOPMENT nodejs geeksWeather.js
 
-HOW TO START WITH DELAY for loopingPages
-  To start in DEVELOPMENT mode and setting loopingPages delay to 10 seconds (10000 uSeconds)
+HOW TO START WITH DELAY for slideShow
+  To start in DEVELOPMENT mode and setting slideShow delay to 10 seconds (10000 uSeconds)
     MODE=DEVELOPMENT DELAY=10000 nodejs geeksWeather.js

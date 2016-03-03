@@ -8,7 +8,7 @@
       "h1 geeksWeather",
       "h2 License",
       "p geeksWeather is licensed under GNU GPLv2.  <em>All rights retained by Ben Bailey</em>",
-      "p <em>Additional terms:</em> The user of this application agrees to show the bbqBailey image and geeksWeather image, currently located in <em>/public/images</em> and utilized in <em>loopingPages.*</em>, and referenced in <em>geeksWeatherConfiguration.json</em>.",
+      "p <em>Additional terms:</em> The user of this application agrees to show the bbqBailey image and geeksWeather image, currently located in <em>/public/images</em> and utilized in <em>slideShow.*</em>, and referenced in <em>geeksWeatherConfiguration.json</em>.",
       "p In addition, user of this application agrees to reserve the <em>splashPage and first entry in displayPages geeksWeatherConfiguration.json</em>, which refer to <em>bbqBailey.png and geeksWeather-Splash</em> as they are provided when obtained as the application from the distribution.  In addition, user agrees to keep the references to wunderground as provided, and required per agreement with wunderground.com for use of their API.",
       "h2 copyright",
       "p The geeksWeather application, software and all files, is copyright &copy; 2016 Ben Bailey."
@@ -24,7 +24,7 @@
       "myServer":"localhost",
       "myPort":"8080",
 
-      "LOOPINGPAGES_DELAY_SEC":10,
+      "slideShow_DELAY_SEC":10,
       "MAX_ELAPSED_TIMEOUT_SEC":10,
       "WUNDERGROUND_REFRESH_WEATHER_MINUTES":10
     },
@@ -50,7 +50,7 @@
         "uri": "/images/geeksWeather-Splash.png",
         "displayType": "img",
         "height": "1000px",
-        "Comment": "Per your license agreement for geeksWeather, this image must remain as the first entry, as obtained, from geeksWeather.  The following entries are a list of images and web sites that are displayed by looping through all the pages.  Used by loopingPages in geeksWeather app.  There can be as many, or as few, as you want."
+        "Comment": "Per your license agreement for geeksWeather, this image must remain as the first entry, as obtained, from geeksWeather.  The following entries are a list of images and web sites that are displayed by looping through all the pages.  Used by slideShow in geeksWeather app.  There can be as many, or as few, as you want."
       },
 
       { "title": "timeAndWeather",
@@ -58,7 +58,7 @@
         "displayType": "iframe",
         "height": "950px",
         "width": "100%",
-        "timeAndWeather_Comment":"This is an image, so it is type img.  This is an application page within geeksWeather.  It is built real-time.  It is a dedicated page that is called in this loopingPages.  It will show your city s current and projected weather information, as obtained by your wunderground key, from wunderground.  The data on this page is updated, by default, every 5 minutes.  See value for WUNDERGROUND_REFRESH_WEATHER_MINUTES.  This value is in Minutes"
+        "timeAndWeather_Comment":"This is an image, so it is type img.  This is an application page within geeksWeather.  It is built real-time.  It is a dedicated page that is called in this slideShow.  It will show your city s current and projected weather information, as obtained by your wunderground key, from wunderground.  The data on this page is updated, by default, every 5 minutes.  See value for WUNDERGROUND_REFRESH_WEATHER_MINUTES.  This value is in Minutes"
       },
 
       { "title": "weather.gov forecast for Alpharetta, GA",

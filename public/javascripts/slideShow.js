@@ -1,24 +1,24 @@
 console.log("++++++++++++++ FINAL: theName should be Banjo +++++++++++++++++++");
-console.log("In loopingPages.js theName is " + theName);
-console.log("In loopingPages.js DELAY is " + DELAY);
+console.log("In slideShow.js theName is " + theName);
+console.log("In slideShow.js DELAY is " + DELAY);
 console.log("Is Jim dead? " + HES_DEAD_JIM);
 console.log("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
 
 var MinDelay=5000;
 
 if(typeof DELAY === 'undefined') {
-    console.log("ERROR: in loopingPages.js, DELAY is undefined.");
-    console.log("   Verify DELAY is passed as paramater in geeksWeather.js to /loopingPages");
-    console.log("   or within loopingPages.jade");
+    console.log("ERROR: in slideShow.js, DELAY is undefined.");
+    console.log("   Verify DELAY is passed as paramater in geeksWeather.js to /slideShow");
+    console.log("   or within slideShow.jade");
     console.log("SETTING DELAY to MinDelay of " + MinDelay);
     DELAY = MinDelay;
 } else if(DELAY < MinDelay) {
-    console.log("WARNING: in loopingPages.js, DELAY is set to a value less than MinDelay of " + MinDelay + " microseconds");
+    console.log("WARNING: in slideShow.js, DELAY is set to a value less than MinDelay of " + MinDelay + " microseconds");
     console.log("   This could result in hammering the underlaying websites, so the value is being changed.");
     console.log("   Changing DELAY to MinDelay value of " + MinDelay + " microseconds.");
     DELAY=MinDelay;
 } else {
-   console.log("loopingPages DELAY is: " + DELAY);
+   console.log("slideShow DELAY is: " + DELAY);
 }
 
 var imgHeight="980px"
@@ -55,7 +55,7 @@ var i=0;
 //var firstTime = true;  //see firstTime below to uncoment
 function advanceImage() { //used with setInterval
   var htmlString="";
-  console.log("loopingPages.js: advanceImage(): value of HES_DEAD_JIM: " + HES_DEAD_JIM);
+  console.log("slideShow.js: advanceImage(): value of HES_DEAD_JIM: " + HES_DEAD_JIM);
   if(HES_DEAD_JIM) {
     htmlString = hesDeadJim();  //always do this first
   // ==== uncomment the following if you want a special first page that only runs first time.
@@ -80,19 +80,19 @@ function advanceImage() { //used with setInterval
 
 var pauseCheckboxValue='';
 function pauseChanged(element) { //used with checkbox
-    console.log("loopingPages.js pauseChanged() entry");
+    console.log("slideShow.js pauseChanged() entry");
     element.checked ? pauseCheckboxValue="Checked": pauseCheckboxValue="";
     console.log("pauseCheckboxValue: " + pauseCheckboxValue);
 }
 
 function moveToDetailedInfo() { //used with button
-    console.log("loopingPages.js moveToDetailedInfo() entry");
+    console.log("slideShow.js moveToDetailedInfo() entry");
     window.location.href="detailedInfo";
 }
 
 function nextSite() {  //used with button
   var htmlString = "";
-  console.log("loopingPages.js nextSite() entry: value of HES_DEAD_JIM: " + HES_DEAD_JIM);
+  console.log("slideShow.js nextSite() entry: value of HES_DEAD_JIM: " + HES_DEAD_JIM);
   if(HES_DEAD_JIM) {
     htmlString = hesDeadJim();
   } else {
@@ -108,7 +108,7 @@ function nextSite() {  //used with button
 
 function prevSite() {  //used with button
   var htmlString = "";
-  console.log("loopingPages.js prevSite() entry: value of HES_DEAD_JIM: " + HES_DEAD_JIM);
+  console.log("slideShow.js prevSite() entry: value of HES_DEAD_JIM: " + HES_DEAD_JIM);
   if(HES_DEAD_JIM) {
     htmlString = hesDeadJim();
   } else {
