@@ -6,6 +6,7 @@ var ERROR_TIME_FIELD = "ERROR";
 var ERROR_TEMPF_FIELD = "";
 var ERROR_EVENT_LISTENER_ERROR_CONNECTING = "EventListener-Error: Connecting...";
 var ERROR_STATION = "Station: Connecting...";
+var NO_WUNDERGROUND_DATA_RECEIVED = "No Wunderground Data Received";
 var ERROR_INTERVAL_TIMEOUT = "Timeout: server update timed out.";
 var INFO_EVENT_LISTENER_CLOSED = "Disconnected";
 var INFO_EVENT_LISTENER_OPEN="EventSource Connected";
@@ -38,6 +39,7 @@ if(!!window.EventSource) {
     console.log('after call to EventSource');
     source.addEventListener('open', function(e) {
         $("#state").text(INFO_EVENT_LISTENER_OPEN);
+        $("#station").text(NO_WUNDERGROUND_DATA_RECEIVED);
         console.log(INFO_EVENT_LISTENER_OPEN);
     }, false);
 

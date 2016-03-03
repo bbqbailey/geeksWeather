@@ -11,55 +11,48 @@ var theRoutes    = require('./app_server/routes/index'); //app js file
 
 var logger = log4js.getLogger();
 var app    = module.exports = express();
-var DELAY  = config.appConfig.defaultDelay; //from geeksWeatherConfiguraton
 var mode   = process.env.MODE;
 var loggerLevel="";
 
-app.locals.DELAY = DELAY;  //is this still needed?
+setMode();
+
 const SECOND = 1000;
 const MINUTE = SECOND * 60;
-var WUNDERGROUND_REFRESH_WEATHER_MINUTES = config.appConfig.defaultDelay;
-const WUNDERGROUND_GET_TIME = WUNDERGROUND_REFRESH_WEATHER_MINUTES * MINUTE;
-//const WEATHER_SEND_TIME = WUNDERGROUND_GET_TIME - 1;
-const TIME_SEND_TIME = 1 * SECOND;
+const FORCED_MAX_ELAPSED_TIMEOUT_SEC = 5;;
+const FORCED_DEFAULT_DELAY_SECS_FOR_LOOPING_PAGES = 10;
+const FORCED_DEFAULT_DELAY_MINUTES_FOR_WUNDERGROUND_REFRESH = 10;
+const SEND_TIME = 1 * SECOND; //Send actual time event each second
 
-
-logger.info("defaultDELAY value is " + DELAY + " microseconds");
-logger.info("MODE is ", process.env.MODE);
-logger.info("NODE_ENV is ", process.env.NODE_ENV); //used in systemd/system/geeksWeather.service
-
-var routes = new theRoutes(DELAY, logger);
-app.use('/', routes);
-
-
-switch(mode) {
-    case "PRODUCTION":
-      console.log("Mode is PRODUCTION");
-      console.log("Setting logging level to INFO");
-      loggerLevel="INFO";
-      break;
-    case "DEVELOPMENT":
-      console.log("Mode is DEVELOPMENT");
-      console.log("Setting logging level to DEBUG");
-      loggerLevel="DEBUG";
-      break;
-    case "TESTING":
-      console.log("Mode is TESTING");
-      console.log("Setting logging level to TRACE");
-      loggerLevel="TRACE";
-      break;
-    default:
-      console.log("Mode is INVALID! - ABORTING");
-      console.log("--Mode must be one of the following states:");
-      console.log("\tPRODUCTION");
-      console.log("\tDEVELOPMENT");
-      console.log("\tTESTING");
-      console.log("--Usage on start:");
-      console.log("\tMODE=DEVELOPMENT nodejs geeksWeather");
-      process.exit();
+var MAX_ELAPSED_TIMEOUT_SEC = config.appConfig.MAX_ELAPSED_TIMEOUT_SEC;
+if(isNaN(MAX_ELAPSED_TIMEOUT_SEC) || (MAX_ELAPSED_TIMEOUT_SEC < (FORCED_MAX_ELAPSED_TIMEOUT_SEC))) {
+  logger.warn("geeksWeather.js: Warning: MAX_ELAPSED_TIMEOUT_SEC is either NaN or is less than " + FORCED_MAX_ELAPSED_TIMEOUT_SEC + " Seconds, so Forcing to " + FORCED_MAX_ELAPSED_TIMEOUT_SEC + ' Seconds.');
+  MAX_ELAPSED_TIMEOUT_SEC = FORCED_MAX_ELAPSED_TIMEOUT_SEC;
 }
-logger.setLevel(loggerLevel); //In order: ALL, TRACE, DEBUG, INFO, WARN, ERROR, FATAL
+MAX_ELAPSED_TIMEOUT_SEC = MAX_ELAPSED_TIMEOUT_SEC * MINUTE;
+logger.trace("geeksWeather.js: After assignment, MAX_ELAPSED_TIMEOUT_SEC value is: " + MAX_ELAPSED_TIMEOUT_SEC + " (microseconds).");
 
+
+var LOOPINGPAGES_DELAY_SEC  = config.appConfig.LOOPINGPAGES_DELAY_SEC;
+if(isNaN(LOOPINGPAGES_DELAY_SEC)) {
+  logger.warn("geeksWeather.js: Warning: in geeksWeather.js, forced LOOPINGPAGES_DELAY_SEC to " + FORCED_DEFAULT_DELAY_SECS_FOR_LOOPING_PAGES + ". Verify entry in  geeksWeatherConfiguraton.json file in appConfig section.");
+  LOOPINGPAGES_DELAY_SEC = FORCED_DEFAULT_DELAY_SECS_FOR_LOOPING_PAGES;
+}
+LOOPINGPAGES_DELAY_SEC = LOOPINGPAGES_DELAY_SEC * SECOND;
+logger.trace("geeksWeather.js: After assignment, LOOPINGPAGES_DELAY_SEC value is: " + LOOPINGPAGES_DELAY_SEC + " (microseconds).");
+
+var WUNDERGROUND_REFRESH_WEATHER_MINUTES = config.appConfig.WUNDERGROUND_REFRESH_WEATHER_MINUTES;
+if(isNaN(WUNDERGROUND_REFRESH_WEATHER_MINUTES) || (WUNDERGROUND_REFRESH_WEATHER_MINUTES < (FORCED_DEFAULT_DELAY_MINUTES_FOR_WUNDERGROUND_REFRESH))) {
+  logger.warn("geeksWeather.js: Warning: WUNDERGROUND_REFRESH_WEATHER_MINUTES is either NaN or is less than " + FORCED_DEFAULT_DELAY_MINUTES_FOR_WUNDERGROUND_REFRESH + " Minutes, so Forcing to " + FORCED_DEFAULT_DELAY_MINUTES_FOR_WUNDERGROUND_REFRESH + ' Minutes.');
+  WUNDERGROUND_REFRESH_WEATHER_MINUTES = FORCED_DEFAULT_DELAY_MINUTES_FOR_WUNDERGROUND_REFRESH;
+}
+WUNDERGROUND_REFRESH_WEATHER_MINUTES = WUNDERGROUND_REFRESH_WEATHER_MINUTES * MINUTE;
+logger.trace("geeksWeather.js: After assignment, WUNDERGROUND_REFRESH_WEATHER_MINUTES value is: " + WUNDERGROUND_REFRESH_WEATHER_MINUTES + " (microseconds).");
+
+//app.locals.DELAY = DELAY;  //is this still needed?
+logger.info("geeksWeather.js: NODE_ENV is ", process.env.NODE_ENV); //used in systemd/system/geeksWeather.service
+
+var routes = new theRoutes(LOOPINGPAGES_DELAY_SEC, logger);
+app.use('/', routes);
 
 var emitter_weather={};
 var connections=[];
@@ -78,36 +71,36 @@ app.set('views',path.join( __dirname, 'app_server', 'views'));
 app.use(express.static(__dirname + '/public'))
 
 app.get('/eventEngine' , function(req, res) {
-    logger.trace('app.get(/eventEngine) entry');
+    logger.trace('geeksWeather.js: app.get(/eventEngine) entry');
     if(connections.length === 0) {
         noClients=true;
     } else {
         noClients=false;
     }
     connections.push(res);
-    logger.debug("app.get(/eventEngine) Added a connection; connections.length: " + connections.length);
+    logger.debug("geeksWeather.js: app.get(/eventEngine) Added a connection; connections.length: " + connections.length);
     res.writeHead(200, { //the following is what makes it a Server Sent Event!
         "Content-type":"text/event-stream",
         "Cache-Control":"no-cache",
         "Connection":"keep-alive"
     });
     if(noClients) {
-        logger.trace("app.get(/eventEngine): noClients was previously true so get new data from wunderground.");
+        logger.trace("geeksWeather.js: app.get(/eventEngine): noClients was previously true so get new data from wunderground.");
         //we haven't been polling wunderground when no clients so get an update!
-        logger.trace("app.get(/eventEngine): calling async.series([getWeatherData, sendWeather])");
-        async.series([getWeatherData, sendWeather], function(err) {
+        logger.trace("geeksWeather.js: app.get(/eventEngine): calling async.series([getWeatherData, sendWeatherEvent])");
+        async.series([getWeatherData, sendWeatherEvent], function(err) {
             if(err) {
-                logger.error("async.series error in app.get(/eventEngine)");
+                logger.error("geeksWeather.js: async.series error in app.get(/eventEngine)");
             }
         });
         noClients=false;
     } else {
-        logger.trace("app.get(/eventEngine): noClients is false");
-        sendWeather();
+        logger.trace("geeksWeather.js: app.get(/eventEngine): noClients is false");
+        sendWeatherEvent();
     }
 
     req.on("close", function() {
-        logger.trace("req.on close");
+        logger.trace("geeksWeather.js: req.on close");
         var toRemove;
         for(var i=0;i<connections.length; i++) {
             if(connections[i] == res) {
@@ -116,62 +109,93 @@ app.get('/eventEngine' , function(req, res) {
             }
         }
         connections.splice(i,1);
-        logger.debug("Removed a connection; connections.length: " + connections.length);
+        logger.debug("geeksWeather.js: Removed a connection; connections.length: " + connections.length);
     });
-    logger.trace("app.get(/eventEngine) exit");
+    logger.trace("geeksWeather.js: app.get(/eventEngine) exit");
 });
 
 
-
-
-
 app.listen(8080, function (err) {
-    logger.info('Express started on port 8080');
+    logger.info('geeksWeather.js: Express started on port 8080');
     if(err) {
-      console.log("app.listen(localhost, 8080) error: ");
+      console.log("geeksWeather.js: app.listen(localhost, 8080) error: ");
       err();
     }
 });
 
+function setMode() {
+  logger.trace("geeksWeather.js: setMode(): entry");
+  switch(mode) {
+      case "PRODUCTION":
+        console.log("Mode is PRODUCTION");
+        console.log("Setting logging level to INFO");
+        loggerLevel="INFO";
+        break;
+      case "DEVELOPMENT":
+        console.log("Mode is DEVELOPMENT");
+        console.log("Setting logging level to DEBUG");
+        loggerLevel="DEBUG";
+        break;
+      case "TESTING":
+        console.log("Mode is TESTING");
+        console.log("Setting logging level to TRACE");
+        loggerLevel="TRACE";
+        break;
+      default:
+        console.log("Mode is INVALID! - ABORTING");
+        console.log("--Mode must be one of the following states:");
+        console.log("\tPRODUCTION");
+        console.log("\tDEVELOPMENT");
+        console.log("\tTESTING");
+        console.log("--Usage on start:");
+        console.log("\tMODE=DEVELOPMENT nodejs geeksWeather");
+        process.exit();
+  }
+  logger.setLevel(loggerLevel); //In order: ALL, TRACE, DEBUG, INFO, WARN, ERROR, FATAL
+  logger.trace("geeksWeather.js: setMode(): exit");
+
+}
+
 var wundergroundInterval = setInterval(function() {
-    logger.trace("setInterval(getWeatherData()) entry");
+    logger.trace("geeksWeather.js: setInterval(getWeatherData()) entry");
     getWeatherData();
-    logger.trace("setInterval(getWeatherData()) exit");
-}, WUNDERGROUND_GET_TIME);
+    logger.trace("geeksWeather.js: setInterval(getWeatherData()) exit");
+}, WUNDERGROUND_REFRESH_WEATHER_MINUTES);
 
 var dateInterval = setInterval(function() {
-    logger.trace("setInterval(sendTime()) entry");
+    logger.trace("geeksWeather.js: setInterval(sendTime()) entry");
     sendTime();
-    logger.trace("setInterval(sendTime()) exit");
-}, TIME_SEND_TIME);
+    logger.trace("geeksWeather.js: setInterval(sendTime()) exit");
+}, SEND_TIME);
 
 
-
-
-function sendWeather() {
-    logger.trace("sendWeather() entry");
+function sendWeatherEvent() {
+    logger.trace("geeksWeather.js: sendWeatherEvent() entry");
     //no reason to proceed if no emitter_weather yet
     if(Object.keys(emitter_weather).length === 0) {
-        logger.trace("sendWeather(), emitter_weather.length === 0");
-        logger.trace("sendWeather() exit on emitter.length === 0");
-        return;
+        logger.trace("geeksWeather.js: sendWeatherEvent(), emitter_weather.length === 0 so not sending weather event to clients");
+        logger.trace("geeksWeather.js: sendWeatherEvent() exit on emitter.length === 0");
+        logger.error("geeksWeather.js: sendWeatherEvent() Sending error to display at station on web page.");
      }
     //no reason to proceed if no clients listening
     if(connections.length === 0) {
-        logger.trace("sendWeather(), connections.length === 0");
-        logger.trace("sendWeather() exit on connections.length === 0");
+        logger.trace("geeksWeather.js: sendWeatherEvent(), connections.length === 0 so not sending weather event to 0 clients!");
+        logger.trace("geeksWeather.js: sendWeatherEvent() exit on connections.length === 0");
+        logger.trace("geeksWeather.js: sendWeatherEvent() exit");
         return;
     }
     var weatherJson = JSON.stringify(emitter_weather);
     sendConnections(weatherJson, 'weather');
-    logger.trace("sendWeather() exit");
+    logger.trace("geeksWeather.js: sendWeatherEvent() exit");
 }
 
+
 function sendTime() {
-    logger.trace("sendTime() entry");
+    logger.trace("geeksWeather.js: sendTime() entry");
     if(connections.length === 0) {
         //no reason to do all of this if no clients!
-        logger.trace("sendTime() connections.length === 0 so returning with no work.");
+        logger.trace("geeksWeather.js: sendTime() connections.length === 0 so returning with no work.");
+        logger.trace("geeksWeather.js: sendTime() exit");
         return;
     }
     var time = new Date();
@@ -193,21 +217,21 @@ function sendTime() {
     var jsonTimeTemp = {'time': time_data, 'temp_f': obs.temp_f};
 
     timeTempJson = JSON.stringify(jsonTimeTemp);
-    logger.debug("sendTime() timeJson: " , timeTempJson);
+    logger.debug("geeksWeather.js: sendTime() timeJson: " , timeTempJson);
     sendConnections(timeTempJson,'time');
-    logger.debug("sendTime(): Number of connections: " + connections.length);
-    logger.trace("sendTime() exit");
+    logger.debug("geeksWeather.js: sendTime(): Number of connections: " + connections.length);
+    logger.trace("geeksWeather.js: sendTime() exit");
 }
 
 function sendConnections(data, event) {
-    logger.trace("sendConnections() entry");
-    logger.trace("sendConnections() data: ", data);
-    logger.debug("sendConnections() event: ", event);
+    logger.trace("geeksWeather.js: sendConnections() entry");
+    logger.trace("geeksWeather.js: sendConnections() data: ", data);
+    logger.debug("geeksWeather.js: sendConnections() event: ", event);
     for(var i=0; i<connections.length; i++ ) {
         connections[i].write('event: ' + event + '\n');
         connections[i].write('data: ' + data + '\n\n');
     }
-    logger.trace("sendConnections() exit");
+    logger.trace("geeksWeather.js: sendConnections() exit");
 }
 
 
@@ -217,7 +241,7 @@ function sendConnections(data, event) {
 //your keyfile ./myWundergroundInfo.db
 //
 function getAppInfo(callback) {
-    logger.trace("getAppInfo() entry");
+    logger.trace("geeksWeather.js: getAppInfo() entry");
     my_key=key.my_key;
     logger.debug("my_key: " + my_key);
     city=config.appConfig.city;
@@ -226,55 +250,71 @@ function getAppInfo(callback) {
     station=config.appConfig.station;
     myServer=config.appConfig.myServer;
     myPort=config.appConfig.myPort;
-    logger.debug("Proceeding with key: ", my_key);
+    logger.debug("geeksWeather.js: Proceeding with key: ", my_key);
     wunderground = new Wunderground(my_key);
-    logger.trace("getAppInfo() exit");
     if(typeof callback === "function")
         callback();
-    logger.trace("getAppInfo() exit");
+    logger.trace("geeksWeather.js: getAppInfo() exit");
 }
 
 //gets weather data and stores it
 function getWeatherData(callback) {
-    logger.trace("getWeatherData() entry");
+    logger.trace("geeksWeather.js: getWeatherData() entry");
     //no reason to proceed if no clients clients
     if(connections.length === 0) {
-        logger.trace("getWeatherData(), connections.length === 0");
-        logger.trace("getWeatherData() exit on connections.length === 0");
+        logger.trace("geeksWeather.js: getWeatherData(), connections.length === 0");
+        logger.trace("geeksWeather.js: getWeatherData() exit on connections.length === 0");
         return;
     }
-    logger.debug("getWeatherData() Calling wunderground");
+    logger.info("geeksWeather.js: getWeatherData() Calling wunderground");
     wunderground.astronomy().conditions().forecast().request('pws/q/pws:' + station, processWundergroundData);
 
     if (typeof callback === "function")
         callback();
-    logger.trace("getWeatherData() exit");
+    logger.trace("geeksWeather.js: getWeatherData() exit");
 }
 
 function processWundergroundData(err, weather) {
-    logger.trace("processWundergroundData() entry");
+    logger.trace("geeksWeather.js: processWundergroundData() entry");
+    logger.trace("geeksWeather.js: processWundergroundData(): does     weather.response.error key exist? " + ("error" in weather.response ? "Yes!" : "No"));
+    if("error" in weather.response ? true : false) {
+      logger.error();
+      logger.error("=======================================================");
+      logger.error("==============ERROR====================================");
+      logger.error("Error: geeksWeather.js: processWundergroundData(): weather.error.type: ", weather.response.error.type)
+      logger.error("Error: geeksWeather.js: processWundergroundData(): Returning without sending any weather data to clients.");
+      logger.error("==============ERROR====================================");
+      logger.error("=======================================================");
+      logger.error();
+      emitter_weather = {"station":weather.response.error.type};
+      logger.trace("geeksWeather.js: processWundergroundData() calling sendWeatherEvent()");
+      sendWeatherEvent();
+      logger.trace("geeksWeather.js: processWundergroundData() exit");
+      return;
+    }
 //    dbInsertWeatherData(err, weather);
+logger.trace("geeksWeather.js: processWundergroundData() calling createEmitterData()");
     createEmitterData(err, weather);
 //    showWundergroundData(err, weather);
-    logger.trace("processWundergroundData() weather: ", weather);
-    logger.trace("processWundergroundData() exit");
+    logger.trace("geeksWeather.js: processWundergroundData() weather: ", weather);
+    logger.trace("geeksWeather.js: processWundergroundData() exit");
 }
 
 function createEmitterData(err, weather) {
-    logger.trace("createEmitterData() entry");
+    logger.trace("geeksWeather.js: createEmitterData() entry");
     if(err) {
-        logger.error("createEmitterData() err: ", err)
+        logger.error("geeksWeather.js: createEmitterData() err: ", err)
         return;
     } else {
-        logger.trace("createEmitterData() after check for no-error");
+        logger.trace("geeksWeather.js: createEmitterData() after check for no-error");
         obs=weather.current_observation;
         var forecastday=weather.forecast.simpleforecast.forecastday;
         var moon=weather.moon_phase;
         var sun = weather.sun_phase
-        logger.trace("createEmitterData() after call to weather.forecast.simpleforecast.forecastday");
-        logger.debug("createEmitterData(); forecastday value: ", forecastday);
-        logger.debug("createEmitterData(); moon_phase value: ", moon);
-        logger.debug("createEmitterData(); sun_phase value: ", sun);
+        logger.trace("geeksWeather.js: createEmitterData() after call to weather.forecast.simpleforecast.forecastday");
+        logger.debug("geeksWeather.js: createEmitterData(); forecastday value: ", forecastday);
+        logger.debug("geeksWeather.js: createEmitterData(); moon_phase value: ", moon);
+        logger.debug("geeksWeather.js: createEmitterData(); sun_phase value: ", sun);
 
         var server_time_now     = new Date();
 
@@ -291,10 +331,10 @@ function createEmitterData(err, weather) {
 
         }
 
-        logger.debug("createEmitterData(); emitter_weather: ", emitter_weather);
+        logger.debug("geeksWeather.js: createEmitterData(); emitter_weather: ", emitter_weather);
     }
-    sendWeather();
-    logger.trace("createEmitterData() exit");
+    sendWeatherEvent();
+    logger.trace("geeksWeather.js: createEmitterData() exit");
 }
 
 
@@ -302,7 +342,8 @@ function createEmitterData(err, weather) {
 async.series([getAppInfo, getWeatherData], function(err) {
 
     if(err) {
-        logger.error("======================async.series error: ", err);
+        logger.error("geeksWeather.js: async.series() error entry: ", err);
+        logger.error("geeksWeather.js: async.series() error exit: ");
         return;
     }
 });

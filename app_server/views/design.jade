@@ -43,19 +43,48 @@ body
   hr
   br
   h2 Using geeksWeather
+  h3 Starting the Application
+  p From the command line of a terminal session, in the base directory for geeksWeather (where geeksWeather.js is located), enter:
+  ul
+    li start MODE=PRODUCTION
+    
+  p If using systemd, then enter:
+  ul
+    li sudo systemctl start geeksWeather.service
+    
+  h4 MODE=PRODUCUCTION
+  p Normal mode for normal running.
+  p This mode is one of three valid modes, which control the level of logging that is performed, for the npm module log4js:
+  ul
+    li PRODUCTION - Only shows high level details, such as 'Info', 'Warn', 'Error'
+    li DEVELOPMENT - Shows all levels of PRODUCTION, plus 'Debug'
+    li TESTING - Most detailed, a lot of logging for troubleshooting.  Shows all levels of PRODUCTION and DEVELOPMENT, plus 'Trace'.
+  p The systemd geeksWeather.service should utilize MODE=PRODUCTION
+  
   h3 Using wunderground.
   p This application uses data from wunderground.com, and is subject to the terms outlined <a href=https://www.wunderground.com/weather/api/d/terms.html> here</a>.
   h3 Obtaining a wunderground API key
   p The setup of geeksWeather requires the use of a <em>wunderground.com API user key</em>.  This key is obtained directly from <em>wunderground.com.</em>   The key for wunderground.com API user's key is stored, by the user, in the <em>geeksWeather file myWundergroundInfo.db as the value for the json file key-pair "my_key".</em>  Without this key, the geeksWeather application will not be able to obtain current weather information from wunderground.com, and will result in an error.
   p Currently (February 29, 2016), wunderground provides information regarding obtaining this key at <a href='https://www.wunderground.com/weather/api/d/docs'>wunderground</a>, but is subject to change.
   p If you obtain a free personal key, then you are (currently 2/29/16) restricted to <em>500 data requests per day, and 10 per minute.</em> The geeksWeather application is currently set to obtain information once-per-5-minutes, which means, on a per-day basis, it does not exceed 288 reqeusts. <em>If you do additional development, or run this application on multiple systems with the same key, then you may possibly exceed this limit</em>, which would result in failure to abide with the wunderground terms, and may cause this application to no longer be usable with your key.  A commercial key, which can be obtained from wunderground.com, has less restricted terms.
+  h3 wunderground data
+  p I've found wunderground to be a reliable source of data; the personal weather stations can be a little less so; individual owners may not pay particular attention to their weather station, although usually I've noted they have been corrected in a day.
+  p However, I have experienced a problem where I've typo'd my key, which of course means no data obtained.  There could be other reasons as well, but so far, that's been my only problem.  
+  p When there's a problem obtaining data from wunderground, the geeksWeather application will do several things:
+  ul
+    li First, the top right corner, where the temperature is normally displayed, will show NaN, for Not a Number.  No numeric value received, NaN.  This is on all pages.
+    li At the bottom of the page that displays the current weather information and tomorow's forecast, where normally the weather station is displayed, the statement "No Wunderground Data Received" will be displayed.
+    li The geeksWeather log file will have an entry for "ERROR" and additional information.
+    
+  h3 Current Weather and Forecast page
+  p Normally, this will show the normal top items of time and temperature.  It will also show two (2) weather icons; the left one is today's forecast for high (H) and low (L) temperatures, with the actual current wind (W), as observed at the weather station.  The right icon is tomorrow's forecast for high (H) and low (L) temperatures, and the forecast average wind (W).  The bottom will show two (2) lines of information; the first line gives a connection status (whether the browser is connected to the geeksWeather application for event time and weather updates), and the station that is providing the data information.  <em>As noted above, the station information will display "No Wunderground Data Received"</em> when no data is being received from wunderground, in which case you should consult the geeksWeather log files for insight.  If you have been receiving data for a while, then your key should be OK, unless wunderground has turned access off for that key due to violations of their API license.  Additional issues may be wundergound is down, or the Internet connection is down (WAN); if the LAN is still up, everything else, such as the clock, will continue to function, but data for various pages may not be available.  This is true for all sites that are providing your content for your various loopingPages elements.
   
   h3 Using the wunderground API key
-  p The geeksWeather application requires that you create a JSON file named <em>wundergroundKey.json</em> and put it into the application root directory (the same directory where geeksWeather.js is found).  Since this is a JSON formated file, it will contain key:value pairs.  Therefore, this file will contain your wunderground Key in the form:
+  p The geeksWeather application requires that you create a JSON file named <em>wundergroundKey.json</em> and put it into the application root directory (the same directory where geeksWeather.js is found).  Since this is a JSON formated file, it will contain key:value pairs.  As a convenience, geeksWeather deploys with this file, but with an invalid key.  Therefore, edit this file so it will contain your key in the form:  
   p
     pre(style="padding-left: 50pt")
       code
-        |{ "KEY:VALUE"}
+        |{ "KEY":"VALUE"}
   p In your file, the key would must be "my_key" (case sensitive), and your value would be the key obtained from wunderground.  Note the structure of a JSON file: a left brace { followed by a double-quote, then "my_key", then double-quote, then colon, then double-quote, your key value, then double-quote, then right brace.
   p An example follows, where the value "1234abc123abc123" simulates the wunderground key you obtained:
   p

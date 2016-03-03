@@ -16,7 +16,6 @@
   },
 
   "config": {
-
     "appConfig": {
       "city":"Alpharetta",
       "state":"GA",
@@ -34,7 +33,7 @@
         "title": "Hes Dead Jim",
         "uri": "/images/hesDeadJim.jpg",
         "displayType": "img",
-        "height": "imgHeight",
+        "height": "imgHeight"
     },
 
     "splashPage":
@@ -42,8 +41,7 @@
         "title": "bbqBailey",
         "uri": "/images/bbqBailey.png",
         "displayType": "img",
-        "height": "1000px",
-        "Comment":""
+        "height": "1000px"
       },
 
     "displayPages": [
