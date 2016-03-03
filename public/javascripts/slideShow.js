@@ -80,14 +80,19 @@ function advanceImage() { //used with setInterval
 
 var pauseCheckboxValue='';
 function pauseChanged(element) { //used with checkbox
-    console.log("slideShow.js pauseChanged() entry");
-    element.checked ? pauseCheckboxValue="Checked": pauseCheckboxValue="";
-    console.log("pauseCheckboxValue: " + pauseCheckboxValue);
+  console.log("slideShow.js pauseChanged() entry");
+  element.checked ? pauseCheckboxValue="Checked": pauseCheckboxValue="";
+  console.log("pauseCheckboxValue: " + pauseCheckboxValue);
 }
 
 function moveToDetailedInfo() { //used with button
-    console.log("slideShow.js moveToDetailedInfo() entry");
-    window.location.href="detailedInfo";
+  console.log("slideShow.js moveToDetailedInfo() entry");
+  window.location.href="detailedInfo";
+}
+
+function moveToDocumentation() { //used with button
+  console.log("slideShow.js moveToDocumentation() entry");
+  window.location.href="geeksWeatherDoc";
 }
 
 function nextSite() {  //used with button

@@ -23,6 +23,11 @@ router.get('/', function(req, res, next) {
     logger.trace('router.get(/) exit');
 });
 
+router.get('/slideShow', function(req, res, next) {
+    logger.trace('router.get(/) entry');
+    res.render('slideShow', {'DELAY':DELAY, name:'Banjo', 'config': stringifyconfig});
+    logger.trace('router.get(/) exit');
+});
 router.get('/detailedInfo', function(req, res, next) {
     logger.trace('router.get(/detailedInfo) entry');
     res.render('detailedInfo');

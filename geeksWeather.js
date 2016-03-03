@@ -269,7 +269,7 @@ function getWeatherData(callback) {
         logger.trace("geeksWeather.js: getWeatherData() exit on connections.length === 0");
         return;
     }
-    logger.info("geeksWeather.js: getWeatherData() Calling wunderground");
+    logger.info("geeksWeather.js: getWeatherData() Calling wunderground - Note: This uses your key, so wunderground API limits apply.");
     wunderground.astronomy().conditions().forecast().request('pws/q/pws:' + station, processWundergroundData);
 
     if (typeof callback === "function")

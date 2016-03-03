@@ -27,6 +27,11 @@
       "slideShow_DELAY_SEC":10,
       "MAX_ELAPSED_TIMEOUT_SEC":10,
       "WUNDERGROUND_REFRESH_WEATHER_MINUTES":10
+
+    },
+
+    "logos": {
+      "wundergroundLogo":"wundergroundLogo_4c_horz.png"
     },
 
     "errorPage": {

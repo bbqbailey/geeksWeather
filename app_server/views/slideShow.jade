@@ -1,25 +1,30 @@
 //output:output.html
-include headers.jade
-script.
-  var theName = "#{name}";
-  var DELAY = "#{DELAY}";
-  var config={};
-  var HES_DEAD_JIM = false;
+
+head
+  title geeksWeather!
+  link(rel='icon' href='/images/bbqBailey.png')
+  link(href='https://fonts.googleapis.com/css?family=Orbitron:900' rel='stylesheet' type='text/css')
+  link(rel='stylesheet' type='text/css' href='/stylesheets/geeksWeather.css')
+  meta(HTTP-EQUIV="CACHE-CONTROL", CONTENT="NO-CACHE")
+  meta(http-equiv="refresh", content="600")
   
-  console.log("=============================================================")
-  var configStringify = '!{config}';
-  config = JSON.parse(configStringify);
-  console.log("config: ",  config);
-  console.log('config typeof: ', typeof config);
-  console.log("config.splashPage: ", config.splashPage);
-  console.log("===========================================================")
+  script.
+    var theName = "#{name}";
+    var DELAY = "#{DELAY}";
+    var config={};
+    var HES_DEAD_JIM = false;
+    
+    console.log("=============================================================")
+    var configStringify = '!{config}';
+    config = JSON.parse(configStringify);
+    console.log("config: ",  config);
+    console.log('config typeof: ', typeof config);
+    console.log("config.splashPage: ", config.splashPage);
+    console.log("===========================================================")
+
 
 body
   div(id='mainArea')
-    title geeksWeather!
-    link(href='https://fonts.googleapis.com/css?family=Orbitron:900' rel='stylesheet' type='text/css')
-    link(rel='icon' href='/images/bbqBailey.png') 
-    link(rel='stylesheet' type='text/css' href='/stylesheets/geeksWeather.css')
 
     section(id='topTime')
       div(id="time" ) Time: Waiting... 
@@ -44,8 +49,11 @@ body
       script(src="/javascripts/geeksWeatherEvents.js")
 
   footer
-    input( class='nav', type='button', value='Prev site', onclick='prevSite()', style='height:60px')
-    input( class='nav', type='button', value='Next site', onclick='nextSite()', style='height:60px')
-    input( class='nav', type='button', value='Detailed Weather Info', onclick='moveToDetailedInfo()')
+    input( class='nav', type='button', value='Prev Slide', onclick='prevSite()', style='height:60px')
+    input( class='nav', type='button', value='Next Slide', onclick='nextSite()', style='height:60px')
+    input( class='nav', type='button', value='Detailed Weather Info', onclick='moveToDetailedInfo()', style='height:60px')
+    input( class='nav', type='button', value='Documentation',
+    onclick='moveToDocumentation()', style='height:60px')
     input( class='nav', id='pauseCB', type='checkbox', name='pause', value='checked', onchange='pauseChanged(this)')
     | Pause
+    img(src="/images/wundergroundLogo_4c_horz.png", id="wundergroundLogo")

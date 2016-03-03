@@ -1,7 +1,15 @@
 doctype html
+head
+  title geeksWeather!
+  link(rel='icon' href='/images/bbqBailey.png')
 
 body
-  h1 Design Considerations for geeksWeather!
+  button(onclick='window.location.href="slideShow"' class='pageSelection' id='homeButton' value='homeButton') Slide Show
+  img(src="/images/wundergroundLogo_4c_horz.png", id="wundergroundLogo", style="width:1.5in")
+  p <em>Document Revision 1.0, Date: 2/29/2016  Author: Ben Bailey (&copy) 2016 Ben Bailey -- All righs reserved--</em>
+
+  h1 geeksWeather Documentation!
+
   h3 Document Version: 1.0.0 for <em>geeksWeather</em> Application Version 1.0.0, Date: 3/1/16
   h2 License
   p geeksWeather is licensed under GNU GPLv2.  <em>All rights retained by Ben Bailey</em>
@@ -11,11 +19,44 @@ body
   p The geeksWeather application, software and all files, is copyright "&copy;" 2016 Ben Bailey.
   hr
   br
+  h2 Overview
+  p The geeksWeather appliction is a nodejs application.  The nodejs application is installed by you on a server running on a computer local to your LAN.  This can be any device that is capable of running nodejs, even small single board computers (SBC) such as the Raspberry Pi or Beaglebone Black.  Primary testing has been on a Beaglebone Black.
+  p The presentation is provided via web browsers.  You can use multiple browsers on your LAN to display geeksWeather.  With proper configuraton of your gateway router, you can view from the Internet (WAN).
+  p The primary function is to display 
+  ul
+    li Weather information
+    li Local timed
+    li Local Temperature (in fahrenheit).
+    li Network implied information
+  p The primary diplay function is to be positioned somewhere in the home or business, possibly in multiple locations, where the person viewing the displayed pages are some distance away; we typically are 20 - 30 feet from our display, where we have a monitor on a bookshelf.  The only time you need to be at the displaying monitor is when you want to do something with a mouse, such as pausing a display, going back pages, going forward pages.
+  p Once started in a browser, you typically will not interact with the geeksWeather application again.  It will just happily display a slide show of updating weather information.
+  p Weather information, data and images, are obtained from Wunderground.com.  You will need to request your own personal API key from them (free).  Visit Wunderground.com for details.  Additional weather display information is obtained from Weather.gov.  You do not need a key for this information.
+  p The primary display is:
+  ul
+    li Top Left: Local Time
+    li Top Right: Local Temperature in fahrenheit
+    li Middle: weather display images from wunderground.com and weather.gov
+    li Bottom: buttons for transitions and pausing.
+    
+  h2 Displayed information
+  h3 Displayed pages
+  p You determine what pages are to be shown in the slideShow via the geeksWeatherConfiguration file.  These are exmaples of items that can be displayed.  Displaying these items does not imply endorsment by the agency originating the image.
+  p You are free to remove any image from the slideShow with the exception of the bbqBailey.png and geeksWeather-Splash.png images.  These must be retained in their current form, in their current location, and displayed as rendered by the geeksWeather application when downloaded and installed.
+
+  h2 Disclaimer
+  p geeksWeather is not affiliated in any way with wunderground.com, nor with weather.gov, or any other agency.  It is not endorsed by any of these agencies.  
+  p The wunderground logo is required to be displayed per the personal key you obtain from wunderground for use with their API.  Please refer to their website and agreements you used to obtain your API key.
+  p geeksWeather does not originate any weather information displayed by this application, nor interpret any information obtained for display.
+  p geeksWeather does not warrant that information displayed by this application is accurate or a valid representation of forecast or current weather events.
+  p geeksWeather is not responsible for any interpretation of information.
+  
   h2 Design
   h3 nodejs
   p This system incorporates a web server, typically hosted on a single board computer (SBC), such as a <em>Beaglebone Blac or a Raspberry Pi.</em>  This web server is provided by nodejs, and runs on the SBC.
+
   h3 geeksWeather basis for display
   p The <em>geeksWeather</em> application forms the basis for the <em>geeksSecuritySystem</em> via it's display pages.  Rather than continuously displaying a security system that should never have a security event, I have chosen to show the weather!  When the <em>geeksWeather</em> application is coupled with the <em>geeksSecuritySystem</em>, currently under development, then on a security event, the weather display will shift to the security event display.  So, think of this as a suite of applications, with the weather display forming the display for the other modules, with the intellegence to shift applications on events.
+
   h3 Server Sent Events (AKA Server Side Events, AKA SSE)
   p Rather than wasting bandwith and increasing system overhead, this application makes use of SSE.  SSE is a new element to HTML5.  Prior to HTML5, an application, such as a messaging application, if it needed an update, would have to refresh itself.  This meant a reload of the current page with information provided by the server.  This is referred to as 'polling', whereby the web page would contiually get a new page with fresh data. This increases network traffic, as well as increases the load on the server.  With HTML5, this is no longer necessary.  Instead, the web page registers as wishing to receive notification of a specified event, and this event contains the new inforation, which the web page can display on receiving the event.  Only the data associated with the event needs to be pushed from the server to the web page, so the content is usually considerably less than would be provided on a full page request, and the event notification from the server should only occur when new data is available that needs to be pushed to the web page.
   p The <em>geeksWeather</em> application makes use of several SSE envents:
@@ -23,16 +64,32 @@ body
     li Clock second update - event 'time'.  This occurs once-per-second.
     li Weather update - event 'weather'.  This occurs once-per-5, unless changed by the user.
     li error update - event 'error'.  This occurs on any error detected that could render the system out of service.
+
   h3 slideShow
-  p The primary display page for the geeksWeather application is <em>slideShow</em>.  This is a single page, constructed with three sections: top, middle, and bottom.  The top section displays the current time, updated each second, sent from the application host computer) along with the current temperature for your specified city/state, obtained from wunderground.com API via the user API key.  <em>For additional information, see detail below.</em>  
+  p The primary display page for the geeksWeather application is <em>slideShow</em>.  This is a single page, constructed with three sections: top, middle, and bottom.  The top section displays the current time, updated each second, sent from the application host computer) along with the current temperature for your specified city/state, obtained from wunderground.com API via the user API key.  <em>For additional information, see detail below.</em> 
   p The middle section of slideShow obtains it's information from the geeksWeatherConfiguration.json file.  You can have a mixture of HTML types of <em>img and iframe.</em> Please remember, from additional license elements above, that <em>the first two entries in geeksWeatherConfiguration.json must retain the references to  bbqBailey.png and geeksWeather-Splash.png.</em>
   p The middle section will go through each of the pages in geeksWeatherConfiguration.json, advancing to the next page per the value <em>ADVANCE_RATE_SECS</em>.  Once all of the pages have been displayed, the loop will restart at the first page and loop through all pages again.  This repeats as long as the geeksWeather application is running, or you change to a different display page via buttons on the bottom of the displayed page.
-  br
+
   h3 Realtime Weather information
-  p The geeksWeather application goes out to wunderground, using your key, to obtain real time weather information.  It caches this information, so regardless of the number of browsers you have open against the nodejs geeksWeather server, your key is only being used once per update.  I sometimes hit my nodejs server from my cellphone to get the current weather pages loop.
-  br
+  p The geeksWeather application goes out to wunderground, using your key, to obtain real time weather information.  It caches this information, so regardless of the number of browsers you have open against the nodejs geeksWeather server, your key is only being used once per update (see Detailed Weather Information section of this document).  I sometimes hit my nodejs server from my cellphone to get the current weather pages loop.
+
+  h3 Page - Detailed Weather Info
+  p You can select this page from the bottom of any slideShow page.
+  p This page is independent of the slide show.  It goes out to wunderground API  using your key, and obtains updated information, and then displays that information.  Since it uses the wunderground API, it uses one of your hits for the minute and for the day.  If you click it multiple times quickly, you could easily find yourself exceeding your 1-minute limit at wunderground!  Any time you go to this page from any browser on your LAN,  it causes an API call for that browser, and thus goes against your daily and minute limits.  In testing, I have exceeded my 1-minute limits, but at first couldn't understand how I was doing so...
+  
+  h3 Weather Underground API limits
+  p Currently, there are limits to 10 hits in a 1-minute time period, and 500 per 24 hour period.  
+  p Here are items that go against your API limits:
+  ul
+    li Starting the geeksWeather application:  1 hit per.
+    li Timeout of the weather data, typically 10 minutes: 1 hit per.
+    li Displaying the 'Detailed Weather Info' by clicking button: 1 hit per.
+    li Manually refreshing the 'Detailed Weather Info' page: 1 hit per.
+    li Starting a new browser and going to geeksWeather: 1 hit per.
+  
   h3 Cookies and personal information
   p The geeksWeather application does not currently have a need for cookies, and thus does not use them.  Also, currently, there is no personal data of any type obtained by geeksWeather, and thus none that is collected or fed anywhere.  Any address you obtain weather for, from wunderground, is in the geeksWeather application configuration file, but this information is not accessed outside of the application, and thus not shared anywhere.  Note that the information you provided wunderground when you obtained your key, and when your key is used by the geeksWeather application to access wunderground data, is between you and wunderground.  This information is subject to the terms you agreed to with wunderground when you applied for and accepted your key.  This information is not under the control of the geeksWeather application.  This condition of geeksWeather for cookes and data sharing is subject to change in the future, but will be associated with a new release, and will be noted, if it ever happens, in the release notes for that release and subsequent releases.  In other words, unless you update to a version that contains cookies or data collection abilities, the geeksWeather version this document is associated with does not collect that information, and there is no way for it to start obtaining that information without a new release being installed by you.
+
   h3 Watchdogs: application Event 'time'
   p The <em>geeksWeather</em> application makes use of the LAN.  As such, it's critical to the successful operation of the application.  This makes it imperitive that the system, as well as the owner independently, can observe a problem with various components (LAN, application host computer, display device, display broswer ) of the application, both hardware and software.
   p To facilitate this, as well as to provide a useful function, a digital clock is displayed at the top of each page.  The clock's time value is created at the <em>host system</em> that provides the geeksWeatherSystem application, typically an SBC.
@@ -55,8 +112,7 @@ body
   ul
     li pull the application down from github.com by issuing the following terminal command: sudo git pull https://github.com/bbqbailey/geeksWeather
   p Once these steps have been completed, you need to configure the geeksWeather application.  See section on Configuration below.  
-  
-    
+
   h3 Starting the Application
   p If starting from a terminal session window, then from the command line of a terminal session, in the base directory for geeksWeather (where geeksWeather.js is located), enter:
   ul
@@ -68,6 +124,7 @@ body
   p If using systemd, then enter:
   ul
     li sudo systemctl start geeksWeather.service
+
   h4 MODE=PRODUCUCTION
   p Normal mode for normal running.
   p This mode is one of three valid modes, which control the level of logging that is performed, for the npm module log4js:
@@ -103,6 +160,7 @@ body
   p The setup of geeksWeather requires the use of a <em>wunderground.com API user key</em>.  This key is obtained directly from <em>wunderground.com.</em>   The key for wunderground.com API user's key is stored, by the user, in the <em>geeksWeather file myWundergroundInfo.db as the value for the json file key-pair "my_key".</em>  Without this key, the geeksWeather application will not be able to obtain current weather information from wunderground.com, and will result in an error.
   p Currently (February 29, 2016), wunderground provides information regarding obtaining this key at <a href='https://www.wunderground.com/weather/api/d/docs'>wunderground</a>, but is subject to change.
   p If you obtain a free personal key, then you are (currently 2/29/16) restricted to <em>500 data requests per day, and 10 per minute.</em> The geeksWeather application is currently set to obtain information once-per-5-minutes, which means, on a per-day basis, it does not exceed 288 reqeusts. <em>If you do additional development, or run this application on multiple systems with the same key, then you may possibly exceed this limit</em>, which would result in failure to abide with the wunderground terms, and may cause this application to no longer be usable with your key.  A commercial key, which can be obtained from wunderground.com, has less restricted terms.
+
   h3 wunderground data
   p I've found wunderground to be a reliable source of data; the personal weather stations can be a little less so; individual owners may not pay particular attention to their weather station, although usually I've noted they have been corrected in a day.
   p However, I have experienced a problem where I've typo'd my key, which of course means no data obtained.  There could be other reasons as well, but so far, that's been my only problem.  
@@ -131,7 +189,6 @@ body
   ul
     li Loss of device hosting display browser
     li Loss or freezing of display browser
-    
   
   h3 geeksWeather Appliction Log files
   p If you start via systemd, then the log files will appear in /var/log/syslog.  If instead you start with a terminal session 'start MODE=PRODUCTION' (or other logging level, identified herein) command, then it will scroll to the screen, unless you redirect output.
@@ -183,4 +240,6 @@ body
     li <em>displayPages</em> The pages that will be displayed, one-by-one, with a pause of slideShow_DELAY_SEC.
   
 footer
+  button(onclick='window.location.href="slideShow"' class='pageSelection' id='homeButton' value='homeButton') Slide Show
+  img(src="/images/wundergroundLogo_4c_horz.png", id="wundergroundLogo", style="width:1.5in")
   p <em>Document Revision 1.0, Date: 2/29/2016  Author: Ben Bailey (&copy) 2016 Ben Bailey -- All righs reserved--</em>
