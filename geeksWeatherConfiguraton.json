@@ -31,7 +31,8 @@
     },
 
     "logos": {
-      "wundergroundLogo":"wundergroundLogo_4c_horz.png"
+      "wundergroundLogo":"wundergroundLogo_4c_horz.png",
+      "comment":"This page is required per API agreement with wunderground"
     },
 
     "errorPage": {
@@ -54,7 +55,7 @@
         "title": "geeksWeather",
         "uri": "/images/geeksWeather-Splash.png",
         "displayType": "img",
-        "height": "1000px",
+        "height": "950px",
         "Comment": "Per your license agreement for geeksWeather, this image must remain as the first entry, as obtained, from geeksWeather.  The following entries are a list of images and web sites that are displayed by looping through all the pages.  Used by slideShow in geeksWeather app.  There can be as many, or as few, as you want."
       },
 
