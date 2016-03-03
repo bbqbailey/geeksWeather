@@ -9,7 +9,7 @@ body {
 
 /* STRUCTURE */
 
-#pagewrap {
+#mainArea {
 	padding: 5px;
 	width: 1600px;
 	margin: 20px auto;
@@ -113,7 +113,7 @@ MEDIA QUERIES
 /* for 980px or less */
 @media screen and (max-width: 980px) {
 	
-	#pagewrap {
+	#mainArea {
 		width: 94%;
 	}
 	#content {
@@ -186,6 +186,6 @@ header, #content, #middle, #sidebar {
 	margin-bottom: 5px;
 }
 
-#pagewrap, header, #content, #middle, #sidebar, footer {
+#mainArea, header, #content, #middle, #sidebar, footer {
 	border: solid 1px #ccc;
 }

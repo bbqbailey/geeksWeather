@@ -1,6 +1,6 @@
 @import url(http://fonts.googleapis.com/css?family=Open+Sans);
 
-body { 
+body {
   font-family: sans-serif-bold;
   color: #black;
   font-size: 200px;
@@ -9,10 +9,10 @@ body {
 
 /* STRUCTURE */
 
-#pagewrap {
+#mainArea {
 	padding: 5px;
 	width: 1600px;
-	margin: 20px auto;
+	margin: 20px; /* auto; /* auto centers on page */
 }
 
 #topTime {
@@ -23,13 +23,13 @@ body {
     font-size: 200px;
     color: #007700;
  }
-     
+
 #topTemp {
     padding-left: 40px;
     padding-right: 0;
     width: 400px;
     float: right;
-    font-family: 'Orbitron', sans-serif;    
+    font-family: 'Orbitron', sans-serif;
     font-size: 200px;
     color: #000000;
 }
@@ -97,8 +97,8 @@ MEDIA QUERIES
 *************************************************************************************/
 /* for 980px or less */
 @media screen and (max-width: 980px) {
-	
-	#pagewrap {
+
+	#mainArea {
 		width: 94%;
 	}
 	#content {
@@ -111,7 +111,7 @@ MEDIA QUERIES
 		margin: 0px 0px 5px 5px;
 		float: right;
 	}
-	
+
 	#sidebar {
 		clear: both;
 		padding: 1% 4%;
@@ -131,13 +131,13 @@ MEDIA QUERIES
 		width: auto;
 		float: none;
 	}
-	
+
 	#middle {
 		width: auto;
 		float: none;
 		margin-left: 0px;
 	}
-	
+
 	#sidebar {
 		width: auto;
 		float: none;
@@ -171,6 +171,6 @@ header, #content, #middle, #sidebar {
 	margin-bottom: 5px;
 }
 
-#pagewrap, header, #content, #middle, #sidebar, footer {
+#mainArea, header, #content, #middle, #sidebar, footer {
 	border: solid 1px #ccc;
 }

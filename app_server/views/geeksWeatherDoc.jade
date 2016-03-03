@@ -79,6 +79,24 @@ body
   h3 Current Weather and Forecast page
   p Normally, this will show the normal top items of time and temperature.  It will also show two (2) weather icons; the left one is today's forecast for high (H) and low (L) temperatures, with the actual current wind (W), as observed at the weather station.  The right icon is tomorrow's forecast for high (H) and low (L) temperatures, and the forecast average wind (W).  The bottom will show two (2) lines of information; the first line gives a connection status (whether the browser is connected to the geeksWeather application for event time and weather updates), and the station that is providing the data information.  <em>As noted above, the station information will display "No Wunderground Data Received"</em> when no data is being received from wunderground, in which case you should consult the geeksWeather log files for insight.  If you have been receiving data for a while, then your key should be OK, unless wunderground has turned access off for that key due to violations of their API license.  Additional issues may be wundergound is down, or the Internet connection is down (WAN); if the LAN is still up, everything else, such as the clock, will continue to function, but data for various pages may not be available.  This is true for all sites that are providing your content for your various slideShow elements.
   
+  h3 Errors
+  h4 Error Page
+  p The geeksWeather application will trap and display on certain severe errors events.  When this occurs, the time will no longer be displayed, and the message, "ERROR" will be displayed in the color Red.  The display page defined in geeksWeatherConfiguration config.errorPage will be displayed, which by default is set to ""/images/hesDeadJim.jpg", a somewhat whimical reference to the phrase used by Star Trek's Dr. Leonard McCoy (original series).
+  p The "ERROR" phrase will be immediate.  However, the errorPage image is timed to the slideShow frequency rate; if 10 seconds, then on average it will take 5 seconds before the errorPage image is displayed. 
+  p When the condition that caused the error event is cleared, then the current time will replace the "ERROR" phrase.  Again, the errorPage image will be updated on the next slideShow update.
+  p Common Errors that can cause an Error Event.  <em>When corrected, the geeksWeather application should return to normal operation.</em>
+  ul
+    li Loss of router
+    li Loss of LAN
+    li Loss of nodejs server
+    li geeksWeather app freeze
+    li Loss of system hosting nodejs Server
+  p Common Errors that may produce no Error notification.  <em>In the following cases, the display time and image will probably freeze</em>, which should be a clue to investigate even though no Error may be displayed.  <em>When these occur, the geeksWeather application will not probably return to normal operation without action taken by you to restore the device or browser.</em>
+  ul
+    li Loss of device hosting display browser
+    li Loss or freezing of display browser
+    
+  
   h3 geeksWeather Appliction Log files
   p If you start via systemd, then the log files will appear in /var/log/syslog.  If instead you start with a terminal session 'start MODE=PRODUCTION' (or other logging level, identified herein) command, then it will scroll to the screen, unless you redirect output.
   
