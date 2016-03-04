@@ -154,6 +154,13 @@
         "uri": "http://www.ssd.noaa.gov/goes/comp/nhem/wv.jpg",
         "displayType": "img",
         "height": "950px"
-      }]
+      },
+
+      { "title": "Home video camera 1",
+        "uri": "http://192.168.1.110/img/video.mjpeg",
+        "displayType":"img",
+        "height": "950px"
+      }
+    ]
   }
 }
