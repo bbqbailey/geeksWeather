@@ -36,15 +36,15 @@ body
           img(src="/images/hesDeadJim.jpg", id="hesDeadJim", style="display:none")
       div(id='imageDiv')
         //why is bbqBailey still needed? It's in slideShow.displayPages.splashPage, but not working if not here!  If it has to be here to keep the page from being blank, then make this the splashPage and remove from slideShow.displayPages.
+        
         img(src='/images/bbqBailey.png', height="900px")
-        script(src = "/javascripts/slideShow.js")    
-
-    script(src="//code.jquery.com/jquery-2.1.4.min.js")
+          
     
       
 
     section(id='main')
-      //      script(src = "/javascripts/slideShow.js")    
+      script(src="//code.jquery.com/jquery-2.1.4.min.js")
+      script(src = "/javascripts/slideShow.js")    
       script(src="/javascripts/geeksWeatherEvents.js")
 
   footer
@@ -53,6 +53,8 @@ body
     input( class='nav', type='button', value='Detailed Weather Info', onclick='moveToDetailedInfo()', style='height:60px')
     input( class='nav', type='button', value='Documentation',
     onclick='moveToDocumentation()', style='height:60px')
+    input( class='nav', type='button', value='Camera 1',
+    onclick='moveToCamera1()', style='height:60px')
     input( class='nav', id='pauseCB', type='checkbox', name='pause', value='checked', onchange='pauseChanged(this)')
     | Pause
     img(src="/images/wundergroundLogo_4c_horz.png", id="wundergroundLogo")

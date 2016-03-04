@@ -50,6 +50,17 @@
         "height": "1000px"
       },
 
+    "cameras":
+      {
+        "camera1":
+          {
+            "location":"Located in Office",
+            "uri": "http://192.168.1.110/img/video.mjpeg",
+            "displayType":"img",
+            "height": "950px"
+          }
+      },
+
     "displayPages": [
       {
         "title": "geeksWeather",

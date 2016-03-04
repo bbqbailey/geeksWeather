@@ -45,3 +45,10 @@ router.get('/geeksWeatherDoc', function(req, res) {
   res.render('geeksWeatherDoc');
   logger.trace('router.get(/geeksWeatherDoc) exit');
 });
+
+router.get('/camera1', function(req, res) {
+  logger.trace('router.get(/camera1) entry');
+  var camera1uri = config.cameras.camera1.uri;
+  res.render('camera1', {'camera1uri':camera1uri});
+  logger.trace('router.get(/camera1) exit');
+});

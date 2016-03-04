@@ -95,6 +95,11 @@ function moveToDocumentation() { //used with button
   window.location.href="geeksWeatherDoc";
 }
 
+function moveToCamera1() { //used with button
+  console.log("slideShow.js moveToCamera1() entry");
+  window.location.href="camera1";
+}
+
 function nextSite() {  //used with button
   var htmlString = "";
   console.log("slideShow.js nextSite() entry: value of HES_DEAD_JIM: " + HES_DEAD_JIM);
