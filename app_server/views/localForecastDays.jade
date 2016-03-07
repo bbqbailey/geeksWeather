@@ -1,0 +1,133 @@
+//output:output.html
+head
+  title geeksWeather!
+  link(rel='icon' href='/images/bbqBailey.png')
+  link(rel='stylesheet' type='text/css' href='/stylesheets/geeksWeather.css')
+
+body
+  div(id='mainArea' )
+    div
+      div
+        div(class='forecastday' id='day0Icon')
+        section(class='forecastday' id='day0' style="font-size:80px")
+          <b>
+          div(id='day0_name')
+          div(id='day0_high')
+          div(id='day0_low')
+          div(id='day0_wind')
+          br
+        
+      div
+        div(class='forecastday' id='day1Icon' style="margin-left:100px")
+        section(class='forecastday' id='day1' style="font-size:80px")
+          <b>
+          div(id='day1_name')
+          div(id='day1_high')
+          div(id='day1_low')
+          div(id='day1_wind')
+          br
+
+    div
+      div
+        div(class='forecastday' id='day2Icon' style="margin-top:0px")
+        section(class='forecastday' id='day2' style="margin-top:0px; font-size:70px")
+          <b>
+          div(id='day2_name')
+          div(id='day2_high')
+          div(id='day2_low')
+          div(id='day2_wind')
+          br
+    
+      div
+        div(class='forecastday' id='day3Icon' style="margin-top:0px; margin-left:100px")
+        section(class='forecastday' id='day3' style="margin-top:0px; font-size:70px")
+          <b>
+          div(id='day3_name')
+          div(id='day3_high')
+          div(id='day3_low')
+          div(id='day3_wind')
+          br
+
+
+  footer
+      div(id='state') State:
+      div(id='station') Station:
+
+  script(src="//code.jquery.com/jquery-2.1.4.min.js")
+
+  script.
+    function moveToslideShow() {
+      window.location.href = 'slideShow'
+    }
+      
+  script(src = "/javascripts/geeksWeatherEvents.js")
+
+  script.
+    source.addEventListener('weather', function(e) {
+      console.log('eventListener: weather: ', e);
+      var weather_data = JSON.parse(e.data);
+      var forecast = weather_data.forecast;
+      //weather.forecast.simpleforecast.forecastday - as used geeksWeather.js
+      console.log("==========forecast:", forecast);
+      var dayNames = ["Sun","Mon","Tue","Wed",
+                      "Thu","Fri","Sat"];
+      var today = new Date();
+      console.log("==============Date: " + today);
+      console.log("============== Today value : " + today.getDay());
+      var theDay = today.getDay();
+      var day=[];
+      for(var i=0;i<7;i++) {
+        day[i] = theDay;
+        theDay++;
+        if(theDay > 6)
+          theDay=0;
+      }
+      console.log("================day[]: ", day);
+      var windRound = Math.round(weather_data.wind_mph);
+      
+      $("#day0_name").text(dayNames[day[0]]);
+      $("#day0_high").text(" H: " + forecast[0].high.fahrenheit);
+      $("#day0_low").text( " L: " + forecast[0].low.fahrenheit);
+      $("#day0_wind").text(" W: " + forecast[0].avewind.mph);
+      var img0 = '<img src="http://icons.wxug.com/i/c/h/' + forecast[0].icon + '.gif"  height=\"350px\" >';
+      console.log("============================================img0: " + img0);
+      $('#day0Icon').html(img0);
+      
+      
+      $("#day1_name").text(dayNames[day[1]]);
+      $("#day1_high").text(" H: " + forecast[1].high.fahrenheit);
+      $("#day1_low").text( " L: " + forecast[1].low.fahrenheit);
+      $("#day1_wind").text(" W: " + forecast[1].avewind.mph);
+      $("#state").text(" Connected");
+      $("#station").text("Station: " + weather_data.station);
+      console.log("weather: ", weather_data);
+      console.log("forecast: ", weather_data.forecast);
+      var img1 = '<img src="http://icons.wxug.com/i/c/h/' + forecast[1].icon + '.gif"  height=\"350px\" >';
+      console.log("============================================img1: " + img1);
+      $('#day1Icon').html(img1);
+      
+      
+      $("#day2_name").text(dayNames[day[2]]);
+      $("#day2_high").text(" H: " + forecast[2].high.fahrenheit);
+      $("#day2_low").text( " L: " + forecast[2].low.fahrenheit);
+      $("#day2_wind").text(" W: " + forecast[2].avewind.mph);
+      $("#state").text(" Connected");
+      $("#station").text("Station: " + weather_data.station);
+      console.log("weather: ", weather_data);
+      console.log("forecast: ", weather_data.forecast);
+      var img2 = '<img src="http://icons.wxug.com/i/c/h/' + forecast[2].icon + '.gif"  height=\"350px\" >';
+      console.log("============================================img2: " + img2);
+      $('#day2Icon').html(img2);
+      
+      $("#day3_name").text(dayNames[day[3]]);
+      $("#day3_high").text(" H: " + forecast[3].high.fahrenheit);
+      $("#day3_low").text( " L: " + forecast[3].low.fahrenheit);
+      $("#day3_wind").text(" W: " + forecast[3].avewind.mph);
+      $("#state").text(" Connected");
+      $("#station").text("Station: " + weather_data.station);
+      console.log("weather: ", weather_data);
+      console.log("forecast: ", weather_data.forecast);
+      var img3 = '<img src="http://icons.wxug.com/i/c/h/' + forecast[3].icon + '.gif"  height=\"350px\" >';
+      console.log("============================================img3: " + img3);
+      $('#day3Icon').html(img3);
+    }, false)
