@@ -60,7 +60,6 @@ app.use('/', routes);
 var emitter_weather={};
 var connections=[];
 var wunderground; //defined in getAppInfo()
-var wunderground_weather={}; //contains weather info returned by Wunderground.com API
 var obs={} //weather observation
 var noClients=true;
 
@@ -293,13 +292,15 @@ function processWundergroundData(err, weather) {
       logger.trace("geeksWeather.js: processWundergroundData() calling sendWeatherEvent()");
       sendWeatherEvent();
       logger.trace("geeksWeather.js: processWundergroundData() exit");
+
       return;
+
     }
-//    dbInsertWeatherData(err, weather);
-logger.trace("geeksWeather.js: processWundergroundData() calling createEmitterData()");
+    logger.trace("geeksWeather.js: processWundergroundData() Only simpleforecast.forecastday data: ", weather.forecast.simpleforecast.forecastday);
+    logger.trace("geeksWeather.js: processWundergroundData() Whole return weather: ", weather);
+
+    logger.trace("geeksWeather.js: processWundergroundData() calling createEmitterData()");
     createEmitterData(err, weather);
-//    showWundergroundData(err, weather);
-    logger.trace("geeksWeather.js: processWundergroundData() weather: ", weather);
     logger.trace("geeksWeather.js: processWundergroundData() exit");
 }
 

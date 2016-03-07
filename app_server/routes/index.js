@@ -40,11 +40,18 @@ router.get('/localForecast', function(req, res) {
     logger.trace('router.get(/localForecast) exit');
 });
 
+router.get('/localForecastDays', function(req, res) {
+    logger.trace('router.get(/localForecastDays) entry');
+    res.render('localForecastDays', {'DELAY':DELAY, name:'Banjo'});
+    logger.trace('router.get(/localForecastDays) exit');
+});
+
 router.get('/geeksWeatherDoc', function(req, res) {
   logger.trace('router.get(/geeksWeatherDoc) entry');
   res.render('geeksWeatherDoc');
   logger.trace('router.get(/geeksWeatherDoc) exit');
 });
+
 
 router.get('/camera1', function(req, res) {
   logger.trace('router.get(/camera1) entry');
