@@ -19,9 +19,17 @@ body {
 #mainArea {
 	padding: 5px;
   float: left;
-	width: 1600px;
+	width: 3000px;
 	margin: 20px; /* auto; /* auto centers on page */
 }
+
+#mainForecastArea {
+	padding: 5px;
+  float: left;
+	width: 3000px;
+	margin: 20px; /* auto; /* auto centers on page */
+}
+
 
 #topTime {
     padding-right: 60px;

@@ -40,10 +40,16 @@ router.get('/localForecast', function(req, res) {
     logger.trace('router.get(/localForecast) exit');
 });
 
-router.get('/localForecastDays', function(req, res) {
-    logger.trace('router.get(/localForecastDays) entry');
-    res.render('localForecastDays', {'DELAY':DELAY, name:'Banjo'});
-    logger.trace('router.get(/localForecastDays) exit');
+router.get('/localForecastDays1', function(req, res) {
+    logger.trace('router.get(/localForecastDays1) entry');
+    res.render('localForecastDays1', {'DELAY':DELAY, name:'Banjo'});
+    logger.trace('router.get(/localForecastDays1) exit');
+});
+
+router.get('/localForecastDays2', function(req, res) {
+    logger.trace('router.get(/localForecastDays2) entry');
+    res.render('localForecastDays2', {'DELAY':DELAY, name:'Banjo'});
+    logger.trace('router.get(/localForecastDays2) exit');
 });
 
 router.get('/geeksWeatherDoc', function(req, res) {

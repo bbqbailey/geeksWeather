@@ -70,20 +70,20 @@
         "Comment": "Per your license agreement for geeksWeather, this image must remain as the first entry, as obtained, from geeksWeather.  The following entries are a list of images and web sites that are displayed by looping through all the pages.  Used by slideShow in geeksWeather app.  There can be as many, or as few, as you want."
       },
 
-      { "title": "localForecast",
-        "uri": "/localForecast",
+      { "title": "localForecastDays1",
+        "uri": "/localForecastDays1",
         "displayType": "iframe",
         "height": "950px",
         "width": "100%",
-        "localForecast_Comment":"This is an image, so it is type img.  This is an application page within geeksWeather.  It is built real-time.  It is a dedicated page that is called in this slideShow.  It will show your city s current and projected weather information, as obtained by your wunderground key, from wunderground.  The data on this page is updated, by default, every 5 minutes.  See value for WUNDERGROUND_REFRESH_WEATHER_MINUTES.  This value is in Minutes"
+        "localForecastDays_Comment":"This is an image, so it is type img.  This is an application page within geeksWeather.  It is built real-time.  It is a dedicated page that is called in this slideShow.  It will show your city s current and projected weather information, as obtained by your wunderground key, from wunderground.  The data on this page is updated, by default, every 5 minutes.  See value for WUNDERGROUND_REFRESH_WEATHER_MINUTES.  This value is in Minutes.  Forecast for Today and Tomorrow."
       },
 
-      { "title": "localForecastDays",
-        "uri": "/localForecastDays",
+      { "title": "localForecastDays2",
+        "uri": "/localForecastDays2",
         "displayType": "iframe",
         "height": "950px",
         "width": "100%",
-        "localForecastDays_Comment":"This is an image, so it is type img.  This is an application page within geeksWeather.  It is built real-time.  It is a dedicated page that is called in this slideShow.  It will show your city s current and projected weather information, as obtained by your wunderground key, from wunderground.  The data on this page is updated, by default, every 5 minutes.  See value for WUNDERGROUND_REFRESH_WEATHER_MINUTES.  This value is in Minutes"
+        "localForecastDays_Comment":"This is an image, so it is type img.  This is an application page within geeksWeather.  It is built real-time.  It is a dedicated page that is called in this slideShow.  It will show your city s current and projected weather information, as obtained by your wunderground key, from wunderground.  The data on this page is updated, by default, every 5 minutes.  See value for WUNDERGROUND_REFRESH_WEATHER_MINUTES.  This value is in Minutes.  Forecast for +2 and +3 Days out."
       },
 
       { "title": "weather.gov forecast for Alpharetta, GA",
