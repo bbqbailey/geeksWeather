@@ -37,8 +37,18 @@ setInterval(function() {
 
 function buildHtml( displayObj ) {
   console.log("buildHtml() entry: displayObj: ", displayObj);
-  var htmlString = '<' + displayObj.displayType + ' src="' + displayObj.uri + '" height="' + displayObj.height + '" width="' + displayObj.width + '">';
-  console.log("buildHtml(): htmlString: " + htmlString);
+//  var htmlString = '<' + displayObj.displayType + ' src="' + displayObj.uri + '" height="' + displayObj.height + '"
+//'"width="' + displayObj.width + '">';
+// var htmlString = '<' + displayObj.displayType + ' src="' + displayObj.uri + '" height="100%" >';
+// var htmlString = '<' + displayObj.displayType + ' src="' + displayObj.uri + '" height="100%" >';
+var height="100%";
+var width=displayObj.width;
+console.log(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>displayObj.displayType: " + displayObj.displayType);
+if(displayObj.displayType === "iframe") {
+  width="100%";
+}
+ var htmlString = '<' + displayObj.displayType + ' src="' + displayObj.uri + '" height="' + height + '"  width="' + width + '">';
+ console.log("buildHtml(): htmlString: " + htmlString);
   return htmlString;
 }
 
@@ -75,7 +85,7 @@ function advanceImage() { //used with setInterval
       i=0;
     }
   }
-  document.getElementById('imageDiv').innerHTML=htmlString;
+  document.getElementById('slideShowImage').innerHTML=htmlString;
 }
 
 var pauseCheckboxValue='';
@@ -113,7 +123,7 @@ function nextSite() {  //used with button
     console.log("nextSite() image: ", config.displayPages[i].name );
     htmlString = buildHtml(config.displayPages[i]);
   }
-  document.getElementById('imageDiv').innerHTML=htmlString;
+  document.getElementById('slideShowImage').innerHTML=htmlString;
 };
 
 function prevSite() {  //used with button
@@ -129,5 +139,5 @@ function prevSite() {  //used with button
     console.log("prevSite() image: ", config.displayPages[i].name );
     htmlString = buildHtml(config.displayPages[i]);
   }
-  document.getElementById('imageDiv').innerHTML=htmlString;
+  document.getElementById('slideShowImage').innerHTML=htmlString;
 };

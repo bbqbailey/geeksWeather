@@ -5,30 +5,27 @@ head
   link(rel='stylesheet' type='text/css' href='/stylesheets/geeksWeather.css')
 
 body
-  div(id='mainForecastArea' )
-    div
-      div
-        div(class='forecastday' id='day0Icon')
-        section(class='forecastday' id='day0' style="font-size:150px")
+  section(id='wholePageSection')
+    section(id="iconSection")
+      div(id='leftIcon')
+        div(id='leftIconImage')
+        div(class='leftForecastday' id='day0')
           <b>
           div(id='day0_name')
           div(id='day0_high')
           div(id='day0_low')
           div(id='day0_wind')
           br
-        
-      div
-        div(class='forecastday' id='day1Icon' style="margin-left:100px")
-        section(class='forecastday' id='day1' style="font-size:150px")
+      div(id='rightIcon')
+        div(id='rightIconImage')
+        div(class='rightForecastday' id='day1')
           <b>
           div(id='day1_name')
           div(id='day1_high')
           div(id='day1_low')
           div(id='day1_wind')
           br
-
-
-  footer
+    footer(class="forecastdays")
       div(id='state') State:
       div(id='station') Station:
 
@@ -68,10 +65,10 @@ body
       $("#day0_high").text(" H: " + forecast[0].high.fahrenheit);
       $("#day0_low").text( " L: " + forecast[0].low.fahrenheit);
       $("#day0_wind").text(" W: " + forecast[0].avewind.mph);
-      var img0 = '<img src="http://icons.wxug.com/i/c/h/' + forecast[0].icon + '.gif"  height=\"1000px\" >';
+      //var img0 = '<img src="http://icons.wxug.com/i/c/h/' + forecast[0].icon + '.gif"  height=\"1000px\" >';
+      var img0 = '<img src="http://icons.wxug.com/i/c/h/' + forecast[0].icon + '.gif"  height=\"100%\" >';
       console.log("============================================img0: " + img0);
-      $('#day0Icon').html(img0);
-      
+      $('#leftIconImage').html(img0);
       
       $("#day1_name").text(dayNames[day[1]]);
       $("#day1_high").text(" H: " + forecast[1].high.fahrenheit);
@@ -81,8 +78,9 @@ body
       $("#station").text("Station: " + weather_data.station);
       console.log("weather: ", weather_data);
       console.log("forecast: ", weather_data.forecast);
-      var img1 = '<img src="http://icons.wxug.com/i/c/h/' + forecast[1].icon + '.gif"  height=\"1000px\" >';
+      //var img1 = '<img src="http://icons.wxug.com/i/c/h/' + forecast[1].icon + '.gif"  height=\"1000px\" >';
+      var img1 = '<img src="http://icons.wxug.com/i/c/h/' + forecast[1].icon + '.gif"  height=\"100%\" >';
       console.log("============================================img1: " + img1);
-      $('#day1Icon').html(img1);
+      $('#rightIconImage').html(img1);
       
     }, false)

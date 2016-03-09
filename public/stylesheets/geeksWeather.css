@@ -1,27 +1,203 @@
 @import url(http://fonts.googleapis.com/css?family=Open+Sans);
 
-body {
-  font-family: sans-serif-bold;
-  color: #black;
-  font-size: 200px;
-
-}
-
-.preFont {
-  display:block;
-  font-family: monospace;
-  white-space: pre;
-  font-size: 27px;
-}
 
 /* STRUCTURE */
 
-#mainArea {
-	padding: 5px;
-  float: left;
-	width: 3000px;
-	margin: 20px; /* auto; /* auto centers on page */
+
+#wholePageSection {
+  height:100%;
+  width: 99%;
+  /*
+  box-sizing: border-box;
+  border-style: solid;
+  border-width:10px;
+  border-color:black;
+  */
 }
+
+
+#topSection {
+  height: 20%;
+  width: 100%;
+  float:left;
+  font-family: 'Orbitron', sans-serif;
+  font-size: 140px;
+  /*
+  box-sizing:border-box;
+  border-style: solid;
+  border-width:10px;
+  border-color: gray;
+  */
+}
+
+#topTime {
+    height: 100%;
+    width:55%;
+    float:left;
+    color: #007700;
+    /*
+    box-sizing: border-box;
+    border-style: solid;
+    border-width:10px;
+    border-color: red;
+    */
+ }
+
+#topTemp {
+    height: 100%;
+    width:45%;
+    float: right;
+    color: #000000;
+    /*
+    box-sizing: border-box;
+    border-style: solid;
+    border-width:10px;
+    border-color: green;
+    */
+}
+
+#mainSection {
+  height:72%;
+  width:100%;
+  float:left;
+  /*
+  box-sizing: border-box;
+  border-style: solid;
+  border-width: 20px;
+  border-color: blue;
+  */
+}
+
+#slideShowImage {
+  height: 100%;
+  width: 100%;
+  float:left;
+  /*
+  box-sizing:border-box;
+  border-style: dotted;
+  border-width: 10px;
+  border-color: green;
+  */
+}
+
+#iconSection {
+  height: 90%;
+  width: 100%;
+  float:left;
+  /*
+  box-sizing:border-box;
+  border-style: solid;
+  border-width:10px;
+  border-color: gray;
+  */
+}
+
+#leftIcon {
+  height: 100%;
+  width: 47%;
+  float:left;
+  color: #007700;
+  /*
+  box-sizing: border-box;
+  border-style: solid;
+  border-width:10px;
+  border-color: red;
+  */
+}
+
+#rightIcon {
+  height: 100%;
+  width: 47%;
+  float:left;
+  color: #007700;
+  /*
+  box-sizing: border-box;
+  border-style: solid;
+  border-width:10px;
+  border-color: red;
+  */
+}
+
+#leftIconImage {
+  height: 100%;
+  float:left;
+  color: #007700;
+  /*
+  box-sizing: border-box;
+  */
+}
+
+#rightIconImage {
+  height: 100%;
+  float:left;
+  color: #007700;
+  /*
+  box-sizing: border-box;
+  */
+}
+
+.leftForecastday {
+  position: absolute;
+  left: 3%;
+  top: 3%;
+  font-size:800%;
+  color: black;
+  float:left;
+}
+
+.rightForecastday {
+  position: absolute;
+  left: 48%;
+  top: 3%;
+  font-size:800%;
+  color: black;
+  float:left;
+}
+
+footer.forecastdays {
+  height: 10%;
+  width: 100%;
+  float:left;
+  font-size: 20px;
+  /*
+  box-sizing: border-box;
+  border-style: solid;
+  border-width: 10px;
+  border-color: purple;
+  */
+}
+
+.footer {
+  height: 8%;
+  width: 100%;
+  float:left;
+	font-size: 40px;
+  /*
+  box-sizing: border-box;
+  border-style: solid;
+  border-width: 10px;
+  border-color: purple;
+  */
+}
+
+/*
+#statusSection {
+  height:0%;
+  width:100%;
+  float:left;
+  box-sizing: border-box;
+  border-style: solid;
+  border-width: 10px;
+  border-color: yellow;
+}
+
+#statusSectionBBQBailey {
+  height:80%;
+  float:left;
+  box-sizing: border-box;
+}
+*/
+
 
 #mainForecastArea {
 	padding: 5px;
@@ -30,72 +206,11 @@ body {
 	margin: 20px; /* auto; /* auto centers on page */
 }
 
-
-#topTime {
-    padding-right: 60px;
-    width: 1000px;
-    float: left;
-    font-family: 'Orbitron', sans-serif;
-    font-size: 200px;
-    color: #007700;
- }
-
-#topTemp {
-    padding-left: 40px;
-    padding-right: 0;
-    width: 400px;
-    float: right;
-    font-family: 'Orbitron', sans-serif;
-    font-size: 200px;
-    color: #000000;
+#mainAreaStandard {
+	padding: 5px;
+  float: left;
 }
 
-#today {
-	width: 700px;
-	float: left;
-	padding: 5px 15px;
-    font-family: sans-serif-bold;
-    font-weight: 900;
-    background-size: contain;
-    backround-repeat: no-repeat;
-}
-
-#tomorrow {
-	width:700px; /* Account for margins + border values */
-	float: left;
-	padding: 5px 15px;
-	margin: 0px 5px 5px 5px;
-    font-family: sans-serif-bold;
-    font-weight: 900;
-    background-size: contain;
-    backround-repeat: no-repeat;
-}
-
-#todayCond {
-    width: 700px;
-    float: left;
-    padding: 5px 15px;
-    margin: 0px 5px 5px 5px;
-    font-size: 80px;
-    font-family: sans-serif-bold
-    font-weight: 900;
-}
-
-#tomorrowCond {
-    width: 700px;
-    float: left;
-    padding: 5px 15px;
-    margin: 0px 5px 5px 5px;
-    font-size: 80px;
-    font-family: sans-serif-bold
-    font-weight: 900;
-}
-
-#sidebar {
-	width: 270px;
-	padding: 5px 15px;
-	float: left;
-}
 
 #wundergroundLogo {
   width: 1.25in;
@@ -106,26 +221,19 @@ body {
   transform: scale(1,1);
 }
 
-.forecastday {
-  float: left;
-  font-size: 40px;
-  margin-right:30px;
-}
 
 .detailedInfo {
+  display:block;
   float: left;
-  font-size: 60px;
+  font-family: monospace;
+  white-space: pre;
+  font-size: 22px;
 }
 
 button.pageSelection {
     height: 60px;
 }
 
-footer {
-	clear: both;
-	padding: 0 15px;
-	font-size: 40px;
-}
 
 /************************************************************************************
 MEDIA QUERIES

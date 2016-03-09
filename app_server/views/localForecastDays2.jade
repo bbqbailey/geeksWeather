@@ -5,30 +5,27 @@ head
   link(rel='stylesheet' type='text/css' href='/stylesheets/geeksWeather.css')
 
 body
-  div(id='mainForecastArea' )
-    div
-      div
-        div(class='forecastday' id='day2Icon')
-        section(class='forecastday' id='day2' style="font-size:150px")
+  section(id='wholePageSection')
+    section(id="iconSection")
+      div(id='leftIcon')
+        div(id='leftIconImage')
+        div(class='leftForecastday' id='day2')
           <b>
           div(id='day2_name')
           div(id='day2_high')
           div(id='day2_low')
           div(id='day2_wind')
           br
-        
-      div
-        div(class='forecastday' id='day3Icon' style="margin-left:100px")
-        section(class='forecastday' id='day3' style="font-size:150px")
+      div(id='rightIcon')
+        div(id='rightIconImage')
+        div(class='rightForecastday' id='day3')
           <b>
           div(id='day3_name')
           div(id='day3_high')
           div(id='day3_low')
           div(id='day3_wind')
           br
-
-
-  footer
+    footer(class="forecastdays")
       div(id='state') State:
       div(id='station') Station:
 
@@ -69,13 +66,10 @@ body
       $("#day2_high").text(" H: " + forecast[2].high.fahrenheit);
       $("#day2_low").text( " L: " + forecast[2].low.fahrenheit);
       $("#day2_wind").text(" W: " + forecast[2].avewind.mph);
-      $("#state").text(" Connected");
-      $("#station").text("Station: " + weather_data.station);
-      console.log("weather: ", weather_data);
-      console.log("forecast: ", weather_data.forecast);
-      var img2 = '<img src="http://icons.wxug.com/i/c/h/' + forecast[2].icon + '.gif"  height=\"1000px\" >';
+      //var img2 = '<img src="http://icons.wxug.com/i/c/h/' + forecast[2].icon + '.gif"  height=\"1000px\" >';
+      var img2 = '<img src="http://icons.wxug.com/i/c/h/' + forecast[2].icon + '.gif"  height=\"100%\" >';
       console.log("============================================img2: " + img2);
-      $('#day2Icon').html(img2);
+      $('#leftIconImage').html(img2);
       
       $("#day3_name").text(dayNames[day[3]]);
       $("#day3_high").text(" H: " + forecast[3].high.fahrenheit);
@@ -85,7 +79,8 @@ body
       $("#station").text("Station: " + weather_data.station);
       console.log("weather: ", weather_data);
       console.log("forecast: ", weather_data.forecast);
-      var img3 = '<img src="http://icons.wxug.com/i/c/h/' + forecast[3].icon + '.gif"  height=\"1000px\" >';
+      //var img3 = '<img src="http://icons.wxug.com/i/c/h/' + forecast[3].icon + '.gif"  height=\"1000px\" >';
+      var img3 = '<img src="http://icons.wxug.com/i/c/h/' + forecast[3].icon + '.gif"  height=\"100%\" >';
       console.log("============================================img3: " + img3);
-      $('#day3Icon').html(img3);
+      $('#rightIconImage').html(img3);
     }, false)
