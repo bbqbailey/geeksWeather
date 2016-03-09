@@ -9,89 +9,87 @@ head
   meta(http-equiv="refresh", content="600")
 
 body
-  section(id='topTime')
-    div(id="time" ) Time: Waiting...
-  
-  section(id='topTemp')
-    div(id="temp_f" )
+  section(id='wholePageSection')
+    section(id="topSection")
+      div(id='topTime')
+        div(id="time" ) Time: Waiting... 
+      div(id='topTemp') 
+        div(id="temp_f" )  
+    section(id="mainDetailedInfoArea")
+      section(id='status')
+        div(id='died')
+          img(src='/images/hesDeadJim.jpg', id='hesDeadJim', style='display:none')
+      section
+        section(class='detailedInfo' style='text-align:left')
+          div
+            p <em>Current Conditions: </em>
+              pre(style='padding-left: 50px')
+                div(id='temp')
+                div(id='rel_hum')
+                div(id='wind_dir')
+                div(id='wind_mph')
+                div(id='wind_gust')
+                div(id='press_mb')
+                div(id='press_trend')
+                div(id='dewpoint')
+                div(id='visibility')
+                div(id='prec_1h')
+                div(id='prec_todayInch')
+        section(class='detailedInfo' style='text-align:left')
+          div
+            p <em>Today's Forecast</em>
+              pre(style='padding-left: 50px')
+                div(id='today_high')
+                div(id='today_low')
+                div(id='wind')
+                div(id='cond')
+            p <em> Sun </em>
+              pre(style='padding-left: 50px')
+                div(id='sun_sunrise_hr') SRH:
+                div(id='sun_sunrise_min') SRM:
+                div(id='sun_sunset_hr') SSH:
+                div(id='sun_sunset_min') SSM:
 
-  section(id='status')
-    div(id='died')
-      img(src='/images/hesDeadJim.jpg', id='hesDeadJim', style='display:none')
-          
-  section(id='mainArea')
-    section
-      section(class='detailedInfo' style='text-align:left')
-        div
-          p <em>Current Conditions: </em>
-            pre(style='padding-left: 50px')
-              div(id='temp')
-              div(id='rel_hum')
-              div(id='wind_dir')
-              div(id='wind_mph')
-              div(id='wind_gust')
-              div(id='press_mb')
-              div(id='press_trend')
-              div(id='dewpoint')
-              div(id='visibility')
-              div(id='prec_1h')
-              div(id='prec_todayInch')
-      section(class='detailedInfo' style='text-align:left')
-        div
-          p <em>Today's Forecast</em>
-            pre(style='padding-left: 50px')
-              div(id='today_high')
-              div(id='today_low')
-              div(id='wind')
-              div(id='cond')
-          p <em> Sun </em>
-            pre(style='padding-left: 50px')
-              div(id='sun_sunrise_hr') SRH:
-              div(id='sun_sunrise_min') SRM:
-              div(id='sun_sunset_hr') SSH:
-              div(id='sun_sunset_min') SSM:
+            p <em> Moon: </em>
+              pre(style='padding-left: 50px')
+                div(id='moon_pctIllum') MI:
+                div(id='moon_ageOfMoon') MA:
+                div(id='moon_phaseofMoon') MP:
+                div(id='moon_hemisphere') MH:
+                div(id='moon_moonrise_hr') MRH:
+                div(id='moon_moonrise_min') MRM:
+                div(id='moon_moonset_hr') MSH:
+                div(id='moon_moonset_min') MSM:
 
-          p <em> Moon: </em>
-            pre(style='padding-left: 50px')
-              div(id='moon_pctIllum') MI:
-              div(id='moon_ageOfMoon') MA:
-              div(id='moon_phaseofMoon') MP:
-              div(id='moon_hemisphere') MH:
-              div(id='moon_moonrise_hr') MRH:
-              div(id='moon_moonrise_min') MRM:
-              div(id='moon_moonset_hr') MSH:
-              div(id='moon_moonset_min') MSM:
+        section(class='detailedInfo' style='text-align:left')
+          div
+            p <em> Tomorrow </em>
+              pre(style='padding-left: 50px')
+                div(id='high') FH:
+                div(id='low') FL:
+                div(id='conditions') FC: 
+                div(id='icon') FI:
+                div(id='pop') FP:
+                div(id='qpf_allday') FA:
+                div(id='qpf_day') FD:
+                div(id='qpf_night') FN:
+                div(id='snow_allday') SA:
+                div(id='snow_day') SD:
+                div(id='snow_night') SN:
+                div(id='maxWindDegrees') MW:
+                div(id='maxWindDir') MD:
+                div(id='maxWindMph') MWM: 
+                div(id='aveWindDegrees') AW:
+                div(id='aveWindDir') AD:
+                div(id='aveWindMPH') AWM:
+                div(id='avehumidity') FU:
+                div(id='maxhumidity') MU:
+                div(id='minhumidity') LU: 
 
-      section(class='detailedInfo' style='text-align:left')
-        div
-          p <em> Tomorrow </em>
-            pre(style='padding-left: 50px')
-              div(id='high') FH:
-              div(id='low') FL:
-              div(id='conditions') FC: 
-              div(id='icon') FI:
-              div(id='pop') FP:
-              div(id='qpf_allday') FA:
-              div(id='qpf_day') FD:
-              div(id='qpf_night') FN:
-              div(id='snow_allday') SA:
-              div(id='snow_day') SD:
-              div(id='snow_night') SN:
-              div(id='maxWindDegrees') MW:
-              div(id='maxWindDir') MD:
-              div(id='maxWindMph') MWM: 
-              div(id='aveWindDegrees') AW:
-              div(id='aveWindDir') AD:
-              div(id='aveWindMPH') AWM:
-              div(id='avehumidity') FU:
-              div(id='maxhumidity') MU:
-              div(id='minhumidity') LU: 
-
-  footer
-    button(onclick='moveToHome()' class='pageSelection' id='homeButton' value='homeButton') Slide Show
-    img(src="/images/wundergroundLogo_4c_horz.png", id="wundergroundLogo")
-    div(id='state') State:
-    div(id='station') Station:
+    section(class="footer")
+      button(onclick='moveToHome()' class='pageSelection' id='homeButton' value='homeButton') Slide Show
+      img(src="/images/wundergroundLogo_4c_horz.png", id="wundergroundLogo")
+      img(src='/images/bbqBailey.png', id='bbqbaileyLogo')
 
  
 

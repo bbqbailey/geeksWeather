@@ -39,19 +39,15 @@ body
       div(id='statusSection')
         div(id="died")
             img(src="/images/hesDeadJim.jpg", id="hesDeadJim", style="display:none")
-      //div(id='imageSection')
-        //why is bbqBailey still needed? It's in slideShow.displayPages.splashPage, but not working if not here!  If it has to be here to keep the page from being blank, then make this the splashPage and remove from slideShow.displayPages.
-        
-        //img(id='bbqBailey' src='/images/bbqBailey.png')
           
     section(class='footer')
       input( class='nav', type='button', value='Prev Slide', onclick='prevSite()', style='height:60px')
       input( class='nav', type='button', value='Next Slide', onclick='nextSite()', style='height:60px')
       input( class='nav', type='button', value='Detailed Weather Info', onclick='moveToDetailedInfo()', style='height:60px')
-      input( class='nav', type='button', value='Documentation',
-      onclick='moveToDocumentation()', style='height:60px')
-      input( class='nav', type='button', value='Camera 1',
-      onclick='moveToCamera1()', style='height:60px')
+      input( class='nav', type='button', value='Documentation', onclick='moveToDocumentation()', style='height:60px')
+      input( class='nav', type='button', value='Camera 1', onclick='moveToCamera1()', style='height:60px')
+      input( class='nav', type='button', value='Calendar', onclick='moveToCalendar()', style='height:60px')
       input( class='nav', id='pauseCB', type='checkbox', name='pause', value='checked', onchange='pauseChanged(this)')
       | Pause
       img(src="/images/wundergroundLogo_4c_horz.png", id="wundergroundLogo")
+      img(src='/images/bbqBailey.png', id='bbqbaileyLogo')

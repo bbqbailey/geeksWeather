@@ -35,12 +35,6 @@ router.get('/detailedInfo', function(req, res, next) {
     logger.trace('router.get(/detailedInfo) exit');
 });
 
-router.get('/localForecast', function(req, res) {
-    logger.trace('router.get(/localForecast) entry');
-    res.render('localForecast', {'DELAY':DELAY, name:'Banjo'});
-    logger.trace('router.get(/localForecast) exit');
-});
-
 router.get('/localForecastDays1', function(req, res) {
     logger.trace('router.get(/localForecastDays1) entry');
     res.render('localForecastDays1', {'DELAY':DELAY, name:'Banjo'});

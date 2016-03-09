@@ -105,6 +105,11 @@ function moveToCamera1() { //used with button
   window.location.href="camera1";
 }
 
+function moveToCalendar() { //used with button
+  console.log("slideShow.js moveToCalendar() entry");
+  window.location.href="Calendar";
+}
+
 function nextSite() {  //used with button
   var htmlString = "";
   console.log("slideShow.js nextSite() entry: value of HES_DEAD_JIM: " + HES_DEAD_JIM);
