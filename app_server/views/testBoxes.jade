@@ -1,0 +1,44 @@
+//output:output.html
+
+head
+  title geeksWeather!
+  link(rel='icon' href='/images/bbqBailey.png')
+  link(href='https://fonts.googleapis.com/css?family=Orbitron:900' rel='stylesheet' type='text/css')
+  link(rel='stylesheet' type='text/css' href='/stylesheets/geeksWeather.css')
+  meta(HTTP-EQUIV="CACHE-CONTROL", CONTENT="NO-CACHE")
+  meta(http-equiv="refresh", content="3600")
+  
+body
+  section(id='wholePageSection')
+    section(id="topSection")
+      div(id='topTime')
+        div(id="time" ) 12:88:88
+      div(id='topTemp') 
+        div(id="temp_f" ) 100
+    section(id='mainSection')  
+      div(id='slideShowImage')
+        span(class="1" style="font-size:60px; color:red") 
+          |The purpose of the /testBoxes page is to show outline boxes for the different areas on the web pages.  
+          | <br><br>
+          |In order to see colored boxes, you must edit geeksWeather.css and uncomment the border stuff
+        script(src="//code.jquery.com/jquery-2.1.4.min.js")
+        //removed so it doesn't generate anyhting for testing:  
+        //script(src = "/javascripts/slideShow.js")    
+        //script(src="/javascripts/geeksWeatherEvents.js")
+        div(id="died")
+            img(src="/images/hesDeadJim.jpg", id="hesDeadJim", style="display:none")
+      div(id='statusSection')
+        div(id="died")
+            img(src="/images/hesDeadJim.jpg", id="hesDeadJim", style="display:none")
+          
+    section(class='footer')
+      input( class='nav', type='button', value='Prev Slide', onclick='prevSite()', style='height:60px')
+      input( class='nav', type='button', value='Next Slide', onclick='nextSite()', style='height:60px')
+      input( class='nav', type='button', value='Detailed Weather Info', onclick='moveToDetailedInfo()', style='height:60px')
+      input( class='nav', type='button', value='Documentation', onclick='moveToDocumentation()', style='height:60px')
+      input( class='nav', type='button', value='Camera 1', onclick='moveToCamera1()', style='height:60px')
+      input( class='nav', type='button', value='Calendar', onclick='moveToCalendar()', style='height:60px')
+      input( class='nav', id='pauseCB', type='checkbox', name='pause', value='checked', onchange='pauseChanged(this)')
+      | Pause
+      img(src="/images/wundergroundLogo_4c_horz.png", id="wundergroundLogo")
+      img(src='/images/bbqBailey.png', id='bbqbaileyLogo')

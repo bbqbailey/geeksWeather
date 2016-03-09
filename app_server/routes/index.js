@@ -66,3 +66,9 @@ router.get('/camera1', function(req, res) {
   res.render('camera1', {'camera1uri':camera1uri});
   logger.trace('router.get(/camera1) exit');
 });
+
+router.get('/testBoxes', function(req, res) {
+  logger.trace('router.get(/testBoxes) entry');
+  res.render('testBoxes');
+  logger.trace('router.get(/testBoxes) exit');
+});

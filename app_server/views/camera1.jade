@@ -10,36 +10,20 @@ head
   script.
     var camera1uri="#{camera1uri}"
 
-  //body
-    //section(id='topTime')
-      //div(id="time" ) Time: Waiting...
-    
-    //section(id='topTemp')
-      //div(id="temp_f" )
-
-    //section(id='status')
-      //div(id='died')
-        //img(src='/images/hesDeadJim.jpg', id='hesDeadJim', style='display:none')
   body
-    section(id='wholePageSection')
-      section(id="topSection")
-        div(id='topTime')
-          div(id="time" ) Time: Waiting... 
-        div(id='topTemp') 
-          div(id="temp_f" )  
-      section(id='mainCameraArea')
-        section(id='status')
-          div(id='died')
-            img(src='/images/hesDeadJim.jpg', id='hesDeadJim', style='display:none')
-          script(src="//code.jquery.com/jquery-2.1.4.min.js")
-          script(src="/javascripts/geeksWeatherEvents.js")
-          console.log("camera1uri: ", camera1uri)      
-          img(src=camera1uri,height="100%")
-        
-      footer(class="footer")
-        button(onclick='window.location.href="slideShow"' class='pageSelection' id='homeButton' value='homeButton') Slide Show
-        img(src="/images/wundergroundLogo_4c_horz.png", id="wundergroundLogo", style="width:1.5in")
-        img(src='/images/bbqBailey.png', id='bbqbaileyLogo')
+    section(id='mainCameraArea')
+      section(id='status')
+        div(id='died')
+          img(src='/images/hesDeadJim.jpg', id='hesDeadJim', style='display:none')
+        script(src="//code.jquery.com/jquery-2.1.4.min.js")
+        script(src="/javascripts/geeksWeatherEvents.js")
+        console.log("camera1uri: ", camera1uri)      
+        img(src=camera1uri,height="100%")
+      
+    footer(class="footer")
+      button(onclick='window.location.href="slideShow"' class='pageSelection' id='homeButton' value='Slide Show')
+      img(src="/images/wundergroundLogo_4c_horz.png", id="wundergroundLogo", style="width:1.5in")
+      img(src='/images/bbqBailey.png', id='bbqbaileyLogo')
 
 
   
