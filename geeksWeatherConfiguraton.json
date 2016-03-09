@@ -70,6 +70,14 @@
         "Comment": "Per your license agreement for geeksWeather, this image must remain as the first entry, as obtained, from geeksWeather.  The following entries are a list of images and web sites that are displayed by looping through all the pages.  Used by slideShow in geeksWeather app.  There can be as many, or as few, as you want."
       },
 
+      {
+        "title": "Calendar",
+        "uri": "/Calendar",
+        "displayType": "iframe",
+        "height": "950px",
+        "Comment": "Not currently produced within application.  Will change in future.  Meantime, place a current calendar named Calendar.html into the images folder."
+      },
+
       { "title": "localForecastDays1",
         "uri": "/localForecastDays1",
         "displayType": "iframe",

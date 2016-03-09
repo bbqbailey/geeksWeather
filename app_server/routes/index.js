@@ -28,6 +28,7 @@ router.get('/slideShow', function(req, res, next) {
     res.render('slideShow', {'DELAY':DELAY, name:'Banjo', 'config': stringifyconfig});
     logger.trace('router.get(/) exit');
 });
+
 router.get('/detailedInfo', function(req, res, next) {
     logger.trace('router.get(/detailedInfo) entry');
     res.render('detailedInfo');
@@ -58,6 +59,12 @@ router.get('/geeksWeatherDoc', function(req, res) {
   logger.trace('router.get(/geeksWeatherDoc) exit');
 });
 
+router.get('/Calendar', function(req, res) {
+  logger.trace('router.get(/Calendar) entry');
+  logger.trace("__dirname: " + __dirname);
+  res.sendFile(__dirname + '/Calendar.html');
+  logger.trace('router.get(/Calendar) exit');
+});
 
 router.get('/camera1', function(req, res) {
   logger.trace('router.get(/camera1) entry');

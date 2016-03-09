@@ -21,17 +21,16 @@ if(typeof DELAY === 'undefined') {
    console.log("slideShow DELAY is: " + DELAY);
 }
 
-var imgHeight="980px"
-var docHeight = document.body.clientHeight;
-var docWidth  = document.body.clientWidth;
-
 function iframeDidLoad() {
   alert('Done');
 }
 
-
+var i=0;
+var firstTime = true;  //see firstTime below to uncoment
+advanceImage();
+//causes slideShow image to advance
 setInterval(function() {
-  console.log("fired");
+  console.log("slideShow.js setInterval() fired!");
   advanceImage();
 }, DELAY);
 
@@ -52,7 +51,6 @@ if(displayObj.displayType === "iframe") {
   return htmlString;
 }
 
-
 function hesDeadJim() {
   console.log("hesDeadJim() entry");
   var htmlString = buildHtml(config.errorPage)
@@ -60,20 +58,17 @@ function hesDeadJim() {
   return htmlString;
 }
 
-
-var i=0;
-//var firstTime = true;  //see firstTime below to uncoment
 function advanceImage() { //used with setInterval
   var htmlString="";
   console.log("slideShow.js: advanceImage(): value of HES_DEAD_JIM: " + HES_DEAD_JIM);
   if(HES_DEAD_JIM) {
     htmlString = hesDeadJim();  //always do this first
   // ==== uncomment the following if you want a special first page that only runs first time.
-  //} else if(firstTime) { //then show splashPage
-      //console.log("firstTime is true");
-      //console.log("   calling buildHtml with config.splashPage value: ", config.splashPage);
-      //htmlString=buildHtml(config.splashPage);
-      //firstTime=false;
+} else if(firstTime) { //then show splashPage
+      console.log("firstTime is true");
+      console.log("   calling buildHtml with config.splashPage value: ", config.splashPage);
+      htmlString=buildHtml(config.splashPage);
+      firstTime=false;
   } else if(pauseCheckboxValue==='Checked') {
       console.log("advanceImage(): pauseCheckboxValue === 'Checked'");
       console.log("returning to avoid advancing or redisplaying same page");
