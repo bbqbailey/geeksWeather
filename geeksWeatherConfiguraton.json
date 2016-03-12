@@ -55,7 +55,7 @@
         "camera1":
           {
             "location":"Located in Office",
-            "uri": "http://192.168.1.110/img/video.mjpeg",
+            "uri": "http://192.168.1.40/img/video.mjpeg",
             "displayType":"img",
             "height": "950px"
           }
@@ -184,7 +184,7 @@
       },
 
       { "title": "Home video camera 1",
-        "uri": "http://192.168.1.110/img/video.mjpeg",
+        "uri": "http://192.168.1.40/img/video.mjpeg",
         "displayType":"img",
         "height": "950px"
       }
