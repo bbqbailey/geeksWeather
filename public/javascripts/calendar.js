@@ -1,3 +1,4 @@
+//output:output.log
 console.log("calendar.js entry");
 
 var calEvents={ 'month':  {'name':'Mar','events':[
@@ -14,11 +15,21 @@ buildHTML();
 //build the html
 function buildHTML() {
   var month = new Array();
-  createCal(month);
+  var monthNames = ["January","February","March","April","May","June",
+    "July","August","September","October","November","December"];
+  var dayNamesShort = ["Sun","Mon", "Tue", "Wed", "Thu", "Fri","Sat"];
+  var dayNamesLong  = ["Sunday","Monday", "Tueday", "Wedday", "Thuday", "Friday","Satday"];
+  var date = new Date();
+  var theYear = date.getFullYear();
+  var theMonth = date.getMonth();
+  var theDate = date.getDate();
+  var theDay = date.getDay();
 
   console.log("calendar.js produceHTML() entry");
+  createCal(month);
 
-  var theCalendar = " <table style='font-size:60px; font-weight: bold '>";
+  var theCalendar = "<style> table { font-size:60px; font-weight: bold} #today {border-width:5px; border-style: solid; border-color: red} </style>";
+  theCalendar = theCalendar + ("<table>");
   theCalendar = theCalendar + ("  <tr>");
   theCalendar = theCalendar + ("    <th> Sun </th>" );
   theCalendar = theCalendar + ("    <th> Mon </th>" );
@@ -35,7 +46,13 @@ function buildHTML() {
       console.log('calEvents length: ' + calEvents.month.events.length);
       for(k=0;k<calEvents.month.events.length;k++) {
         console.log('comparing ' + month[i][j] + ' to ' + calEvents.month.events[k].date);
-        if(month[i][j] == calEvents.month.events[k].date) {
+        if(theDate == month[i][j] ) {
+          dateString = "    <td id='today' ";
+          if(calEvents.month.events[k].date == month[i][j]) {
+            dateString = dateString + " bgcolor=#00ff00";
+          }
+          dateString = dateString +  "> " + month[i][j] + " </td>";
+        } else if(calEvents.month.events[k].date == month[i][j]) {
           dateString = "    <td bgcolor=#00ff00> " + month[i][j] + " </td>";
         }
       }
@@ -48,15 +65,6 @@ function buildHTML() {
     }
   }
   console.log("theCalendar: " + theCalendar);
-  var monthNames = ["January","February","March","April","May","June",
-    "July","August","September","October","November","December"];
-  var dayNamesShort = ["Sun","Mon", "Tue", "Wed", "Thu", "Fri","Sat"];
-  var dayNamesLong  = ["Sunday","Monday", "Tueday", "Wedday", "Thuday", "Friday","Satday"];
-  var date = new Date();
-  var theYear = date.getFullYear();
-  var theMonth = date.getMonth();
-  var theDate = date.getDate();
-  var theDay = date.getDay();
   console.log("Year: " + theYear + " Month: " + monthNames[theMonth] + " Date: " + theDate);
   console.log("Day Long: " + dayNamesLong[theDay] + " Day Short: " + dayNamesShort[theDay]);
   $("#month").html(monthNames[theMonth]);
