@@ -53,11 +53,16 @@ router.get('/geeksWeatherDoc', function(req, res) {
   logger.trace('router.get(/geeksWeatherDoc) exit');
 });
 
-router.get('/Calendar', function(req, res) {
-  logger.trace('router.get(/Calendar) entry');
-  logger.trace("__dirname: " + __dirname);
-  res.sendFile(__dirname + '/Calendar.html');
-  logger.trace('router.get(/Calendar) exit');
+router.get('/calendar', function(req, res) {
+  logger.trace('router.get(/calendar) entry');
+  res.render('calendar');
+  logger.trace('router.get(/calendar) exit');
+});
+
+router.get('/calendarEvents', function(req, res) {
+  logger.trace('router.get(/calendarEvents) entry');
+  res.render('calendarEvents');
+  logger.trace('router.get(/calendar) exit');
 });
 
 router.get('/camera1', function(req, res) {

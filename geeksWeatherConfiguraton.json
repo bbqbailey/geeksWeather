@@ -72,10 +72,18 @@
 
       {
         "title": "Calendar",
-        "uri": "/Calendar",
+        "uri": "/calendar",
         "displayType": "iframe",
         "height": "950px",
-        "Comment": "Not currently produced within application.  Will change in future.  Meantime, place a current calendar named Calendar.html into the images folder."
+        "Comment": "Current Month calendar.  Dynamic creation within browser.  Following page should be the events.  Seperate pages so can be viewed from across room."
+      },
+
+      {
+        "title": "Calendar Events",
+        "uri": "/calendarEvents",
+        "displayType": "iframe",
+        "height": "950px",
+        "Comment": "Current Month Events.  Dynamic creation within browser.  Following page should be the events.  Seperate pages so can be viewed from across room.  Currently this is hard coded in the page for each month."
       },
 
       { "title": "localForecastDays1",
