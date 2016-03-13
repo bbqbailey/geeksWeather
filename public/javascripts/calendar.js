@@ -18,7 +18,7 @@ function buildHTML() {
 
   console.log("calendar.js produceHTML() entry");
 
-  var theCalendar = " <table style='font-size:130px; font-weight: bold '>";
+  var theCalendar = " <table style='font-size:60px; font-weight: bold '>";
   theCalendar = theCalendar + ("  <tr>");
   theCalendar = theCalendar + ("    <th> Sun </th>" );
   theCalendar = theCalendar + ("    <th> Mon </th>" );

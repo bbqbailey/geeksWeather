@@ -26,7 +26,7 @@ console.log('calEvents: ', calEvents);
 console.log('calEvents.month:', calEvents.month);
 console.log('calEvents.month.events:', calEvents.month.events);
 var theEvent=""
-var eventString = "<section style='font-weight:bold; font-size:70px '>"
+var eventString = "<section style='font-weight:bold; font-size:50px '>"
 for(i=0;i<calEvents.month.length; i++) {
   console.log('calEvents.month[' + i + ']:', calEvents.month[i]);
   console.log('calEvents.month[' + i + '].events.length: ' + calEvents.month[i].events.length);
