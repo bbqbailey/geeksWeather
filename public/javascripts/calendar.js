@@ -28,7 +28,7 @@ function buildHTML() {
   console.log("calendar.js produceHTML() entry");
   createCal(month);
 
-  var theCalendar = "<style> table { font-size:60px; font-weight: bold} #today {border-width:5px; border-style: solid; border-color: red} </style>";
+  var theCalendar = "<style> table { font-size:60px; font-weight: bold} #today {border-width:10px; border-style: solid; border-color: red} </style>";
   theCalendar = theCalendar + ("<table>");
   theCalendar = theCalendar + ("  <tr>");
   theCalendar = theCalendar + ("    <th> Sun </th>" );

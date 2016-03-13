@@ -50,7 +50,7 @@ for(i=todayMonth;i<=nextMonth; i++) { //this month and next month
       var theEvent = calEvents.month[i].events[j].event;
       var date = calEvents.month[i].events[j].date;
       var text = calEvents.month[i].events[j].text;
-      eventString = eventString + ' March ' + eventDate + ': ' + theEvent + ': ' + text + ' <br><br>';
+      eventString = eventString + ' April ' + eventDate + ': ' + theEvent + ': ' + text + ' <br><br>';
     }
   }
   if(i==todayMonth)
