@@ -1,0 +1,17 @@
+This document assumes:
+ - You have already installed nodejs and npm
+
+1.  Create a new directory that will hold all application files.
+2. Issue command: cd <directory> where <directory> is the directory you just created.
+3. Issue command: npm install express-generator -g
+  This installs globally the express-generator
+4. Issue command: express <myapp> where <myapp> is the name of the application: e.g., geeksWeather
+  This creates an application skeleton.
+5. Issue command: cd <myapp>
+6. npm install
+  This installs the dependencies
+7. Issue command: DEBUG=<myapp>:* npm start
+  This starts the application.  If you want to use 'nodemon' (utility to auto restart on file change) to start, then
+    Issue command: nodemon npm start
+8. Go to broswer: http://localhost:3000
+  This runs the application

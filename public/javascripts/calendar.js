@@ -39,23 +39,30 @@ function buildHTML() {
   theCalendar = theCalendar + ("    <th> Fri </th>" );
   theCalendar = theCalendar + ("    <th> Sat </th>" );
   theCalendar = theCalendar + ("  </tr>")
-  for(i=0; i<=5; i++) {
+  for(i=0; i<=5; i++) { //max rows for any month is 6
     theCalendar = theCalendar + ("  <tr>");
-    for(j=0;j<=6; j++) {
-      var dateString = "    <td> " + month[i][j] + " </td>";
+    for(j=0;j<=6; j++) { //max days for any week is 7
+      var dateString = "";
+      var id = "";
+      var monthDate = month[i][j];  //we are working on this date of the month
       console.log('calEvents length: ' + calEvents.month.events.length);
+      if(monthDate == theDate) {
+        console.log('monthDate == theDate: true');
+        id= " id='today' ";
+      }
       for(k=0;k<calEvents.month.events.length;k++) {
-        console.log('comparing ' + month[i][j] + ' to ' + calEvents.month.events[k].date);
-        if(theDate == month[i][j] ) {
-          dateString = "    <td id='today' ";
-          if(calEvents.month.events[k].date == month[i][j]) {
-            dateString = dateString + " bgcolor=#00ff00";
-          }
-          dateString = dateString +  "> " + month[i][j] + " </td>";
-        } else if(calEvents.month.events[k].date == month[i][j]) {
-          dateString = "    <td bgcolor=#00ff00> " + month[i][j] + " </td>";
+        //some convenience abbreviations
+        var eventDate = calEvents.month.events[k].date;
+        console.log('===========theDate: ' + theDate + ' monthDate: ' + monthDate + ' eventDate: ' + eventDate);
+        var bgColor = "";
+        if(monthDate==eventDate) {
+          console.log('monthDate == eventDate: true');
+          bgColor = " bgcolor=#00ff00 "
+          break;
         }
       }
+      dateString = "<td " + id + bgColor + "> " + monthDate + "</td>";
+      console.log('dateString: ' + dateString);
       theCalendar = theCalendar + dateString;
     }
     theCalendar = theCalendar + ("  </tr>")

@@ -107,7 +107,12 @@ function moveToCamera1() { //used with button
 
 function moveToCalendar() { //used with button
   console.log("slideShow.js moveToCalendar() entry");
-  window.location.href="Calendar";
+  window.location.href="calendar";
+}
+
+function moveToCalendarEvents() { //used with button
+  console.log("slideShow.js moveToCalendarEvents() entry");
+  window.location.href="calendarEvents";
 }
 
 function nextSite() {  //used with button

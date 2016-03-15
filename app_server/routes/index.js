@@ -77,3 +77,9 @@ router.get('/testBoxes', function(req, res) {
   res.render('testBoxes');
   logger.trace('router.get(/testBoxes) exit');
 });
+
+router.post('/eventEditor'), function(req, res) {
+  logger.trace('router.post(/eventEditor) entry');
+  res.render('eventEditor');
+  logger.trace('router.get(/eventEditor) exit');
+}
