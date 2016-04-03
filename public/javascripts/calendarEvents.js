@@ -1,12 +1,4 @@
-const MEETING='Meeting';
-const WEDDING_ANNIVERSARY='Wedding Anniversary';
-const FAMILY_GATHERING='Family Gathering';
-const BIRTHDAY='Birthday';
-const HAM_FIELDDAY="HAM Field Day";
-const HOLIDAY="Holiday";
-const EVENT='Event';
-
-var eventTypes = [MEETING, WEDDING_ANNIVERSARY, FAMILY_GATHERING, BIRTHDAY, HAM_FIELDDAY, HOLIDAY, EVENT];
+var calEvents = require("./calEvents.db");
 
 function getEvents() {
   console.log("calendar.js getEvents() entry");
@@ -16,54 +8,6 @@ function getEvents() {
     ]},
     {'name':'Feb','events':[
     ]},
-    {'name':'March','events':[
-      {'date':6,'event':WEDDING_ANNIVERSARY,'text':'Sarah and Michael\'s Wedding Anniversary'},
-      {'date':12,'event':FAMILY_GATHERING,'text':'Sarah, Michael, Vickie join us for dinner.'},
-      {'date':15,'event':MEETING,'text':' 7:30PM: NFARL Club Meeting'},
-      {'date':20,'event':EVENT,'text':' Vernal Equinox 2016'},
-      {'date':26,'event':BIRTHDAY,'text':'Scott Bagwell\'s Birthday'}
-    ]},
-    {'name':'April','events':[
-      {'date':19,'event':BIRTHDAY,'text':'Sarah\'s Birthday'},
-      {'date':19,'event':MEETING,'text':' 7:30PM: NFARL Club Meeting'}
-    ]},
-    {'name':'May','events':[
-      {'date':17,'event':MEETING,'text':' 7:30PM: NFARL Club Meeting'}
-    ]},
-    {'name':'June','events':[
-      {'date':20,'event':EVENT,'text':' Summer Soltice 2016'},
-      {'date':21,'event':MEETING,'text':' 7:30PM: NFARL Club Meeting'},
-      {'date':25,'event':HAM_FIELDDAY,'text':'  1800 UTC Start All Day: NFARL Club HAM Field Day'},
-      {'date':26,'event':HAM_FIELDDAY,'text':' All Day 2059UTC End: NFARL Club HAM Field Day'}
-    ]},
-    {'name':'July','events':[
-      {'date':4,'event':HOLIDAY,'text':'July 4th'},
-      {'date':19,'event':MEETING,'text':' 7:30PM: NFARL Club Meeting'}
-    ]},
-    {'name':'August','events':[
-      {'date':16,'event':MEETING,'text':' 7:30PM: NFARL Club Meeting'}
-    ]},
-    {'name':'September','events':[
-      {'date':20,'event':MEETING,'text':' 7:30PM: NFARL Club Meeting'},
-      {'date':22,'event':EVENT,'text':' Autumnal Equinox 2016'}
-    ]},
-    {'name':'October','events':[
-      {'date':8,'event':BIRTHDAY,'text':'Pat\'s Birthday'},
-      {'date':18,'event':MEETING,'text':' 7:30PM: NFARL Club Meeting'}
-    ]},
-    {'name':'November','events':[
-      {'date':15,'event':MEETING,'text':' 7:30PM: NFARL Club Meeting'},
-      {'date':16,'event':BIRTHDAY,'text':'Bengy\'s Birthday'},
-      {'date':24,'event':HOLIDAY,'text':'Thanksgiving'}
-
-    ]},
-    {'name':'December','events':[
-      {'date':11,'event':BIRTHDAY,'text':'Vickie\'s Birthday'},
-      {'date':11,'event':BIRTHDAY,'text':'Caroline\'s Birthday'},
-      {'date':21,'event':EVENT,'text':' Winter Soltice 2016'},
-      {'date':25,'event':HOLIDAY,'text':'Christmas'}
-    ]},
-
 
   ]};
   return calEvents;

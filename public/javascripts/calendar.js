@@ -20,8 +20,8 @@ function buildHTML() {
   var dayNamesShort = ["Sun","Mon", "Tue", "Wed", "Thu", "Fri","Sat"];
   var dayNamesLong  = ["Sunday","Monday", "Tueday", "Wedday", "Thuday", "Friday","Satday"];
   var date = new Date();
-  var theYear = date.getFullYear();
-  var theMonth = date.getMonth();
+  var theYear = date.getFullYear(); //e.g., 2014 instead of 14
+  var theMonth = date.getMonth(); //Jan is 0
   var theDate = date.getDate();
   var theDay = date.getDay();
 
@@ -85,6 +85,7 @@ function buildHTML() {
 }
 
 //create the calendar
+/*
 function createCal(month) {
   console.log("calendar.js createCal() entry");
   var searching=true;
@@ -113,3 +114,4 @@ function createCal(month) {
   }
   console.log("calendar.js createCal() exit");
 }
+*/

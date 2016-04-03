@@ -36,3 +36,12 @@ output.log
 debugging.txt
 Documentation/WundergroundResponseData.txt
 Documentation/LinksysWebVideoCameraWVC54GCA-EU_V10_UG_A-WEB.pdf
+public/javascripts/calEvents.db
+putlic/javascripts/useDB.js
+public/javascripts/_calPersonalEvents.json
+public/javascripts/myapp.js
+public/javascripts/myapp2.js
+public/javascripts/useCreateCalWithEvents.js
+public/javascripts/useDB.js
+public/javascripts/useMyapp.js
+

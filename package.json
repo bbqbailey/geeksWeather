@@ -1,0 +1,44 @@
+{
+  "name": "geeksweather",
+  "version": "1.0.0",
+  "description": "geeksWeather, which is the base display element for geeksSecurity.",
+  "main": "geeksWeather.js",
+  "dependencies": {
+    "async": "^1.5.0",
+    "body-parser": "^1.14.2",
+    "ejs": "^2.3.4",
+    "express": "^4.13.3",
+    "jade": "^1.11.0",
+    "log4js": "^0.6.29",
+    "monitor": "^0.6.10",
+    "morgan": "^1.6.1",
+    "nedb": "^1.8.0",
+    "querystring": "^0.2.0",
+    "utils": "^0.3.1",
+    "wundergroundnode": "^0.9.0"
+  },
+  "devDependencies": {
+    "chai": "^3.5.0",
+    "mocha": "^2.4.5",
+    "mocha-sinon": "^1.1.5",
+    "sinon": "^1.17.3"
+  },
+  "scripts": {
+    "test": "mocha test "
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/bbqbailey/geeksWeather.git"
+  },
+  "keywords": [
+    "weather",
+    "wunderground",
+    "security"
+  ],
+  "author": "Ben Bailey, aka BbqBailey",
+  "license": "GPL-2.0",
+  "bugs": {
+    "url": "https://github.com/bbqbailey/geeksWeather/issues"
+  },
+  "homepage": "https://github.com/bbqbailey/geeksWeather#readme"
+}
