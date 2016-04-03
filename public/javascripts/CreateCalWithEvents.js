@@ -77,6 +77,10 @@ CreateCalWithEvents.prototype.insertEventsIntoCal = function(callback) {
       );
     }
   }
+  console.log('==========byCal============');
+  for(i=0; i<self.calendarMonth.byCal.length; i++) {
+    console.log('calendar position: ' + i + ': ', self.calendarMonth.byCal[i]);
+  }
 }
 
 CreateCalWithEvents.prototype.getEvents = function(year, month, callback) {
