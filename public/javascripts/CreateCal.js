@@ -103,7 +103,8 @@ function CreateCal(year, month, callBack) {
     calendar[i]={};
   }
 
-  var calendarMonth={byDay:monthOfDays,byCal:calendar}
+  var calendarMonth={byDay:monthOfDays,byCal:calendar};
+  
   callBack(null, calendarMonth);
 }
 
