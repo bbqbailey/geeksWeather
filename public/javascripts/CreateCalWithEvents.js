@@ -10,7 +10,7 @@ var calToValues = {Jan:0,Feb:1,Mar:2,Apr:3,May:4,Jun:5,Jul:6,Aug:7,
 var valuesToCal = {0:"Jan",1:"Feb",2:"Mar",3:"Apr",4:"May",5:"Jun",6:"Jul",
   7:"Aug",8:"Sep",9:"Oct",10:"Nov",11:"Dec"}
 
-var db = new Datastore({filename: __dirname + "/calEvents.db", autoload: true});
+var db = new Datastore({filename: "../database/calEvents.db", autoload: true});
 
 console.log('db: ', db);
 console.log('__dirname: ', __dirname);
