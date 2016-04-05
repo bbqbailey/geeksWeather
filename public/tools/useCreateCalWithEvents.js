@@ -1,4 +1,6 @@
-var CreateCalWithEvents = require("../javascripts/CreateCalWithEvents");
+
+var rootPath =require("geeksweatherconfig").rootPath;
+var CreateCalWithEvents = require(rootPath + "public/javascripts/CreateCalWithEvents");
 
 var calWithEvents = new CreateCalWithEvents(2016, "Mar");
 

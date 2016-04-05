@@ -1,4 +1,5 @@
-var calEvents = require("./calEvents.db");
+var rootPath = require("geeksweatherconfig").rootPath;
+var calEvents = require(rootPath + "calEvents.db");
 
 function getEvents() {
   console.log("calendar.js getEvents() entry");

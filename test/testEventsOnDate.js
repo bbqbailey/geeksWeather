@@ -1,11 +1,12 @@
 //var assert = require('assert');
+var rootPath = require("geeksweatherconfig").rootPath;
+var CalendarEvent = require(rootPath + "/public/javascripts/CalendarEvent")
+var EventsOnDate = require(rootPath + "/public/javascripts/EventsOnDate")
+
 var expect = require('chai').expect;
 var sinon = require('mocha-sinon');
 
 var assert = expect.assert;
-
-var CalendarEvent = require("../public/javascripts/CalendarEvent")
-var EventsOnDate = require("../public/javascripts/EventsOnDate")
 
 var eventItemYear = "2016";
 var eventItemMonth = "April";

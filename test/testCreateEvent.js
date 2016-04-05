@@ -2,7 +2,8 @@
 var expect = require('chai').expect;
 var sinon = require('mocha-sinon');
 
-var CalendarEvent = require('../public/javascripts/CalendarEvent.js');
+var rootPath = require("geeksweatherconfig").rootPath;
+var CalendarEvent = require(rootPath + '/public/javascripts/CalendarEvent.js');
 
 var assert = expect.assert;
 

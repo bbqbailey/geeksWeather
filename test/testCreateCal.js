@@ -4,7 +4,9 @@ var sinon = require('mocha-sinon');
 
 var assert = expect.assert;
 
-var CreateCal = require("../public/javascripts/CreateCal")
+var rootPath =require("geeksweatherconfig").rootPath;
+console.log('rootPath: ', rootPath);
+var CreateCal = require(rootPath + "/public/javascripts/CreateCal")
 
 
 
