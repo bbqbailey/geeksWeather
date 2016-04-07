@@ -4,10 +4,10 @@ var bodyParser   = require('body-parser');
 var Wunderground = require('wundergroundnode');
 var async        = require("async");
 var log4js       = require('log4js');
-var configFile   = require('./geeksWeatherConfiguraton'); //app json file
+var configFile   = require('./geeksWeatherAppData'); //app json file
 var config       = configFile.config;
 var key          = require('./wundergroundKey');  //app json file
-var theRoutes    = require('./app_server/routes/index'); //app js file
+var theRoutes    = require('./routes/index'); //app js file
 
 var logger = log4js.getLogger();
 var app    = module.exports = express();

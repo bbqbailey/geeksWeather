@@ -1,6 +1,6 @@
 var express = require('express');
 var router  = express.Router();
-var configFile = require('../../geeksWeatherConfiguraton');
+var configFile = require('../geeksWeatherAppData');
 var config = configFile.config;
 var DELAY;
 var logger;
