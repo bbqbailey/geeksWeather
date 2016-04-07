@@ -68,7 +68,7 @@ app.use(bodyParser.urlencoded({ extended: true}));
 
 app.set('view engine', 'jade');
 app.engine('jade', require('jade').__express);
-app.set('views',path.join( __dirname, 'app_server', 'views'));
+app.set('views',path.join( __dirname, 'views'));
 
 app.use(express.static(__dirname + '/public'))
 
