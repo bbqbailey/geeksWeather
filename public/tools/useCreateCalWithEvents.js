@@ -2,7 +2,7 @@
 var rootPath =require("geeksweatherconfig").rootPath;
 var CreateCalWithEvents = require(rootPath + "public/javascripts/CreateCalWithEvents");
 
-var calWithEvents = new CreateCalWithEvents(2016, "Mar");
+var calWithEvents = new CreateCalWithEvents(2016, "Apr");
 
 var calEvents;
 
@@ -11,6 +11,7 @@ calWithEvents.getCalEvents(function(err, calEvents) {
     console.log('CreateCalWithEvents.js: getCalEvents error: ', err);
   } else {
     console.log("useCreateCalWithEvents.js : calEvents: ", calEvents);
+    console.log('useCreateCalWithEvents.js : calWithEvents: ', calWithEvents.calendarMonth);
   }
 });
 

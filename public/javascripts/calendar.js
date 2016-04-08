@@ -3,7 +3,7 @@ console.log("calendar.js entry");
 var rootPath =require("geeksweatherconfig").rootPath;
 var CreateCalWithEvents = require(rootPath + "public/javascripts/CreateCalWithEvents");
 
-
+/*
 var calEvents={ 'month':  {'name':'Mar','events':[
     {'date':6,'event':'WEDDING_ANNIVERSARY','text':'Sarah and Michael\'s Wedding Anniversary'},
     {'date':12,'event':'FAMILY_GATHERING','text':'Sarah, Michael, Vickie join us for dinner.'},
@@ -11,6 +11,15 @@ var calEvents={ 'month':  {'name':'Mar','events':[
     {'date':26,'event':'BIRTHDAY','text':'Scott Bagwell\'S Birthday'},
   ]}
 };
+*/
+
+var EventType={
+  Birthday:'bgcolor = "#ff0000"',
+  Holiday:'border-top-color = "#00ff00"',
+  DrApt:'border-right-color = "#0000ff"',
+  Meeting:'border-bottom-color = "#ff8080"',
+  Event:'border-left-color = "#80ff80"'
+  }
 
 var date = new Date();
 var theYear = date.getFullYear(); //e.g., 2014 instead of 14
@@ -21,11 +30,12 @@ var calWithEvents = new CreateCalWithEvents(theYear, theMonth);
 console.log('calendar.js return from CreateCalWithEvents constructor');
 
 console.log('calendar.js calling getCalEvents');
-calWithEvents.getCalEvents(function(err, calEvents) {  //callback executing too soon
+calWithEvents.getCalEvents(function(err, calEvents) {
   if(err) {
     console.log('calendar.js getCalEvents callback: error: ', err);
   } else {
-    console.log("calendar.js : getcalEvents callback: calEvents: ", calEvents);  //coming back undefined
+    console.log("calendar.js : getcalEvents callback: calEvents: ", calEvents);
+    buildHTML();
   }
 });
 
@@ -46,6 +56,7 @@ function buildHTML() {
   console.log("calendar.js produceHTML() entry");
   //createCal(month);
 
+  console.log("calendar.js calWithEvents: ", calWithEvents);
 
   var theCalendar = "<style> table { font-size:60px; font-weight: bold} #today {border-width:10px; border-style: solid; border-color: red} </style>";
   theCalendar = theCalendar + ("<table>");
@@ -58,6 +69,54 @@ function buildHTML() {
   theCalendar = theCalendar + ("    <th> Fri </th>" );
   theCalendar = theCalendar + ("    <th> Sat </th>" );
   theCalendar = theCalendar + ("  </tr>")
+
+  var calendarCell;
+  console.log('================================calendarCell=======================');
+  var shortCal = calWithEvents.calendarMonth.byCal; //convenience
+  var shortDay = calWithEvents.calendarMonth.byDay;
+  var firstTime = true;
+  console.log('<table>');
+  for(calendarCell=0; calendarCell<shortCal.length; calendarCell++) {
+    if(calendarCell%7 === 0) {
+      if(!firstTime) {
+        console.log('</tr>');
+      }
+      firstTime=false;
+
+      console.log('<tr>');
+    }
+    //console.log('byCal[' + calendarCell + ']: ', calWithEvents.calendarMonth.byCal[calendarCell]);
+    //console.log('cell: ' + calendarCell + ', date: ' + shortcut[calendarCell].date);
+    var calDate = shortCal[calendarCell].date
+    var todaysData = '<td> ' + calDate + ' </td>';
+    if(calDate === undefined) {
+      todaysData = "<td> </td>";
+    } else {
+      if( calDate === theDate) {
+        todaysData = '<td id="today" > ' + calDate + ' </td>'
+      }
+      if(shortDay[calDate].eventToday) {
+        if(calDate === theDate) {
+          todaysData = '<td id="today" ';
+        } else {
+          todaysData = '<td ';
+        }
+        var eventColors="";
+        for(i=0;i<shortDay[calDate].events.length; i++) {
+          eventColors += EventType[shortDay[calDate].events[i].eventType] + " ";
+          console.log('Event: ' + shortDay[calDate].events[i].eventType);
+        }
+        todaysData += eventColors + " > " + calDate + ' </td>';
+      }
+    }
+    console.log(todaysData);
+  }
+  console.log('</tr>');
+  console.log('</table>');
+}
+
+
+  /* old but works, prior to using single array of byCal
   for(i=0; i<=5; i++) { //max rows for any month is 6
     theCalendar = theCalendar + ("  <tr>");
     for(j=0;j<=6; j++) { //max days for any week is 7

@@ -43,7 +43,7 @@ CreateCalWithEvents.prototype.getCalEvents = function(callback) {
     self.calEvents = docs;
     //console.log('CreateCalWithEvents.js calling CreateCal with year: ' + self.year + ', month: ' + self.monthValue);
     CreateCal(self.year, self.monthValue, function(err, calMonth){
-      self.calendarMonth = calMonth;
+      self.calendarMonth = calMonth; //an object with two elements:
       //console.log('CreateCalWithEvents.js getCalEvents: calendarMonth: ', self.calendarMonth);
     });
     //console.log('CreateCalWithEvents.js calling insertEventsIntoCal');
@@ -51,12 +51,13 @@ CreateCalWithEvents.prototype.getCalEvents = function(callback) {
       //console.log('CreateCalWithEvents.js after return from insertEventsIntoCal');
     });
     //console.log('CreateCalWithEvents.js getCalEvents executing callback');
+    console.log('CreateCalWithEvents.js return from insertEventsIntoCal');
     callback(err, docs);
   });
 };
 
 CreateCalWithEvents.prototype.insertEventsIntoCal = function(callback) {
-  //console.log('CreateCalWithEvents.js: insertEventsIntoCal() entry');
+  console.log('CreateCalWithEvents.js: insertEventsIntoCal() entry');
   var i;
   var j;
   for(i=0;i<self.calEvents.length; i++) {
