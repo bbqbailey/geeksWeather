@@ -1,5 +1,8 @@
 //output:output.log
 console.log("calendar.js entry");
+var rootPath =require("geeksweatherconfig").rootPath;
+var CreateCalWithEvents = require(rootPath + "public/javascripts/CreateCalWithEvents");
+
 
 var calEvents={ 'month':  {'name':'Mar','events':[
     {'date':6,'event':'WEDDING_ANNIVERSARY','text':'Sarah and Michael\'s Wedding Anniversary'},
@@ -9,7 +12,22 @@ var calEvents={ 'month':  {'name':'Mar','events':[
   ]}
 };
 
-buildHTML();
+var date = new Date();
+var theYear = date.getFullYear(); //e.g., 2014 instead of 14
+var theMonth = date.getMonth(); //Jan is 0
+var calEvents;
+
+var calWithEvents = new CreateCalWithEvents(theYear, theMonth);
+console.log('calendar.js return from CreateCalWithEvents constructor');
+
+console.log('calendar.js calling getCalEvents');
+calWithEvents.getCalEvents(function(err, calEvents) {  //callback executing too soon
+  if(err) {
+    console.log('calendar.js getCalEvents callback: error: ', err);
+  } else {
+    console.log("calendar.js : getcalEvents callback: calEvents: ", calEvents);  //coming back undefined
+  }
+});
 
 
 //build the html
@@ -19,14 +37,15 @@ function buildHTML() {
     "July","August","September","October","November","December"];
   var dayNamesShort = ["Sun","Mon", "Tue", "Wed", "Thu", "Fri","Sat"];
   var dayNamesLong  = ["Sunday","Monday", "Tueday", "Wedday", "Thuday", "Friday","Satday"];
-  var date = new Date();
-  var theYear = date.getFullYear(); //e.g., 2014 instead of 14
-  var theMonth = date.getMonth(); //Jan is 0
+  //var date = new Date();
+  //var theYear = date.getFullYear(); //e.g., 2014 instead of 14
+  //var theMonth = date.getMonth(); //Jan is 0
   var theDate = date.getDate();
   var theDay = date.getDay();
 
   console.log("calendar.js produceHTML() entry");
-  createCal(month);
+  //createCal(month);
+
 
   var theCalendar = "<style> table { font-size:60px; font-weight: bold} #today {border-width:10px; border-style: solid; border-color: red} </style>";
   theCalendar = theCalendar + ("<table>");

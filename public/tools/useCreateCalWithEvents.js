@@ -4,10 +4,16 @@ var CreateCalWithEvents = require(rootPath + "public/javascripts/CreateCalWithEv
 
 var calWithEvents = new CreateCalWithEvents(2016, "Mar");
 
+var calEvents;
 
-calWithEvents.getCalEvents(function(calEvents) {
-  //console.log("useCreateCalWithEvents.js : calEvents: ", calEvents);
+calWithEvents.getCalEvents(function(err, calEvents) {
+  if(err) {
+    console.log('CreateCalWithEvents.js: getCalEvents error: ', err);
+  } else {
+    console.log("useCreateCalWithEvents.js : calEvents: ", calEvents);
+  }
 });
+
 
 
 /*
