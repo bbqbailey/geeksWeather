@@ -1,8 +1,10 @@
 var Datastore = require("nedb");
+var rootPath =require("geeksweatherconfig").rootPath;
+
 var natEvents = require("./_calNationalEvents.json");
 var perEvents = require("./_calPersonalEvents.json")
 
-var db = new Datastore({filename: "calEvents.db", autoload: true});
+var db = new Datastore({filename: rootPath + "public/database/calEvents.db", autoload: true});
 
 db.insert(natEvents.CalendarEvents, function(err, newDoc) {
   if(err) {

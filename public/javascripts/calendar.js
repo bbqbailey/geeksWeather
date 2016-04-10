@@ -1,4 +1,28 @@
 //output:output.log
+/**
+*
+* calendar.js
+*
+*  Uses:
+*   Date()
+*   geeksweatherconfig
+*   CreateCalWithEvents
+*
+* Purpose:
+*   Constructs an HTML calendar with events for each day.
+*   Each day has the following attributes:
+*     - If calendar date is today, then date text is colored red, else black
+*     - Each border element (top, right, bottom, left) are colored to reflect
+*       an event-type (EventType) for that day.
+*
+* Description:
+*   Invokes CreateCalWithEvents, receiving a calendar with events for each day (calEvents).
+*   Using calEvents, constructs an HTML calendar.
+*
+*
+*
+**/
+
 console.log("calendar.js entry");
 var rootPath =require("geeksweatherconfig").rootPath;
 var CreateCalWithEvents = require(rootPath + "public/javascripts/CreateCalWithEvents");
@@ -14,11 +38,12 @@ var calEvents={ 'month':  {'name':'Mar','events':[
 */
 
 var EventType={
-  Birthday:'bgcolor = "#ff0000"',
-  Holiday:'border-top-color = "#00ff00"',
-  DrApt:'border-right-color = "#0000ff"',
-  Meeting:'border-bottom-color = "#ff8080"',
-  Event:'border-left-color = "#80ff80"'
+  Birthday:'border-top:5px solid #ff0000;',
+  Appointment:'border-right:5px solid #00ff00;',
+  Holiday:'border-bottom:5px solid #0000ff;',
+  Misc:'border-left:5px solid #c0c0c0;',
+  Today:'color:red;',
+  Trip:'background-color:green;'
   }
 
 var date = new Date();
@@ -103,10 +128,14 @@ function buildHTML() {
         }
         var eventColors="";
         for(i=0;i<shortDay[calDate].events.length; i++) {
+          if(i===0)
+            eventColors += 'style="';
           eventColors += EventType[shortDay[calDate].events[i].eventType] + " ";
-          console.log('Event: ' + shortDay[calDate].events[i].eventType);
+          if((i+1) === shortDay[calDate].events.length)
+            eventColors += '"'
+          //console.log('Event: ' + shortDay[calDate].events[i].eventType);
         }
-        todaysData += eventColors + " > " + calDate + ' </td>';
+        todaysData += eventColors + ' > ' + calDate + ' </td>';
       }
     }
     console.log(todaysData);
