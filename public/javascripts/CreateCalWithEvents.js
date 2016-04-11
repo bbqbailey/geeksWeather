@@ -61,7 +61,7 @@ CreateCalWithEvents.prototype.insertEventsIntoCal = function(callback) {
   var i;
   var j;
   for(i=0;i<self.calEvents.length; i++) {
-    //console.log('self.calEvents[' + i + '].date: ', self.calEvents[i]);
+    //console.log('CreateCalWithEvents.js: insertEventsIntoCal(): self.calEvents[' + i + '].date: ', self.calEvents[i]);
     self.calendarMonth.byDay[self.calEvents[i].date].events.push(self.calEvents[i]);
     self.calendarMonth.byDay[self.calEvents[i].date].eventToday=true;
   }
@@ -83,7 +83,7 @@ CreateCalWithEvents.prototype.insertEventsIntoCal = function(callback) {
   }
   //console.log('==========CreateCalWithEvents.byCal============');
   for(i=0; i<self.calendarMonth.byCal.length; i++) {
-    //console.log('calendar position: ' + i + ': ', self.calendarMonth.byCal[i]);
+    console.log('calendar position: ' + i + ': ', self.calendarMonth.byCal[i]);
   }
   callback();
 }

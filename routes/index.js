@@ -53,11 +53,30 @@ router.get('/geeksWeatherDoc', function(req, res) {
   logger.trace('router.get(/geeksWeatherDoc) exit');
 });
 
+
+
+
+
+/////////////////////////////////////////////////////////////////////////////
 router.get('/calendar', function(req, res) {
   logger.trace('router.get(/calendar) entry');
-  res.render('calendar');
-  logger.trace('router.get(/calendar) exit');
+  var rootPath =require("geeksweatherconfig").rootPath;
+  var CreateCalWithEvents = require(rootPath + "public/javascripts/CreateCalWithEvents");
+  var calWE = new CreateCalWithEvents(2016, "Apr");
+  var calWithEvents;
+  calWE.getCalEvents(function(err, calEvents) {
+    //calWithEvents = calEvents;
+    console.log('============================================index.js: calWE.calendarMonth.byCal: ', calWE.calendarMonth.byCal);
+    //console.log('============================================index.js: calWE.getCalEvents: calEvents: ', calWithEvents);
+    var stringifyCalWithEvents = JSON.stringify(calWE.calendarMonth);
+    //console.log('=======================================index.js stringifyCalWithEvents: ',stringifyCalWithEvents);
+    res.render('calendar', { 'calWithEvents': stringifyCalWithEvents});
+    logger.trace('router.get(/calendar) exit');
+  });
 });
+/////////////////////////////////////////////////////////////////////////////
+
+
 
 router.get('/calendarEvents', function(req, res) {
   logger.trace('router.get(/calendarEvents) entry');

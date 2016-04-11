@@ -23,9 +23,8 @@
 *
 **/
 
-console.log("calendar.js entry");
-var rootPath =require("geeksweatherconfig").rootPath;
-var CreateCalWithEvents = require(rootPath + "public/javascripts/CreateCalWithEvents");
+//var rootPath =require("geeksweatherconfig").rootPath;
+//var CreateCalWithEvents = require(rootPath + "public/javascripts/CreateCalWithEvents");
 
 /*
 var calEvents={ 'month':  {'name':'Mar','events':[
@@ -38,10 +37,10 @@ var calEvents={ 'month':  {'name':'Mar','events':[
 */
 
 var EventType={
-  Birthday:'border-top:5px solid #ff0000;',
-  Appointment:'border-right:5px solid #00ff00;',
-  Holiday:'border-bottom:5px solid #0000ff;',
-  Misc:'border-left:5px solid #909090;',
+  Birthday:'border-top:10px solid #ff0000;',
+  Appointment:'border-right:10px solid #00ff00;',
+  Holiday:'border-bottom:10px solid #0000ff;',
+  Misc:'border-left:10px solid #909090;',
   Today:'color:red;',
   Trip:'background-color:green;'
   }
@@ -50,11 +49,18 @@ var date = new Date();
 var theYear = date.getFullYear(); //e.g., 2014 instead of 14
 var theMonth = date.getMonth(); //Jan is 0
 var calEvents;
+console.log("calendar.js entry");
 
-var calWithEvents = new CreateCalWithEvents(theYear, theMonth);
-console.log('calendar.js return from CreateCalWithEvents constructor');
+//var calWithEvents = new CreateCalWithEvents(theYear, theMonth);
+console.log('calendar.js typeof calWithEvents: ', typeof calWithEvents);
+//console.log('calendar.js calWithEvents: ', calWithEvents);
 
-console.log('calendar.js calling getCalEvents');
+
+buildHTML();
+
+
+//console.log('calendar.js calling getCalEvents');
+/*
 calWithEvents.getCalEvents(function(err, calEvents) {
   if(err) {
     console.log('calendar.js getCalEvents callback: error: ', err);
@@ -63,6 +69,7 @@ calWithEvents.getCalEvents(function(err, calEvents) {
     buildHTML();
   }
 });
+*/
 
 
 //build the html
@@ -84,32 +91,35 @@ function buildHTML() {
   console.log("calendar.js calWithEvents: ", calWithEvents);
 
   var theCalendar = "<style> table { font-size:60px; font-weight: bold} #today {border-width:10px; border-style: solid; border-color: red} </style>";
-  theCalendar = theCalendar + ("<table>");
-  theCalendar = theCalendar + ("  <tr>");
-  theCalendar = theCalendar + ("    <th> Sun </th>" );
-  theCalendar = theCalendar + ("    <th> Mon </th>" );
-  theCalendar = theCalendar + ("    <th> Tue </th>" );
-  theCalendar = theCalendar + ("    <th> Wed </th>" );
-  theCalendar = theCalendar + ("    <th> Thu </th>" );
-  theCalendar = theCalendar + ("    <th> Fri </th>" );
-  theCalendar = theCalendar + ("    <th> Sat </th>" );
-  theCalendar = theCalendar + ("  </tr>")
+  theCalendar +=  ('<div style = "float:left">');
+  theCalendar +=  ('  <table>');
+  theCalendar +=  ('    <tr>');
+  theCalendar +=  ('      <th> Sun </th>' );
+  theCalendar +=  ('      <th> Mon </th>' );
+  theCalendar +=  ('      <th> Tue </th>' );
+  theCalendar +=  ('      <th> Wed </th>' );
+  theCalendar +=  ('      <th> Thu </th>' );
+  theCalendar +=  ('      <th> Fri </th>' );
+  theCalendar +=  ('      <th> Sat </th>' );
+  theCalendar +=  ('    </tr>')
 
   var calendarCell;
-  console.log('================================calendarCell=======================');
-  var shortCal = calWithEvents.calendarMonth.byCal; //convenience
-  var shortDay = calWithEvents.calendarMonth.byDay;
+  //console.log('================================calendarCell=======================');
+  //console.log('calendar.js: calWithEvents.byDay: ', calWithEvents.byDay);
+  //console.log('calendar.js: calWithEvents.byCal: ', calWithEvents.byCal);
+  var shortCal = calWithEvents.byCal; //convenience
+  var shortDay = calWithEvents.byDay;
   var firstTime = true;
-  console.log('<div style="float:left">');
-  console.log('<table>');
+  //theCalendar += '<div style="float:left">';
+  //theCalendar += '<table>';
   for(calendarCell=0; calendarCell<shortCal.length; calendarCell++) {
     if(calendarCell%7 === 0) {
       if(!firstTime) {
-        console.log('</tr>');
+        theCalendar += '</tr>';
       }
       firstTime=false;
 
-      console.log('<tr>');
+      theCalendar += '<tr>';
     }
     //console.log('byCal[' + calendarCell + ']: ', calWithEvents.calendarMonth.byCal[calendarCell]);
     //console.log('cell: ' + calendarCell + ', date: ' + shortcut[calendarCell].date);
@@ -140,14 +150,15 @@ function buildHTML() {
       }
     }
     console.log(todaysData);
+    theCalendar += todaysData;
   }
   console.log('</tr>');
   console.log('</table>');
   console.log('</div>');
+  theCalendar += '</tr></table></div>';
 
   //add the color-key
-  console.log(
-    '<div style="float:left;"\>\r\n' +
+  var colorKey = '<div style="float:left;"\>\r\n' +
     ' <div style="background-color:#ff0000">\r\n' +
     '   <span> Birthday </span>\r\n' +
     ' </div>' +
@@ -167,7 +178,20 @@ function buildHTML() {
     '  <span>Today</span>\r\n' +
     ' </div>\r\n' +
     '</div>\r\n'
-  );
+    ;
+  console.log('colorKey: ' + colorKey);
+
+  theCalendar += colorKey;
+
+
+  $("#month").html(monthNames[theMonth]);
+  $("#year").html(theYear);
+  $("#monthYear").html(monthNames[theMonth] + " " + theYear);
+  $("#date").html(theDate);
+  $("#dayLong").html(dayNamesLong[theDay]);
+  $("#dayShort").html(dayNamesShort[theDay]);
+  $("#calendar").html(theCalendar);
+
 }
 
 
