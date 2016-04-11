@@ -113,12 +113,12 @@ function buildHTML() {
     //console.log('byCal[' + calendarCell + ']: ', calWithEvents.calendarMonth.byCal[calendarCell]);
     //console.log('cell: ' + calendarCell + ', date: ' + shortcut[calendarCell].date);
     var calDate = shortCal[calendarCell].date
-    var todaysData = '<td> ' + calDate + ' </td>';
+    var todaysData = '<td style="border:5px solid #000000;"> ' + calDate + ' </td>';
     if(calDate === undefined) {
       todaysData = "<td> </td>";
     } else {
       if( calDate === theDate) {
-        todaysData = '<td id="today" > ' + calDate + ' </td>'
+        todaysData = '<td id="today" style="border:5px solid #000000;"> ' + calDate + ' </td>'
       }
       if(shortDay[calDate].eventToday) {
         if(calDate === theDate) {
@@ -129,7 +129,7 @@ function buildHTML() {
         var eventColors="";
         for(i=0;i<shortDay[calDate].events.length; i++) {
           if(i===0)
-            eventColors += 'style="';
+            eventColors = 'style="border:5px solid #000000;';
           eventColors += EventType[shortDay[calDate].events[i].eventType] + " ";
           if((i+1) === shortDay[calDate].events.length)
             eventColors += '"'
