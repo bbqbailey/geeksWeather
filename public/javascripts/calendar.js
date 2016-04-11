@@ -100,6 +100,7 @@ function buildHTML() {
   var shortCal = calWithEvents.calendarMonth.byCal; //convenience
   var shortDay = calWithEvents.calendarMonth.byDay;
   var firstTime = true;
+  console.log('<div style="float:left">');
   console.log('<table>');
   for(calendarCell=0; calendarCell<shortCal.length; calendarCell++) {
     if(calendarCell%7 === 0) {
@@ -142,6 +143,31 @@ function buildHTML() {
   }
   console.log('</tr>');
   console.log('</table>');
+  console.log('</div>');
+
+  //add the color-key
+  console.log(
+    '<div style="float:left;"\>\r\n' +
+    ' <div style="background-color:#ff0000">\r\n' +
+    '   <span> Birthday </span>\r\n' +
+    ' </div>' +
+    ' <div style="background-color:#00ff00">\r\n' +
+    '  <span>Appointment </span>\r\n' +
+    ' </div>\r\n' +
+    ' <div style="background-color:#0000ff">\r\n' +
+    '  <span> Holiday </span>\r\n' +
+    ' </div>\r\n' +
+    ' <div style="background-color:#c0c0c0">\r\n' +
+    '  <span> Misc </span>\r\n' +
+    ' </div>\r\n' +
+    ' <div style="background-color:green">\r\n' +
+    '  <span> Trip</span>\r\n' +
+    ' </div>\r\n' +
+    ' <div style="background-color:red">\r\n'+
+    '  <span>Today</span>\r\n' +
+    ' </div>\r\n' +
+    '</div>\r\n'
+  );
 }
 
 
