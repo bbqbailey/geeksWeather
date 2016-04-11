@@ -41,7 +41,7 @@ var EventType={
   Birthday:'border-top:5px solid #ff0000;',
   Appointment:'border-right:5px solid #00ff00;',
   Holiday:'border-bottom:5px solid #0000ff;',
-  Misc:'border-left:5px solid #c0c0c0;',
+  Misc:'border-left:5px solid #909090;',
   Today:'color:red;',
   Trip:'background-color:green;'
   }
@@ -113,12 +113,12 @@ function buildHTML() {
     //console.log('byCal[' + calendarCell + ']: ', calWithEvents.calendarMonth.byCal[calendarCell]);
     //console.log('cell: ' + calendarCell + ', date: ' + shortcut[calendarCell].date);
     var calDate = shortCal[calendarCell].date
-    var todaysData = '<td style="border:5px solid #000000;"> ' + calDate + ' </td>';
+    var todaysData = '<td style="border:2px solid #000000;"> ' + calDate + ' </td>';
     if(calDate === undefined) {
       todaysData = "<td> </td>";
     } else {
       if( calDate === theDate) {
-        todaysData = '<td id="today" style="border:5px solid #000000;"> ' + calDate + ' </td>'
+        todaysData = '<td id="today" style="border:2px solid #000000;"> ' + calDate + ' </td>'
       }
       if(shortDay[calDate].eventToday) {
         if(calDate === theDate) {
@@ -129,7 +129,7 @@ function buildHTML() {
         var eventColors="";
         for(i=0;i<shortDay[calDate].events.length; i++) {
           if(i===0)
-            eventColors = 'style="border:5px solid #000000;';
+            eventColors = 'style="border:2px solid #000000;';
           eventColors += EventType[shortDay[calDate].events[i].eventType] + " ";
           if((i+1) === shortDay[calDate].events.length)
             eventColors += '"'
