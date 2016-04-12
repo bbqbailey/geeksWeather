@@ -1,8 +1,9 @@
 var Datastore = require("nedb");
-var rootPath =require("geeksweatherconfig").rootPath;
+var fs = require("fs");
 
-var natEvents = require("./_calNationalEvents.json");
-var perEvents = require("./_calPersonalEvents.json")
+var rootPath =require("geeksweatherconfig").rootPath;
+var natEvents = require(rootPath + "public/database/_calNationalEvents.json");
+
 
 var db = new Datastore({filename: rootPath + "public/database/calEvents.db", autoload: true});
 
@@ -12,20 +13,31 @@ db.insert(natEvents.CalendarEvents, function(err, newDoc) {
     return;
   }
   console.log('natEvents insert: ', newDoc);
+  console.log('finished db.insert()');
 });
 
-db.insert(perEvents.CalendarEvents, function(err, newDoc) {
-  if(err) {
-    console.log('=====================db.insert err: ', err);
-    return;
+fs.exists(rootPath + "public/database/_calPersonalEvents.json", function(val) {
+  if(val) {
+    var perEvents = require(rootPath + "public/database/_calPersonalEvents.json")
+    db.insert(perEvents.CalendarEvents, function(err, newDoc) {
+      if(err) {
+        console.log('=======db.insert err for _calPersonalEvents: ', err);
+        return;
+      }
+      console.log('_calPersonalEvents insert: ', newDoc);
+    });
+  } else {
+    console.log('_calPersonalEvents.jsno does not exist.');
   }
-  console.log('perEvents insert: ', newDoc);
 });
 
-db.insert({"eventTypes":[{event:"Birthday"}, {event:"WeddingAnniversary"}, {event:"Meeting"},     {event:"Holiday"},{event:"Event"}]},
+
+db.insert({"eventTypes":[{event:"Birthday"}, {event:"Appointment"}, {event:"Meeting"}, {event:"Holiday"}, {event:"Misc"}, {event:"Trip"}]},
   function(err) {
     if(err) {
       console.log("=====================================error: ", err);
+    } else {
+      console.log('Inserted the valid eventTypes into db.');
     }
   });
 
