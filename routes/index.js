@@ -53,13 +53,7 @@ router.get('/geeksWeatherDoc', function(req, res) {
   logger.trace('router.get(/geeksWeatherDoc) exit');
 });
 
-
-
-
-
-/////////////////////////////////////////////////////////////////////////////
-router.get('/calendar', function(req, res) {
-  logger.trace('router.get(/calendar) entry');
+function buildCalendar(callback) {
   var rootPath =require("geeksweatherconfig").rootPath;
   var CreateCalWithEvents = require(rootPath + "public/javascripts/CreateCalWithEvents");
   var calWE = new CreateCalWithEvents(2016, "Apr");
@@ -70,9 +64,19 @@ router.get('/calendar', function(req, res) {
     //console.log('============================================index.js: calWE.getCalEvents: calEvents: ', calWithEvents);
     var stringifyCalWithEvents = JSON.stringify(calWE.calendarMonth);
     //console.log('=======================================index.js stringifyCalWithEvents: ',stringifyCalWithEvents);
-    res.render('calendar', { 'calWithEvents': stringifyCalWithEvents});
-    logger.trace('router.get(/calendar) exit');
+    callback(null, stringifyCalWithEvents);
   });
+}
+
+
+
+/////////////////////////////////////////////////////////////////////////////
+router.get('/calendar', function(req, res) {
+  logger.trace('router.get(/calendar) entry');
+  buildCalendar(function(err, stringifyCalWithEvents) {
+    res.render('calendar', { 'calWithEvents': stringifyCalWithEvents});
+  });
+  logger.trace('router.get(/calendar) exit');
 });
 /////////////////////////////////////////////////////////////////////////////
 
