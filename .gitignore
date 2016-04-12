@@ -45,6 +45,6 @@ public/javascripts/useCreateCalWithEvents.js
 public/javascripts/useDB.js
 public/javascripts/useMyapp.js
 public/tools/test.html
-public/database/
+public/database/_calPersonalEvents.json
+public/database/calEvents.db*
 public/tools/testCalendar.html
-
