@@ -71,7 +71,7 @@ function CreateCal(year, month, callBack) {
     day = new Date(year, month);
   }
 
-  console.log('CreateCal.js: day: ' + day);
+  //console.log('CreateCal.js: day: ' + day);
   var calendar=[]; //will build up a 2 dim array, or array of arrays
 
   var searching=true;
@@ -104,7 +104,7 @@ function CreateCal(year, month, callBack) {
   }
 
   var calendarMonth={byDay:monthOfDays,byCal:calendar};
-  
+
   callBack(null, calendarMonth);
 }
 

@@ -1,9 +1,23 @@
 var express = require('express');
 var router  = express.Router();
 var configFile = require('../geeksWeatherAppData');
+var rootPath = require('geeksweatherconfig').rootPath;
+var Calendar = require(rootPath + 'public/javascripts/Calendar');
+var CreateCalWithEvents = require(rootPath + "public/javascripts/CreateCalWithEvents");
+
 var config = configFile.config;
 var DELAY;
 var logger;
+
+var EventType={
+  Birthday:'border-top:20px solid #ff0000;',
+  Appointment:'border-right:20px solid #00ff00;',
+  Holiday:'border-bottom:20px solid #0000ff;',
+  Misc:'border-left:20px solid #909090;',
+  Today:'color:red;',
+  Trip:'background-color:green;'
+  }
+
 
 
 //console.log("====================================index.js config is typeof : ", typeof config);
@@ -53,34 +67,20 @@ router.get('/geeksWeatherDoc', function(req, res) {
   logger.trace('router.get(/geeksWeatherDoc) exit');
 });
 
-function buildCalendar(callback) {
-  var rootPath =require("geeksweatherconfig").rootPath;
-  var CreateCalWithEvents = require(rootPath + "public/javascripts/CreateCalWithEvents");
-  var calWE = new CreateCalWithEvents(2016, "Apr");
-  var calWithEvents;
-  calWE.getCalEvents(function(err, calEvents) {
-    //calWithEvents = calEvents;
-    console.log('============================================index.js: calWE.calendarMonth.byCal: ', calWE.calendarMonth.byCal);
-    //console.log('============================================index.js: calWE.getCalEvents: calEvents: ', calWithEvents);
-    var stringifyCalWithEvents = JSON.stringify(calWE.calendarMonth);
-    //console.log('=======================================index.js stringifyCalWithEvents: ',stringifyCalWithEvents);
-    callback(null, stringifyCalWithEvents);
-  });
-}
-
-
-
-/////////////////////////////////////////////////////////////////////////////
 router.get('/calendar', function(req, res) {
   logger.trace('router.get(/calendar) entry');
-  buildCalendar(function(err, stringifyCalWithEvents) {
-    res.render('calendar', { 'calWithEvents': stringifyCalWithEvents});
+  createCal(function(err, stringifyCalWithEvents) {
+    if(err) {
+      console.log('====ERROR====index.js router.get(/calendar) err: ', err);
+    } else {
+      //console.log('router.get rendering: ', stringifyCalWithEvents);
+      //res.render('calendar', { 'calWithEvents': stringifyCalWithEvents});
+      res.send(stringifyCalWithEvents);
+      console.log('index.js router.get(/calendar): do I want res.send or res.render (requires .jade ) ???');
+    };
   });
   logger.trace('router.get(/calendar) exit');
 });
-/////////////////////////////////////////////////////////////////////////////
-
-
 
 router.get('/calendarEvents', function(req, res) {
   logger.trace('router.get(/calendarEvents) entry');
@@ -105,4 +105,40 @@ router.post('/eventEditor'), function(req, res) {
   logger.trace('router.post(/eventEditor) entry');
   res.render('eventEditor');
   logger.trace('router.get(/eventEditor) exit');
+}
+
+function createCal(callback) {
+  buildCalendar(function(err, calWithEvents) {
+    //console.log('index.js createCal(): return from buildCalendar calWithEvents: ', calWithEvents);
+    if(err) {
+      console.log('=========ERROR==========index.js createCal() buildCalendar() err: ', err);
+      callback(err, null);
+    } else {
+      //console.log('index.js createCal() buildCalendar() calWithEvents: ', calWithEvents);
+      //console.log('index.js createCal() buildCalendar() returning via callback');
+      callback(null, calWithEvents);
+    };
+  });
+};
+
+function buildCalendar(callback) {
+  var date = new Date();
+  var fullYear = date.getFullYear();
+  var month = date.getMonth();
+  var calWE = new CreateCalWithEvents(fullYear, month);
+  var calWithEvents;
+  calWE.getCalEvents(function(err, calEvents) {
+    var calendar = new Calendar();
+    calendar.buildHTML(EventType, calWE.calendarMonth, function(err, stringifyCalWithEvents) {
+      //console.log('=====index.js buildCalendar() in callback after return from calendar.buildHTML()====');
+      if(err) {
+        console.log('========ERROR==========index.js buildCalendar(): calendar.buildHTML() error: ', err);
+        callback(err, null);
+      } else {
+        //console.log('index.js buildCalendar(): calendar.buildHTML()', stringifyCalWithEvents);
+        //console.log('index.js buildCalendar() exiting via callback after completing calendar.buildHTML()');
+        callback(null, stringifyCalWithEvents);
+      }
+    });
+  });
 }

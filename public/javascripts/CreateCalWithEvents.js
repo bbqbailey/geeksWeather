@@ -51,13 +51,13 @@ CreateCalWithEvents.prototype.getCalEvents = function(callback) {
       //console.log('CreateCalWithEvents.js after return from insertEventsIntoCal');
     });
     //console.log('CreateCalWithEvents.js getCalEvents executing callback');
-    console.log('CreateCalWithEvents.js return from insertEventsIntoCal');
+    //console.log('CreateCalWithEvents.js return from insertEventsIntoCal');
     callback(err, docs);
   });
 };
 
 CreateCalWithEvents.prototype.insertEventsIntoCal = function(callback) {
-  console.log('CreateCalWithEvents.js: insertEventsIntoCal() entry');
+  //console.log('CreateCalWithEvents.js: insertEventsIntoCal() entry');
   var i;
   var j;
   for(i=0;i<self.calEvents.length; i++) {
@@ -71,6 +71,7 @@ CreateCalWithEvents.prototype.insertEventsIntoCal = function(callback) {
     var firstWord = self.calendarMonth.byDay[i]; //convenience
     for(j=0;j<firstWord.events.length; j++) {
       var secondWord = firstWord.events[j]; //convenience
+      /*
       console.log(secondWord.month +
         '\/' + secondWord.date +
         '\/' + secondWord.year +
@@ -79,12 +80,15 @@ CreateCalWithEvents.prototype.insertEventsIntoCal = function(callback) {
         ' text: ' + secondWord.text +
         ' id: ' + secondWord._id
       );
+      */
     }
   }
   //console.log('==========CreateCalWithEvents.byCal============');
+  /*
   for(i=0; i<self.calendarMonth.byCal.length; i++) {
     console.log('calendar position: ' + i + ': ', self.calendarMonth.byCal[i]);
   }
+  */
   callback();
 }
 
@@ -104,11 +108,11 @@ CreateCalWithEvents.prototype.getEvents = function(year, month, callback) {
   var docs;
   db.find({$and: [{ "year":year}, { "month":self.monthName}]}, function(err, docs) {
     if(err) {
-      console.log('CreateCalWithEvents.js db.find() error: ', err);
+      console.log('====ERROR====CreateCalWithEvents.js db.find() error: ', err);
     } else {
       //console.log('CreateCalWithEvents.js getEvents() in callback for db.find: docs: ', docs);
+      callback(err, docs);
     }
-    callback(err, docs);
   });
 };
 
