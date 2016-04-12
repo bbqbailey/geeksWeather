@@ -4,6 +4,10 @@ var configFile = require('../geeksWeatherAppData');
 var rootPath = require('geeksweatherconfig').rootPath;
 var Calendar = require(rootPath + 'public/javascripts/Calendar');
 var CreateCalWithEvents = require(rootPath + "public/javascripts/CreateCalWithEvents");
+var CalendarEvents = require(rootPath + "public/javascripts/CalendarEvents");
+var Datastore = require("nedb");
+//global; was running into issues when doing new Datastore twice
+db = new Datastore({filename: rootPath + "public/database/calEvents.db", autoload: true});
 
 var config = configFile.config;
 var DELAY;
@@ -84,7 +88,20 @@ router.get('/calendar', function(req, res) {
 
 router.get('/calendarEvents', function(req, res) {
   logger.trace('router.get(/calendarEvents) entry');
-  res.render('calendarEvents');
+
+  var date = new Date();
+  var year = date.getFullYear();
+  var month = date.getMonth();
+
+  var calendarEvents = new CalendarEvents(year, month);
+  calendarEvents.getEvents(function(err, calEvents) {
+    if(err) {
+      console.log('===ERROR===index.js router.get(/calendarEvents) err: ', err);
+    } else {
+      console.log('index.js router.get(/calendarEvents) calevents: ', calEvents);
+      res.send(calEvents);
+    }
+  });
   logger.trace('router.get(/calendar) exit');
 });
 
