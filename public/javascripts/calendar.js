@@ -37,10 +37,10 @@ var calEvents={ 'month':  {'name':'Mar','events':[
 */
 
 var EventType={
-  Birthday:'border-top:10px solid #ff0000;',
-  Appointment:'border-right:10px solid #00ff00;',
-  Holiday:'border-bottom:10px solid #0000ff;',
-  Misc:'border-left:10px solid #909090;',
+  Birthday:'border-top:20px solid #ff0000;',
+  Appointment:'border-right:20px solid #00ff00;',
+  Holiday:'border-bottom:20px solid #0000ff;',
+  Misc:'border-left:20px solid #909090;',
   Today:'color:red;',
   Trip:'background-color:green;'
   }
@@ -90,7 +90,7 @@ function buildHTML() {
 
   console.log("calendar.js calWithEvents: ", calWithEvents);
 
-  var theCalendar = "<style> table { font-size:60px; font-weight: bold} #today {border-width:10px; border-style: solid; border-color: red} </style>";
+  var theCalendar = "<style> table { font-size:60px; font-weight: bold} #today {border-width:40px; border-style: solid; color:red} </style>";
   theCalendar +=  ('<div style = "float:left">');
   theCalendar +=  ('  <table>');
   theCalendar +=  ('    <tr>');
