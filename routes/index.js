@@ -73,7 +73,7 @@ router.get('/geeksWeatherDoc', function(req, res) {
 
 router.get('/calendar', function(req, res) {
   logger.trace('router.get(/calendar) entry');
-  createCal(function(err, stringifyCalWithEvents) {
+  createCal(function(err, stringifyCalWithEvents) { //local function
     if(err) {
       console.log('====ERROR====index.js router.get(/calendar) err: ', err);
     } else {

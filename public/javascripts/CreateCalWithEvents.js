@@ -39,20 +39,25 @@ CreateCalWithEvents.prototype.getCalEvents = function(callback) {
   var err;
 
   self.getEvents(self.year, self.monthValue, function(err, docs) {
-    //console.log('CreateCalWithEvents.js getCalEvents(): docs: ', docs);
-    self.calEvents = docs;
-    //console.log('CreateCalWithEvents.js calling CreateCal with year: ' + self.year + ', month: ' + self.monthValue);
-    CreateCal(self.year, self.monthValue, function(err, calMonth){
-      self.calendarMonth = calMonth; //an object with two elements:
-      //console.log('CreateCalWithEvents.js getCalEvents: calendarMonth: ', self.calendarMonth);
-    });
-    //console.log('CreateCalWithEvents.js calling insertEventsIntoCal');
-    self.insertEventsIntoCal(function() {
-      //console.log('CreateCalWithEvents.js after return from insertEventsIntoCal');
-    });
-    //console.log('CreateCalWithEvents.js getCalEvents executing callback');
-    //console.log('CreateCalWithEvents.js return from insertEventsIntoCal');
-    callback(err, docs);
+    if(err) {
+      console.log('====ERROR====CreateCalWithEvents.js getCalEvents() received error: ', err);
+      callback(err, null);
+    } else {
+      //console.log('CreateCalWithEvents.js getCalEvents(): docs: ', docs);
+      self.calEvents = docs;
+      //console.log('CreateCalWithEvents.js calling CreateCal with year: ' + self.year + ', month: ' + self.monthValue);
+      CreateCal(self.year, self.monthValue, function(err, calMonth){
+        self.calendarMonth = calMonth; //an object with two elements:
+        //console.log('CreateCalWithEvents.js getCalEvents: calendarMonth: ', self.calendarMonth);
+      });
+      //console.log('CreateCalWithEvents.js calling insertEventsIntoCal');
+      self.insertEventsIntoCal(function() {
+        //console.log('CreateCalWithEvents.js after return from insertEventsIntoCal');
+      });
+      //console.log('CreateCalWithEvents.js getCalEvents executing callback');
+      //console.log('CreateCalWithEvents.js return from insertEventsIntoCal');
+      callback(null, docs);
+    };
   });
 };
 
@@ -108,10 +113,11 @@ CreateCalWithEvents.prototype.getEvents = function(year, month, callback) {
   var docs;
   db.find({$and: [{ "year":year}, { "month":self.monthName}]}, function(err, docs) {
     if(err) {
-      console.log('====ERROR====CreateCalWithEvents.js db.find() error: ', err);
+      console.log('====ERROR====CreateCalWithEvents.js  getEvents(): db.find() error: ', err);
+      callback(err, null);
     } else {
       //console.log('CreateCalWithEvents.js getEvents() in callback for db.find: docs: ', docs);
-      callback(err, docs);
+      callback(null, docs);
     }
   });
 };

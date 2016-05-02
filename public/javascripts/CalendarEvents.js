@@ -7,7 +7,7 @@
 *   nedb
 *
 * purpose:
-*   Builds a up an html output of calendar events that are taking place this month.
+*   Builds an html output of calendar events that are taking place this month.
 *   The resultant events are sorted, earliest first.  Events prior to 'today' aren't shown.
 *
 **/
