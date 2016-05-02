@@ -48,3 +48,5 @@ public/tools/test.html
 public/database/_calPersonalEvents.json
 public/database/calEvents.db*
 public/tools/testCalendar.html
+public/logs/*
+

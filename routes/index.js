@@ -11,7 +11,7 @@ db = new Datastore({filename: rootPath + "public/database/calEvents.db", autoloa
 
 var config = configFile.config;
 var DELAY;
-var logger;
+var logger; //valid levels: trace, debug, info, warn, error, fatal
 
 var EventType={
   Birthday:'border-top:20px solid #ff0000;',
@@ -75,7 +75,8 @@ router.get('/calendar', function(req, res) {
   logger.trace('router.get(/calendar) entry');
   createCal(function(err, stringifyCalWithEvents) { //local function
     if(err) {
-      console.log('====ERROR====index.js router.get(/calendar) err: ', err);
+      //console.log('====ERROR====index.js router.get(/calendar) err: ', err);
+      logger.error('====ERROR====index.js router.get(/calendar) err: ', err);
     } else {
       //console.log('router.get rendering: ', stringifyCalWithEvents);
       //res.render('calendar', { 'calWithEvents': stringifyCalWithEvents});

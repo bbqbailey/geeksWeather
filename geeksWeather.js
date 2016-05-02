@@ -8,11 +8,21 @@ var configFile   = require('./geeksWeatherAppData'); //app json file
 var config       = configFile.config;
 var key          = require('./wundergroundKey');  //app json file
 var theRoutes    = require('./routes/index'); //app js file
+var hostname = require('os').hostname().split('.').shift();
 
-var logger = log4js.getLogger();
+if(hostname === 'Trader') {
+  log4js.loadAppender('file');
+  log4js.addAppender(log4js.appenders.file('./public/logs/geeksWeather.log'), 'geeksWeather');
+}
+var logger = log4js.getLogger('geeksWeather');
 var app    = module.exports = express();
 var mode   = process.env.MODE;
 var loggerLevel="";
+/*
+Valild log levels: trace, debug, info, warn, error, fatal
+*/
+
+
 
 setMode();
 
