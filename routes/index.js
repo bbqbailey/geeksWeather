@@ -75,7 +75,7 @@ router.get('/calendar', function(req, res) {
   logger.trace('router.get(/calendar) entry');
   createCal(function(err, stringifyCalWithEvents) { //local function
     if(err) {
-      //console.log('====ERROR====index.js router.get(/calendar) err: ', err);
+      console.log('====ERROR====index.js router.get(/calendar) err: ', err);
       logger.error('====ERROR====index.js router.get(/calendar) err: ', err);
     } else {
       //console.log('router.get rendering: ', stringifyCalWithEvents);
@@ -96,8 +96,9 @@ router.get('/calendarEvents', function(req, res) {
 
   var calendarEvents = new CalendarEvents(year, month);
   calendarEvents.getEvents(function(err, calEvents) {
-    if(err) {
       console.log('===ERROR===index.js router.get(/calendarEvents) err: ', err);
+      logger.error('===ERROR===index.js router.get(/calendarEvents) err: ', err);
+    if(err) {
     } else {
       console.log('index.js router.get(/calendarEvents) calevents: ', calEvents);
       res.send(calEvents);

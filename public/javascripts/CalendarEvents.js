@@ -14,6 +14,9 @@
 
 var rootPath = require("geeksweatherconfig").rootPath;
 var Datastore = require("nedb");
+var log4js = require('log4js'); //Bengy
+
+logger = log4js.getLogger('geeksWeather');
 
 var calToValues = {Jan:0,Feb:1,Mar:2,Apr:3,May:4,Jun:5,Jul:6,Aug:7,
   Sep:8,Oct:9,Nov:10,Dec:11};
@@ -39,18 +42,25 @@ function CalendarEvents(year, month) {
 CalendarEvents.prototype.getEvents = function(callback) {
   var todayDate = self.todayDate;
   console.log('CalendarEvents.js getEvents() entry');
-  console.log('=============================================================todayDate: ', todayDate);
-  console.log('getEvents(): self.date: ' + self.date);
-  console.log('getEvents(): self.todayMonthName: ' + self.todayMonthName);
-  db.find({$and: [{ "year":self.todayYear}, { "month":self.todayMonthName}]}).sort({date:1}).exec(function(err, docs) {
-    if(err) {
-      console.log('CreateCalWithEvents.js db.find() error: ', err);
-    } else {
-      self.htmlConvert(docs, function(err, docs) {
-        callback(err, docs);
-      });
-    }
-  });
+  //console.log('=============================================================todayDate: ', todayDate);
+  //console.log('CalendarEvents.js getEvents(): self.date: ' + self.date);
+  //console.log('CalendarEvents.js getEvents(): self.todayMonthName: ' + self.todayMonthName);
+//  db.find( {$and: [{ "year":self.todayYear}, { "month":self.todayMonthName}]}).sort({date:1}).exec(function(err, docs) {
+  db.find( {$or : [ {$and : [{ "year":self.todayYear},{"month":self.todayMonthName}]}, {$and : [{ "recurs":"YearlyOnDate"},{"month":self.todayMonthName}]}]}).sort({date:1}).exec(function(err, docs) {
+      if(err) {
+         logger.error('CalendarEvents.js db.find() error: ', err);
+         logger.error('CalendarEventss.js ????????? calling callback(err, docs) - is this what I should do?');
+         callback(err, docs);
+      } else {
+        logger.trace("CalendarEvents.js: getEvents() docs: ", docs);
+        logger.trace("CalendarEvents.js: getEvents() self.year: ", self.year);
+        logger.trace("CalendarEvents.js: getEvents() self.monthName: ", self.monthName);
+        self.htmlConvert(docs, function(err, docs) {
+           callback(err, docs);
+        });
+      };
+    });
+  console.log("CalendarEvents.js getEvents() exit");
 }
 
 CalendarEvents.prototype.htmlConvert = function(calendarEvents, callback) {
@@ -70,7 +80,7 @@ CalendarEvents.prototype.htmlConvert = function(calendarEvents, callback) {
     var text = calendarEvents[i].text;
     //eventString = eventString + ' ' + month + ' ' + eventDate + ': ' + theEvent + ': ' + text + ' <br><br>';
     if(self.todayDate <= eventDate) {
-      eventString += month + ' ' + eventDate + ': ' + theEvent + ': ' + text + ' <br><br>';
+      eventString += month + ' ' + eventDate + ': '  + text + ' <br><br>';
     }
   };
   //$("#event").html(eventString);

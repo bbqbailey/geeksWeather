@@ -2,8 +2,8 @@
 var CreateCal = require("./CreateCal");
 var log4js = require('log4js'); //Bengy
 
-logger = log4js.getLogger('geeksWeather');
 
+logger = log4js.getLogger('geeksWeather');
 
 var calToValues = {Jan:0,Feb:1,Mar:2,Apr:3,May:4,Jun:5,Jul:6,Aug:7,
   Sep:8,Oct:9,Nov:10,Dec:11};
@@ -39,7 +39,7 @@ CreateCalWithEvents.prototype.getCalEvents = function(callback) {
   self.getEvents(self.year, self.monthValue, function(err, docs) {
     if(err) {
       console.log('====ERROR====CreateCalWithEvents.js getCalEvents() received error: ', err);
-      logger.trace("CreateCalWithEvents.js getEvents() exit on err");
+      logger.error("CreateCalWithEvents.js getEvents() exit on err");
       callback(err, null);
     } else {
       self.calEvents = docs;
@@ -93,9 +93,10 @@ CreateCalWithEvents.prototype.getEvents = function(year, month, callback) {
   }
 
   var docs;
-  db.find({$and: [{ "year":year}, { "month":self.monthName}]}, function(err, docs) {
+//  db.find({$and: [{ "year":year}, { "month":self.monthName}]}, function(err, docs) {
+  db.find( {$or : [ {$and : [{ "year":self.year},{"month":self.monthName}]}, {$and : [{ "recurs":"YearlyOnDate"},{"month":self.monthName}]}]}).sort({date:1}).exec(function(err, docs) {
     if(err) {
-      console.log('====ERROR====CreateCalWithEvents.js  getEvents(): db.find() error: ', err);
+      logger.error('====ERROR====CreateCalWithEvents.js  getEvents(): db.find() error: ', err);
       callback(err, null);
     } else {
       logger.trace("CreateCalWithEvents.js getEvents() invoking callback");
