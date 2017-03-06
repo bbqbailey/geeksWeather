@@ -28,9 +28,9 @@ var EventType={
 //console.log("config: ", config);
 var stringifyconfig = JSON.stringify(config)
 
-module.exports = function(theDelay, theLogger) {
+module.exports = function(theDelay) {
   DELAY = theDelay;
-  logger = theLogger;
+  logger = _gw_logger;
   return router;
 }
 
@@ -126,20 +126,24 @@ router.post('/eventEditor'), function(req, res) {
 }
 
 function createCal(callback) {
+  logger.trace("index.js createCal() entry");
   buildCalendar(function(err, calWithEvents) {
     //console.log('index.js createCal(): return from buildCalendar calWithEvents: ', calWithEvents);
     if(err) {
-      console.log('=========ERROR==========index.js createCal() buildCalendar() err: ', err);
+      logger.trace('=========ERROR==========index.js createCal() buildCalendar() err: ', err);
+      logger.error(err);
       callback(err, null);
     } else {
       //console.log('index.js createCal() buildCalendar() calWithEvents: ', calWithEvents);
       //console.log('index.js createCal() buildCalendar() returning via callback');
+      logger.trace("index.js createCal() exit - invoking normal callback");
       callback(null, calWithEvents);
     };
   });
 };
 
 function buildCalendar(callback) {
+  logger.trace("index.js buildCalendar() entry");
   var date = new Date();
   var fullYear = date.getFullYear();
   var month = date.getMonth();
@@ -150,11 +154,13 @@ function buildCalendar(callback) {
     calendar.buildHTML(EventType, calWE.calendarMonth, function(err, stringifyCalWithEvents) {
       //console.log('=====index.js buildCalendar() in callback after return from calendar.buildHTML()====');
       if(err) {
-        console.log('========ERROR==========index.js buildCalendar(): calendar.buildHTML() error: ', err);
+        logger.trace('========ERROR==========index.js buildCalendar(): calendar.buildHTML() error: ', err);
+        logger.error(err);
         callback(err, null);
       } else {
         //console.log('index.js buildCalendar(): calendar.buildHTML()', stringifyCalWithEvents);
         //console.log('index.js buildCalendar() exiting via callback after completing calendar.buildHTML()');
+        logger.trace("index.js buildCalendar() exit - invoking normal callback");
         callback(null, stringifyCalWithEvents);
       }
     });
