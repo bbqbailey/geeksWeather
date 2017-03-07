@@ -47,6 +47,8 @@ public/javascripts/useMyapp.js
 public/tools/test.html
 public/database/_calPersonalEvents.json
 public/database/calEvents.db*
+public/database/*.old*
+public/database/_calPersonalNew.json
 public/tools/testCalendar.html
 public/logs/*
 
